@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FightMyHOA — Your HOA Isn't Always Right.</title>
+<meta name="description" content="AI-generated appeal letters for HOA fines, violation notices, and architectural denials. Attorney-quality. 5 minutes. $49.">
+<meta name="keywords" content="HOA fine appeal letter fight HOA violation, fightmyhoa, demand letter generator, AI letter writer">
+<meta property="og:title" content="FightMyHOA — Your HOA Isn't Always Right.">
+<meta property="og:description" content="AI-generated appeal letters for HOA fines, violation notices, and architectural denials. Attorney-quality. 5 minutes. $49.">
+<meta property="og:url" content="https://fightmyhoa.com">
+<link rel="canonical" href="https://fightmyhoa.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1a3d6b;
+  --primary-dark: #0a1f3d;
+  --accent: #60a5fa;
+  --ink: #0f0f0f;
+  --ink-light: #3a3a3a;
+  --ink-muted: #6b6b6b;
+  --bg: #fafaf8;
+  --bg-alt: #f3f2ef;
+  --border: #e2e0db;
+  --white: #ffffff;
+  --radius: 10px;
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.6; }
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,250,248,0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px; display: flex; justify-content: space-between; align-items: center;
+}
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+.nav-name { font-family: var(--serif); font-size: 17px; font-weight: 700; color: var(--ink); }
+.nav-cta { background: var(--primary); color: #fff; padding: 9px 20px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600; transition: opacity 0.15s; }
+.nav-cta:hover { opacity: 0.88; }
+
+/* HERO */
+.hero {
+  background: linear-gradient(160deg, var(--primary-dark) 0%, var(--primary) 60%, #1a5a4a 100%);
+  color: #fff; padding: 90px 24px 80px; text-align: center; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 99px; padding: 5px 14px; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 24px; backdrop-filter: blur(8px); }
+.hero h1 { font-family: var(--serif); font-size: clamp(36px, 6vw, 68px); font-weight: 900; line-height: 1.08; margin-bottom: 20px; letter-spacing: -0.02em; }
+.hero h1 span { color: #60a5fa; }
+.hero-sub { font-size: clamp(16px, 2.2vw, 19px); color: rgba(255,255,255,0.92); max-width: 580px; margin: 0 auto 36px; line-height: 1.65; font-weight: 300; }
+.hero-cta-wrap { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
+.btn-primary { background: #60a5fa; color: var(--primary-dark); padding: 16px 36px; border-radius: 8px; text-decoration: none; font-size: 17px; font-weight: 700; transition: transform 0.15s, box-shadow 0.15s; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.25); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+.btn-secondary { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 15px 28px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: 500; transition: background 0.15s; }
+.btn-secondary:hover { background: rgba(255,255,255,0.2); }
+.hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat-num { font-family: var(--serif); font-size: 28px; font-weight: 900; color: #60a5fa; display: block; }
+.hero-stat-label { font-size: 13px; color: rgba(255,255,255,0.92); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* TRUST BAR */
+.trust-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 18px 24px; display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+.trust-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-muted); font-weight: 500; }
+.trust-icon { font-size: 16px; }
+
+/* SECTIONS */
+section { padding: 72px 24px; }
+.container { max-width: 1060px; margin: 0 auto; }
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
+.section-title { font-family: var(--serif); font-size: clamp(28px, 4vw, 42px); font-weight: 900; color: var(--ink); margin-bottom: 14px; line-height: 1.15; letter-spacing: -0.02em; }
+.section-sub { font-size: 17px; color: var(--ink-muted); max-width: 560px; line-height: 1.65; font-weight: 300; }
+
+/* PROBLEMS */
+.problems { background: var(--bg-alt); }
+.problem-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 40px; }
+.problem-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; display: flex; gap: 16px; transition: box-shadow 0.2s; }
+.problem-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+.problem-icon { font-size: 28px; flex-shrink: 0; }
+.problem-title { font-weight: 700; font-size: 15px; margin-bottom: 5px; color: var(--ink); }
+.problem-body { font-size: 13px; color: var(--ink-muted); line-height: 1.6; }
+
+/* HOW IT WORKS */
+.steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; margin-top: 48px; position: relative; }
+.step { text-align: center; padding: 0 16px; }
+.step-num { font-family: var(--serif); font-size: 48px; font-weight: 900; color: var(--primary); opacity: 0.2; line-height: 1; margin-bottom: 12px; }
+.step-title { font-weight: 700; font-size: 16px; margin-bottom: 8px; color: var(--ink); }
+.step-body { font-size: 14px; color: var(--ink-muted); line-height: 1.65; }
+
+/* SAMPLE */
+.sample-section { background: var(--primary-dark); color: #fff; }
+.sample-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); padding: 32px 36px; font-family: Georgia, serif; font-size: 14px; line-height: 1.9; color: rgba(255,255,255,0.85); white-space: pre-wrap; margin-top: 32px; position: relative; }
+.sample-card::before { content: 'SAMPLE OUTPUT'; position: absolute; top: -10px; left: 20px; background: #60a5fa; color: var(--primary-dark); font-size: 10px; font-weight: 800; letter-spacing: 0.1em; padding: 3px 10px; border-radius: 4px; font-family: var(--sans); }
+
+/* PRICING */
+.pricing-section { background: var(--bg-alt); text-align: center; }
+.price-card { background: var(--white); border: 2px solid var(--primary); border-radius: 14px; padding: 48px 40px; max-width: 480px; margin: 40px auto 0; box-shadow: 0 8px 40px rgba(0,0,0,0.08); }
+.price-amount { font-family: var(--serif); font-size: 72px; font-weight: 900; color: var(--primary); line-height: 1; }
+.price-label { font-size: 14px; color: var(--ink-muted); margin-bottom: 28px; }
+.price-features { list-style: none; margin-bottom: 32px; display: flex; flex-direction: column; gap: 12px; text-align: left; }
+.price-features li { display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink-light); }
+.price-features li::before { content: '✓'; color: var(--primary); font-weight: 800; font-size: 14px; flex-shrink: 0; }
+.price-btn { display: block; background: var(--primary); color: #fff; padding: 18px; border-radius: 8px; text-decoration: none; font-size: 18px; font-weight: 700; transition: opacity 0.15s; }
+.price-btn:hover { opacity: 0.88; }
+.price-note { font-size: 13px; color: var(--ink-muted); margin-top: 14px; }
+
+/* FAQ */
+.faq-grid { display: flex; flex-direction: column; gap: 0; margin-top: 40px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.faq-item { padding: 24px 28px; border-bottom: 1px solid var(--border); }
+.faq-item:last-child { border-bottom: none; }
+.faq-q { font-weight: 700; font-size: 16px; color: var(--ink); margin-bottom: 8px; }
+.faq-a { font-size: 14px; color: var(--ink-muted); line-height: 1.7; }
+
+/* BOTTOM CTA */
+.bottom-cta { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: #fff; text-align: center; padding: 80px 24px; }
+.bottom-cta h2 { font-family: var(--serif); font-size: clamp(28px, 4vw, 46px); font-weight: 900; margin-bottom: 14px; letter-spacing: -0.02em; }
+.bottom-cta p { font-size: 17px; color: rgba(255,255,255,0.88); margin-bottom: 36px; font-weight: 300; }
+
+/* FOOTER */
+footer { background: var(--ink); color: rgba(255,255,255,0.75); text-align: center; padding: 24px; font-size: 12px; }
+footer a { color: rgba(255,255,255,0.75); }
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .hero { padding: 60px 20px 52px; }
+  .hero-stats { gap: 20px; }
+  .trust-bar { gap: 16px; padding: 14px 16px; }
+  .price-card { padding: 36px 24px; }
+  .sample-card { padding: 24px 20px; }
+  nav { padding: 12px 16px; }
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.hero h1, .hero-sub, .hero-cta-wrap { animation: fadeUp 0.6s ease both; }
+.hero-sub { animation-delay: 0.1s; }
+.hero-cta-wrap { animation-delay: 0.2s; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="/">
+    <div class="nav-icon">🏘️</div>
+    <span class="nav-name">FightMyHOA</span>
+  </a>
+  <a class="nav-cta" href="https://payhip.com/b/8TWrB">Appeal My Fine →</a>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">⚖ Attorney-Quality · AI-Powered · $49 flat fee</div>
+    <h1>Your HOA Isn't Always <span>Right.</span></h1>
+    <p class="hero-sub">AI-generated appeal letters for HOA fines, violation notices, and architectural denials. Attorney-quality. 5 minutes. $49.</p>
+    <div class="hero-cta-wrap">
+      <a class="btn-primary" href="https://payhip.com/b/8TWrB">Appeal My Fine →</a>
+      <a class="btn-secondary" href="#how">See How It Works</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num">$49</span>
+        <span class="hero-stat-label">Flat Fee</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">5 min</span>
+        <span class="hero-stat-label">To Generate</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">2</span>
+        <span class="hero-stat-label">Letter Versions</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">50</span>
+        <span class="hero-stat-label">States Covered</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trust-bar">
+  <div class="trust-item"><span class="trust-icon">⚖️</span> Cites your state's specific laws</div>
+  <div class="trust-item"><span class="trust-icon">🔒</span> No subscription · one flat fee</div>
+  <div class="trust-item"><span class="trust-icon">📧</span> Letter emailed to you instantly</div>
+  <div class="trust-item"><span class="trust-icon">✉️</span> Two versions: Standard + Assertive</div>
+  <div class="trust-item"><span class="trust-icon">📋</span> Includes submission checklist</div>
+</div>
+
+<section class="problems">
+  <div class="container">
+    <div class="section-label">Sound Familiar?</div>
+    <h2 class="section-title">You shouldn't have to just take it.</h2>
+    <p class="section-sub">A formal demand letter — citing the law, setting a deadline, spelling out consequences — changes the dynamic completely.</p>
+    <div class="problem-grid">
+      
+        <div class="problem-card">
+          <div class="problem-icon">💸</div>
+          <div>
+            <div class="problem-title">Bogus Fines</div>
+            <div class="problem-body">They fined you for something that isn't in the CC&Rs, or applied rules inconsistently. That's challengeable.</div>
+          </div>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon">🏗️</div>
+          <div>
+            <div class="problem-title">Architectural Denial</div>
+            <div class="problem-body">Your improvement was denied without clear reasoning. You have the right to appeal with proper documentation.</div>
+          </div>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon">📋</div>
+          <div>
+            <div class="problem-title">Rule Enforcement</div>
+            <div class="problem-body">The board is enforcing rules that don't exist, or refusing to enforce them against your neighbor.</div>
+          </div>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon">📁</div>
+          <div>
+            <div class="problem-title">Records Denied</div>
+            <div class="problem-body">You have a legal right to HOA financial records and board minutes. They must provide them.</div>
+          </div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Attorney-quality letter in 5 minutes.</h2>
+    <p class="section-sub">No legal knowledge required. Just describe your situation in plain English — the AI handles the rest.</p>
+    <div class="steps">
+      
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-title">Enter Your Access Code</div>
+          <div class="step-body">Purchase for $49 and get your access code by email instantly.</div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-title">Describe the Dispute</div>
+          <div class="step-body">Tell us about the fine, the notice, and your defense. No legal knowledge needed.</div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-title">AI Writes Your Appeal</div>
+          <div class="step-body">Cites your state's HOA statutes, your CC&Rs, and invokes your due process rights.</div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-title">Submit to the Board</div>
+          <div class="step-body">Certified mail puts them on notice. Most HOAs back down when faced with a documented legal challenge.</div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<section class="sample-section">
+  <div class="container">
+    <div class="section-label">Sample Output</div>
+    <h2 class="section-title" style="color:var(--ink)">This is what your letter looks like.</h2>
+    <p class="section-sub" style="color:var(--ink-muted)">Real AI output — specific, professional, and legally precise. Not a template. Not fill-in-the-blank.</p>
+    <div class="sample-card">[DATE]\n\nVia Certified Mail — Return Receipt Requested\n\n[Recipient Name]\n[Address]\n\nRe: Formal Demand — [Subject]\n\nDear [Name]:\n\nThis letter constitutes a formal demand... [Full letter generated based on your specific situation, citing applicable state statutes, setting a firm deadline, and stating clear consequences.]\n\nThe AI generates 500-700 words of attorney-quality language specific to your state, your situation, and your demands.\n\nSincerely,\n[Your Name]</div>
+  </div>
+</section>
+
+<section class="pricing-section" id="pricing">
+  <div class="container">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title">One letter. One price. No subscriptions.</h2>
+    <p class="section-sub" style="margin:0 auto">A lawyer would charge $200-$500 to write this letter. You get the same result for $49.</p>
+    <div class="price-card">
+      <div class="price-amount">$49</div>
+      <div class="price-label">one-time · instant access</div>
+      <ul class="price-features">
+        <li>Standard + Assertive letter versions</li>
+        <li>Two-pass AI quality review</li>
+        <li>State-specific legal citations</li>
+        <li>Submission checklist included</li>
+        <li>Letter emailed to you instantly</li>
+        <li>Print-ready, send same day</li>
+        <li>No subscription, no renewal</li>
+      </ul>
+      <a class="price-btn" href="https://payhip.com/b/8TWrB">Appeal My Fine →</a>
+      <p class="price-note">Secure checkout via Payhip. Access code delivered by email immediately after purchase.</p>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">Common questions.</h2>
+    <div class="faq-grid">
+      
+        <div class="faq-item">
+          <div class="faq-q">What if the rule is in the CC&Rs?</div>
+          <div class="faq-a">The letter focuses on whether the rule was applied fairly, whether proper procedure was followed, and whether the fine amount is proportionate — even valid rules can be appealed on procedural grounds.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Do I have the right to a hearing?</div>
+          <div class="faq-a">In most states, yes. Your HOA bylaws almost certainly require a hearing before fines become final. The letter demands this right explicitly.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What if the HOA ignores me?</div>
+          <div class="faq-a">The letter references your state's HOA ombudsman or regulatory agency — filing a complaint there is free and often prompts a response faster than legal action.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Does this work for condo associations too?</div>
+          <div class="faq-a">Yes. The AI handles both HOA and condo association disputes and cites the appropriate state statutes for each.</div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<div class="bottom-cta">
+  <div class="container">
+    <h2>Ready to fight back?</h2>
+    <p>Attorney-quality letter in 5 minutes. $49 flat. No subscription.</p>
+    <a class="btn-primary" href="https://payhip.com/b/8TWrB" style="display:inline-flex;margin:0 auto">Appeal My Fine →</a>
+  </div>
+</div>
+
+<footer>
+  <p>FightMyHOA · © 2026 The Super Simple Software Company · <a href="mailto:support@buyappsonce.com">support@buyappsonce.com</a> · <a href="https://hoafight.com/app">Launch App</a></p>
+  <p style="margin-top:8px;font-size:13px;opacity:0.75">Legal Disclaimer: Letters generated by AI do not constitute legal advice. Review all content before sending. For complex matters, consult a licensed attorney.</p>
+</footer>
+
+</body>
+</html>
