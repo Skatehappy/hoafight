@@ -7,15 +7,15 @@ const EMAILJS_PUBLIC_KEY  = "YOUR_EMAILJS_PUBLIC_KEY";
 const API_BASE = "";
 
 const APP = {
-  name: "TenantFight",
-  tagline: "Tenant Demand Letter Writer",
+  name: "FightMyHOA",
+  tagline: "HOA Appeal Letter Writer",
   icon: "🏠",
   color: "#1a6b5a",
   colorLight: "#2d9e87",
   payhip: "https://payhip.com/b/8TWrB",
-  support: "support@tenantfight.com",
+  support: "support@hoafight.com",
   price: "$49",
-  domain: "landlorddesk.com",
+  domain: "hoafight.com",
   font: "'Source Serif 4', Georgia, serif",
   displayFont: "'Playfair Display', serif",
 };
@@ -377,7 +377,7 @@ ADDITIONAL DEMANDS: ${formData.additionalDemands || "none"}`;
         {currentStep === "Intro" && (
           <div style={{ textAlign: "center" }}>
             <div style={{ fontSize: "13px", color: colors.goldLight, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "12px" }}>{APP.icon} {APP.name}</div>
-            <h1 style={{ fontFamily: APP.displayFont, fontSize: "clamp(28px, 5vw, 44px)", color: colors.ink, marginBottom: "16px", fontWeight: "900" }}>Tenant Demand Letter Writer</h1>
+            <h1 style={{ fontFamily: APP.displayFont, fontSize: "clamp(28px, 5vw, 44px)", color: colors.ink, marginBottom: "16px", fontWeight: "900" }}>HOA Appeal Letter Writer</h1>
             <p style={{ fontSize: "17px", color: colors.inkMuted, marginBottom: "48px", maxWidth: "480px", margin: "0 auto 40px", lineHeight: "1.7" }}>
               Attorney-quality demand letters for security deposit disputes, habitability issues, and landlord violations. Enter your access code to begin.
             </p>
@@ -537,7 +537,7 @@ ADDITIONAL DEMANDS: ${formData.additionalDemands || "none"}`;
 
             <div style={{ marginTop: "24px", textAlign: "center", padding: "20px", background: colors.white, borderRadius: "10px", border: `1px solid ${colors.borderLight}` }}>
               <div style={{ fontSize: "14px", color: colors.inkMuted, marginBottom: "6px" }}>Did your landlord respond?</div>
-              <div style={{ fontSize: "12px", color: colors.inkFaint }}>Share your outcome → <span style={{ color: colors.goldLight }}>results@tenantfight.com</span></div>
+              <div style={{ fontSize: "12px", color: colors.inkFaint }}>Share your outcome → <span style={{ color: colors.goldLight }}>results@hoafight.com</span></div>
             </div>
           </div>
         )}
@@ -545,7 +545,7 @@ ADDITIONAL DEMANDS: ${formData.additionalDemands || "none"}`;
 
       <style>{`@keyframes spin { to { transform: rotate(360deg); } } * { box-sizing: border-box; } body { margin: 0; } @media print { button, .no-print { display: none !important; } body { background: #fff; } @page { margin: 0.75in; } }`}</style>
       <footer style={{ textAlign: "center", padding: "16px", fontSize: "0.72rem", color: "#888", borderTop: "1px solid #e5e0d6", marginTop: "40px" }}>
-        TenantFight v1.0 · © 2026 The Super Simple Software Company · support@buyappsonce.com
+        FightMyHOA v1.0 · © 2026 The Super Simple Software Company · support@buyappsonce.com
       </footer>
     </div>
   );
