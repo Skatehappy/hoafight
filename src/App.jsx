@@ -56,7 +56,7 @@ const stepFields = {
   ],
   Dispute: [
     { key: "disputeType",  label: "Type of Dispute",        type: "select", required: true,
-      options: ["Wrongful Fine", "Architectural Denial", "Inconsistent Enforcement", "Records Denied", "Other"] },
+      options: ["Wrongful Fine", "Architectural Denial", "Inconsistent Enforcement", "Records Denied", "Special Assessment Dispute", "Election Irregularity", "Failure to Maintain Common Areas", "Board Harassment / Targeted Enforcement", "HOA Fee / Dues Dispute", "Other"] },
     { key: "ccrSection",   label: "CC&R / Bylaw Section Referenced", type: "text", required: false, placeholder: "e.g. Article IV, Section 3.2" },
     { key: "disputeDetails", label: "Describe the Dispute",  type: "textarea", required: true,
       placeholder: "e.g. I received a $150 fine for my trash can being visible from the street on March 10. However, I had placed it out for scheduled pickup and it was removed within 2 hours. Multiple neighbors leave cans out longer without penalty." },
@@ -79,6 +79,59 @@ const requiredFields = {
   Dispute: ["disputeType", "disputeDetails"],
   Demand: ["demand"],
 };
+
+const conditionalFields = {
+  "Special Assessment Dispute": [
+    { key: "assessmentAmount",        label: "Assessment Amount",                  type: "text",   placeholder: "e.g. $2,400 per unit" },
+    { key: "assessmentNoticeReceived",label: "Notice Received?",                    type: "select", options: ["Yes — adequate notice","No notice at all","Insufficient notice period","Notice but missing required disclosures"] },
+    { key: "assessmentVoteHeld",      label: "Member Vote Held?",                   type: "select", options: ["Yes","No vote held","Not sure","Vote held but improper procedure"] },
+    { key: "assessmentPurpose",       label: "Stated Purpose of the Assessment",    type: "textarea", placeholder: "e.g. 'Roof replacement for clubhouse'" },
+  ],
+  "Records Denied": [
+    { key: "recordsRequested",        label: "Records You Requested",               type: "textarea", placeholder: "e.g. Monthly financial statements for 2025; board meeting minutes Jan-Mar 2026; most recent reserve study; vendor contracts over $5,000" },
+    { key: "recordsRequestDate",      label: "Date of Your Written Request",         type: "text",     placeholder: "e.g. February 10, 2026" },
+    { key: "recordsHoaResponse",      label: "HOA Response to Date",                 type: "textarea", placeholder: "e.g. No response; or 'We don't have to show those'; or partial production on [date]" },
+  ],
+  "Election Irregularity": [
+    { key: "electionViolation",       label: "Specific Procedural Violation",       type: "textarea", placeholder: "e.g. Inspector of elections not appointed; ballots counted in private; candidate excluded without stated grounds" },
+    { key: "electionDate",            label: "Election Date",                        type: "text",     placeholder: "e.g. March 15, 2026" },
+    { key: "electionOutcome",         label: "Outcome You Are Contesting",           type: "textarea", placeholder: "e.g. Board seats 1, 3, 5 were certified for incumbents despite apparent quorum failure" },
+  ],
+  "Failure to Maintain Common Areas": [
+    { key: "commonAreaAtIssue",       label: "Common Area at Issue",                 type: "select",   options: ["Pool","Walkways / sidewalks","Landscaping","Roofs on common buildings","Parking lots","Clubhouse / gym","Fencing / gates","Lighting","Other"] },
+    { key: "commonAreaCondition",     label: "Condition Described",                  type: "textarea", placeholder: "e.g. Pool has been closed since November 2025; tiles cracked and pump broken. Pool deck concrete is spalling and creates trip hazards." },
+    { key: "commonAreaSafetyHazard",  label: "Creates a Safety Hazard?",             type: "select",   options: ["Yes","No","Unclear"] },
+    { key: "commonAreaPriorRequests", label: "Prior Requests Made",                  type: "textarea", placeholder: "e.g. Emailed board 11/15/25 and 12/20/25; raised at annual meeting 1/18/26; no action taken" },
+  ],
+  "Board Harassment / Targeted Enforcement": [
+    { key: "harassmentIncidents",     label: "Incidents Described with Dates",      type: "textarea", placeholder: "e.g. 12/3/25 — inspection and $150 fine for trash can visible; 12/10/25 — fine for 'lawn height' when grass was 3 inches; 12/18/25 — threatening letter from board president" },
+    { key: "harassmentComparators",   label: "Other Homeowners with Same Condition Not Fined?", type: "select", options: ["Yes — same condition, not fined","No — everyone is cited","Not sure"] },
+    { key: "harassmentProtectedClass",label: "Protected Class Involved?",            type: "select",   options: ["No","Yes — race or national origin","Yes — disability","Yes — familial status","Yes — religion","Yes — other"] },
+  ],
+  "Inconsistent Enforcement": [
+    { key: "harassmentIncidents",     label: "Incidents Described with Dates",      type: "textarea", placeholder: "e.g. Cited and fined for condition X on [dates]" },
+    { key: "harassmentComparators",   label: "Other Homeowners with Same Condition Not Fined?", type: "select", options: ["Yes — same condition, not fined","No — everyone is cited","Not sure"] },
+    { key: "harassmentProtectedClass",label: "Protected Class Involved?",            type: "select",   options: ["No","Yes — race or national origin","Yes — disability","Yes — familial status","Yes — religion","Yes — other"] },
+  ],
+  "Architectural Denial": [
+    { key: "modificationRequested",   label: "Modification Requested",              type: "select",   options: ["Solar panels","Satellite dish / antenna","EV charger","Accessibility modification (ramp, grab bars, etc.)","Fence","Flag / flagpole","Paint / exterior color","Landscaping","Shed or outbuilding","Other"] },
+    { key: "modificationDenialReason",label: "Denial Reason HOA Gave",               type: "textarea", placeholder: "e.g. 'Does not match neighborhood aesthetic'" },
+    { key: "modificationProtection",  label: "Applicable Federal or State Protection", type: "select", options: ["Federal OTARD rule (satellite dish / antenna)","State solar rights / solar access law","ADA or Fair Housing accessibility modification","State EV charger protection statute","Federal flag display law","None / not sure"] },
+  ],
+  "HOA Fee / Dues Dispute": [
+    { key: "feesDisputed",            label: "Fees You Dispute",                     type: "textarea", placeholder: "e.g. $75 'administrative fee' not in CC&Rs; $200 late fee on $180 assessment; double-charging of trash fee for three months" },
+    { key: "feesAmount",              label: "Total Amount at Issue",                type: "text",     placeholder: "e.g. $875" },
+    { key: "feesCcrsCitation",        label: "CC&Rs Provisions the HOA Cites (if any)", type: "textarea", placeholder: "e.g. Board claims 'Article VI §4' authorizes it; that section only authorizes regular assessments, not administrative fees" },
+  ],
+};
+
+function buildDisputeFields(baseFields, disputeType) {
+  const cond = conditionalFields[disputeType];
+  if (!cond) return baseFields;
+  const idx = baseFields.findIndex(f => f.key === "disputeType");
+  if (idx === -1) return [...baseFields, ...cond];
+  return [...baseFields.slice(0, idx + 1), ...cond, ...baseFields.slice(idx + 1)];
+}
 
 const inputStyle = (focused) => ({
   width: "100%",
@@ -243,6 +296,133 @@ export default function App() {
 
   const systemPrompt = "You are an expert HOA and community association attorney. Write compelling appeal letters citing your state HOA statute, invoking due process and hearing rights, and challenging procedural defects. 500-700 words. Format: formal appeal letter with [DATE] placeholder, via certified mail. Output ONLY the letter.";
 
+  const specialAssessmentPrompt = `You are an expert HOA and community association attorney specializing in special assessment disputes. Write firm, legally precise appeal letters.
+
+Rules:
+- Open with clear statement: the HOA levied a special assessment on a specific date in a specific amount; the assessment is improper for specified procedural or substantive reasons
+- Cite the state's HOA statute by name (e.g., California Davis-Stirling Common Interest Development Act at Civil Code §§5600-5615; Florida Chapter 720; Texas Property Code Chapter 209; North Carolina Chapter 47F)
+- Cite the notice and vote requirements the state imposes — most states require 30-60 days written notice and a member vote for special assessments exceeding stated budget thresholds (often 5% of budgeted gross expenses)
+- Cite the governing documents (CC&Rs, Declaration, Bylaws) provisions on assessment authority and required procedures
+- Identify the specific defects: insufficient notice, no member vote when required, exceeds statutory cap, funds directed to ineligible purposes, or inadequate financial justification
+- Demand: production of the financial justification and itemized budget for the assessment; proof of proper notice and proper member vote (if required); suspension of the assessment pending compliance; refund of any amounts already paid if the assessment is void
+- Warn of remedies: complaint to the state's HOA regulator or attorney general, suit for declaratory and injunctive relief, breach-of-fiduciary-duty claims against individual board members, and attorney's fees where statute or CC&Rs provide
+- Set a firm 30-day response deadline
+- Professional but firm tone
+- 500-700 words
+- Format: formal letter with [DATE] placeholder, via certified mail
+- Output ONLY the letter, no preamble`;
+
+  const recordsRequestPrompt = `You are an expert HOA and community association attorney specializing in member records-inspection rights. Write firm, legally precise demand letters.
+
+Rules:
+- Open with clear statement: on a specific date you submitted a written request for enumerated records; the HOA has failed to comply within the statutory deadline
+- Cite the state's HOA records-inspection statute by name (e.g., California Davis-Stirling at Civil Code §§5200-5240; Florida §720.303(5); Texas Property Code §209.005; North Carolina §47F-3-118) — most states require production within 10-30 days of a written request
+- Cite the CC&Rs and Bylaws provisions on member inspection rights
+- List the specific records requested — financial records, meeting minutes, budgets, reserve studies, vendor contracts, ballots, or other records the member is legally entitled to inspect
+- Rebut any "confidentiality" or "burden" excuse — statutory inspection rights are not defeated by member-information redactions that the statute itself already requires
+- Demand: production of each enumerated record within a short follow-up deadline (typically 10-15 days); if the HOA intends to charge a reasonable copying fee, production of the fee schedule first; and a written statement of which records are withheld and on what specific statutory basis
+- Warn of remedies: statutory penalties where provided (some states impose per-day penalties for non-compliance), attorney's fees, small-claims or declaratory-relief actions, and complaint to the state HOA regulator
+- Set a firm 15-day response deadline
+- Professional but firm tone
+- 500-700 words
+- Format: formal letter with [DATE] placeholder, via certified mail
+- Output ONLY the letter, no preamble`;
+
+  const electionIrregularityPrompt = `You are an expert HOA and community association attorney specializing in HOA election disputes. Write firm, legally precise demand letters.
+
+Rules:
+- Open with clear statement: the board election held on a specific date was conducted improperly; specify each particular procedural violation
+- Cite the state's HOA election statute by name (e.g., California Davis-Stirling at Civil Code §§5100-5145 — election procedures and secret ballots; Florida §720.306; Texas Property Code §209.00593)
+- Cite the CC&Rs and Bylaws provisions on election procedures, quorum, inspector of elections, and candidate eligibility
+- Identify specific defects: ballots not counted per statute, proxies mishandled, candidates improperly excluded, quorum not met, inspector of elections not appointed, inadequate notice of election, or failure to preserve ballots per statutory retention period
+- Demand: independent investigation of the election; production of all ballot records (sealed ballots, proxies, voter list, inspector of elections' report); and re-run of the election under proper procedures if defects cannot be cured
+- Warn of remedies: member action to set aside the election, court-ordered reelection, complaint to the state HOA regulator, and attorney's fees where statute or CC&Rs provide
+- Set a firm 30-day response deadline
+- Professional but firm tone
+- 500-700 words
+- Format: formal letter with [DATE] placeholder, via certified mail
+- Output ONLY the letter, no preamble`;
+
+  const commonAreaPrompt = `You are an expert HOA and community association attorney specializing in HOA maintenance and fiduciary duty claims. Write firm, legally precise demand letters.
+
+Rules:
+- Open with clear statement of the common area(s) at issue, the condition, how long it has gone unaddressed, and any safety hazards created
+- Cite the CC&Rs and Declaration provisions that assign maintenance responsibility for the common areas to the HOA
+- Cite the state's HOA statute confirming the association's duty to maintain common areas (e.g., California Davis-Stirling at Civil Code §4775; Florida §720.303; Texas Property Code Chapter 209)
+- Cite the board's fiduciary duty to the membership — the business judgment rule does not protect inaction or gross neglect of core maintenance obligations
+- Reference prior requests to the HOA and the inadequate response
+- Demand: a specific repair plan with timeline; documentation of the HOA's contracted maintenance obligations; and interim safety measures where a hazard exists
+- Warn of remedies: member action for breach of the governing documents and breach of fiduciary duty; injunctive relief to compel maintenance; damages for diminution in property value; complaint to the state HOA regulator; and attorney's fees where statute or CC&Rs provide
+- Set a firm 30-day response deadline (shorter for documented safety hazards)
+- Professional but firm tone
+- 500-700 words
+- Format: formal letter with [DATE] placeholder, via certified mail
+- Output ONLY the letter, no preamble`;
+
+  const boardHarassmentPrompt = `You are an expert HOA and community association attorney specializing in selective enforcement, board harassment, and fair housing claims. Write firm, legally precise demand letters.
+
+Rules:
+- Open with clear statement: the HOA board or management company has engaged in targeted enforcement against the homeowner, with specific incidents and dates
+- Identify the pattern: repeated inspections, excessive fines, threatening communications, or selective enforcement of rules not applied to similarly situated homeowners
+- Cite the state's HOA uniform-enforcement and fiduciary-duty statutes (e.g., California Davis-Stirling at Civil Code §5975 and related uniform-enforcement requirements; Florida §720.305; Texas Property Code Chapter 209)
+- Cite the board's fiduciary duty and the uniform-enforcement doctrine — selective enforcement of covenants is itself a defense and an affirmative claim
+- If a protected class is implicated: cite the federal Fair Housing Act (42 U.S.C. §§3601-3619) and any applicable state fair housing statute, noting that disparate treatment or disparate-impact targeting is actionable
+- Name comparators where available — other homeowners with the same condition who were not fined, inspected, or harassed
+- Demand: immediate cessation of targeted enforcement; written enforcement criteria and proof of uniform application; withdrawal of any fines imposed through selective enforcement; and a written commitment to follow uniform enforcement procedures going forward
+- Warn of remedies: civil action for breach of fiduciary duty, declaratory and injunctive relief, HUD complaint if fair housing laws are implicated, and attorney's fees where statute or CC&Rs provide
+- Set a firm 30-day response deadline
+- Professional but firm tone — document the record
+- 500-700 words
+- Format: formal letter with [DATE] placeholder, via certified mail
+- Output ONLY the letter, no preamble`;
+
+  const architecturalPrompt = `You are an expert HOA and community association attorney specializing in architectural review and modification denials. Write firm, legally precise appeal letters.
+
+Rules:
+- Open with clear statement: the HOA denied a specific modification request; identify the modification, the date of denial, and the stated grounds
+- Cite the CC&Rs and Architectural Guidelines provisions the HOA relied on, and rebut any pretextual or vague grounds — architectural review standards must be objective and applied uniformly
+- If the modification is federally or state protected, cite the governing law by name:
+  * Satellite dishes and over-the-air reception devices: FCC Over-the-Air Reception Devices Rule (OTARD) at 47 CFR §1.4000, which preempts restrictions on antennas up to one meter
+  * Solar energy systems: state solar rights or solar access laws (e.g., California Civil Code §714; Florida §163.04; Arizona §33-1816; Texas Property Code §202.010)
+  * Accessibility modifications: Fair Housing Act at 42 U.S.C. §3604(f)(3)(A) — reasonable modifications for disabled residents; ADA if common areas are implicated
+  * Electric vehicle chargers: state EV charger protection statutes where applicable (e.g., California Civil Code §4745; Florida §718.113; Colorado §38-33.3-106.8)
+  * Flags: federal Freedom to Display the American Flag Act (4 U.S.C. §5 Note)
+- Demand: written denial citing specific CC&Rs provisions, not conclusions; reconsideration in light of the applicable federal or state protection; and, if denied on review, reasonable alternative modifications
+- Warn of remedies: civil action for declaratory and injunctive relief; FCC complaint (OTARD); HUD complaint (accessibility); state utility-commission or regulator complaint (solar, EV); and attorney's fees where statute or CC&Rs provide
+- Set a firm 30-day response deadline
+- Professional but firm tone
+- 500-700 words
+- Format: formal letter with [DATE] placeholder, via certified mail
+- Output ONLY the letter, no preamble`;
+
+  const hoaFeesPrompt = `You are an expert HOA and community association attorney specializing in assessment, fee, and billing disputes. Write firm, legally precise demand letters.
+
+Rules:
+- Open with clear statement: the HOA has charged specified fees or dues that are not authorized by the CC&Rs, are incorrectly calculated, lack required itemization, or include improper late fees
+- Cite the state's HOA assessment statute (e.g., California Davis-Stirling at Civil Code §§5600-5740; Florida §720.308; Texas Property Code §209.0063; North Carolina §47F-3-115) governing assessment authority, itemization, late fees, and collection procedures
+- Cite the CC&Rs and Bylaws provisions on assessments and any required member-vote procedures for fee increases
+- Rebut each disputed fee specifically: unauthorized by the governing documents, exceeds statutory caps on late fees, improper compounding, assessed without required notice, or assessed in violation of the statutory fee-collection sequence (most states require payment to be applied to current assessments before late fees and fines)
+- Demand: itemized accounting of all fees charged and paid; the legal basis (statute or CC&Rs section) for each fee that is not clearly provided for in the governing documents; refund of any unauthorized amounts; and correction of any improper late fees
+- Warn of remedies: dispute under the state's HOA collection statute; refusal to pay disputed amounts pending resolution without triggering lien remedies where state law protects disputed accounts; complaint to the state HOA regulator; and civil action with attorney's fees where statute or CC&Rs provide
+- Set a firm 30-day response deadline
+- Professional but firm tone
+- 500-700 words
+- Format: formal letter with [DATE] placeholder, via certified mail
+- Output ONLY the letter, no preamble`;
+
+  const pickSystemPrompt = (disputeType) => {
+    if (!disputeType) return systemPrompt;
+    if (disputeType === "Special Assessment Dispute") return specialAssessmentPrompt;
+    if (disputeType === "Records Denied") return recordsRequestPrompt;
+    if (disputeType === "Election Irregularity") return electionIrregularityPrompt;
+    if (disputeType === "Failure to Maintain Common Areas") return commonAreaPrompt;
+    if (disputeType === "Board Harassment / Targeted Enforcement") return boardHarassmentPrompt;
+    if (disputeType === "Inconsistent Enforcement") return boardHarassmentPrompt;
+    if (disputeType === "Architectural Denial") return architecturalPrompt;
+    if (disputeType === "HOA Fee / Dues Dispute") return hoaFeesPrompt;
+    return systemPrompt;
+  };
+
   const buildPrompt = (tone) => {
     const base = `
 HOMEOWNER: ${formData.ownerName}
@@ -261,10 +441,16 @@ RESPONSE DEADLINE: ${formData.deadline || "30 days"}
 NEXT STEPS IF IGNORED: ${formData.nextSteps || "all available remedies"}
 ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
 
+    const cond = (conditionalFields[formData.disputeType] || [])
+      .filter(f => formData[f.key]?.toString().trim())
+      .map(f => `${f.label.toUpperCase()}: ${formData[f.key]}`)
+      .join("\n");
+    const fullBase = cond ? `${base}\n\nTYPE-SPECIFIC DETAILS:\n${cond}` : base;
+
     if (tone === "assertive") {
-      return `Write a MORE ASSERTIVE appeal letter. Stronger language, explicit due process violations, more forceful demands. Different wording from standard:\n${base}`;
+      return `Write a MORE ASSERTIVE appeal letter. Stronger language, explicit due process violations, more forceful demands. Different wording from standard:\n${fullBase}`;
     }
-    return `Write a STANDARD PROFESSIONAL appeal letter:\n${base}`;
+    return `Write a STANDARD PROFESSIONAL appeal letter:\n${fullBase}`;
   };
 
   const generateLetter = async () => {
@@ -274,13 +460,14 @@ ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
     setAltLetter("");
     setChecklist([]);
     try {
+      const effectivePrompt = pickSystemPrompt(formData.disputeType);
       setLoadingMsg("Drafting your appeal letter...");
-      const draft = await callAPI(systemPrompt, buildPrompt("standard"), false, "");
+      const draft = await callAPI(effectivePrompt, buildPrompt("standard"), false, "");
       setLoadingMsg("Running quality review...");
       const reviewed = await callAPI("", "", true, draft);
       setLetter(reviewed);
       setLoadingMsg("Generating assertive version...");
-      const alt = await callAPI(systemPrompt, buildPrompt("assertive"), false, "");
+      const alt = await callAPI(effectivePrompt, buildPrompt("assertive"), false, "");
       setAltLetter(alt);
       setLoadingMsg("Building checklist...");
       try {
@@ -407,7 +594,7 @@ ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
               Your HOA Isn't Always Right.
             </h1>
             <p style={{ fontSize: "17px", color: colors.inkMuted, maxWidth: "480px", margin: "0 auto 40px", lineHeight: "1.7" }}>
-              AI-generated appeal letters for HOA fines, violation notices, and architectural denials. Attorney-quality. 5 minutes. {APP.price}.
+              AI-generated appeal letters for HOA fines, special assessments, records requests, election disputes, architectural denials, common-area maintenance failures, board harassment, and unauthorized fees. Attorney-quality. 5 minutes. {APP.price}.
             </p>
             <div style={{ maxWidth: "400px", margin: "0 auto", background: colors.white, border: `1px solid ${colors.border}`, borderRadius: "12px", padding: "32px", boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}>
               <div style={{ fontSize: "14px", color: colors.inkLight, marginBottom: "16px", fontWeight: "600" }}>Enter Your Access Code</div>
@@ -473,7 +660,7 @@ ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
 
             {/* Fields */}
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-              {(stepFields[currentStep] || []).map(f => (
+              {(currentStep === "Dispute" ? buildDisputeFields(stepFields.Dispute, formData.disputeType) : (stepFields[currentStep] || [])).map(f => (
                 <Field key={f.key} field={f} value={formData[f.key]} onChange={v => handleChange(f.key, v)} />
               ))}
             </div>
