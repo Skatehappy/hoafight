@@ -251,6 +251,30 @@ export default function App() {
 
   useEffect(() => {
     try { const s = sessionStorage.getItem("hoa_form"); if (s) setFormData(JSON.parse(s)); } catch {}
+    const params = new URLSearchParams(window.location.search);
+    const stateParam = params.get("state");
+    const disputeParam = params.get("dispute");
+    const slugToStateName = {
+      "california": "California", "texas": "Texas", "florida": "Florida",
+      "new-york": "New York", "illinois": "Illinois", "pennsylvania": "Pennsylvania",
+      "ohio": "Ohio", "georgia": "Georgia", "north-carolina": "North Carolina", "arizona": "Arizona"
+    };
+    const slugToDisputeType = {
+      "hoa-fine-dispute-letter": "Wrongful Fine",
+      "selective-enforcement-challenge": "Inconsistent Enforcement",
+      "architectural-approval-denial": "Architectural Denial",
+      "hoa-records-request-letter": "Records Denied",
+      "hoa-special-assessment-challenge": "Other",
+      "hoa-board-harassment-letter": "Other",
+      "hoa-lien-threat-response": "Other",
+      "hoa-ccr-violation-dispute": "Inconsistent Enforcement",
+      "hoa-election-challenge": "Other",
+      "hoa-discrimination-letter": "Other"
+    };
+    const updates = {};
+    if (stateParam && slugToStateName[stateParam]) updates.state = slugToStateName[stateParam];
+    if (disputeParam && slugToDisputeType[disputeParam]) updates.disputeType = slugToDisputeType[disputeParam];
+    if (Object.keys(updates).length) setFormData(prev => ({ ...prev, ...updates }));
   }, []);
 
   useEffect(() => {
