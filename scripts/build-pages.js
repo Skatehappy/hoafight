@@ -5,6 +5,7 @@ import { DISPUTES } from './data/disputes.js';
 import { APP_CONFIG } from './data/config.js';
 import { renderStateHub } from './templates/state-hub-template.js';
 import { renderDeepPage } from './templates/deep-page-template.js';
+import { renderHub } from './templates/hub-template.js';
 
 const PUBLIC_DIR = 'public';
 const GENERATED_DIR = path.join('scripts', 'data', 'generated');
@@ -44,10 +45,21 @@ for (const state of STATES) {
   }
 }
 
+// STEP 2 — emit the link hub (index of every state + state×dispute page) so the
+// whole cluster is reachable from the homepage in <=2 clicks. Regenerated each run.
+const hubDir = path.join(PUBLIC_DIR, 'letters');
+if (!fs.existsSync(hubDir)) fs.mkdirSync(hubDir, { recursive: true });
+fs.writeFileSync(path.join(hubDir, 'index.html'), renderHub(STATES, DISPUTES));
+stats.hub = 1;
+
+// STEP 4 — sitemap with today's lastmod on every entry (the legitimate re-crawl
+// nudge) + the new hub URL.
+const TODAY = new Date().toISOString().slice(0, 10);
 const sitemapUrls = [
-  `<url><loc>https://${APP_CONFIG.domain}/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>`,
-  ...STATES.map(s => `<url><loc>https://${APP_CONFIG.domain}/${s.slug}</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>`),
-  ...STATES.flatMap(s => DISPUTES.map(d => `<url><loc>https://${APP_CONFIG.domain}/${s.slug}/${d.slug}</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>`))
+  `<url><loc>https://${APP_CONFIG.domain}/</loc><lastmod>${TODAY}</lastmod><priority>1.0</priority><changefreq>weekly</changefreq></url>`,
+  `<url><loc>https://${APP_CONFIG.domain}/letters</loc><lastmod>${TODAY}</lastmod><priority>0.9</priority><changefreq>weekly</changefreq></url>`,
+  ...STATES.map(s => `<url><loc>https://${APP_CONFIG.domain}/${s.slug}</loc><lastmod>${TODAY}</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>`),
+  ...STATES.flatMap(s => DISPUTES.map(d => `<url><loc>https://${APP_CONFIG.domain}/${s.slug}/${d.slug}</loc><lastmod>${TODAY}</lastmod><priority>0.7</priority><changefreq>monthly</changefreq></url>`))
 ].filter(u => u && u.includes('<loc>'));
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
