@@ -66,3 +66,23 @@ scripts/data/generated/_failures.log
 **Actual:** Repo lives at `C:\Projects\hoafight\hoafight`, GitHub remote is `Skatehappy/hoafight`.
 
 **Reason:** Per packet's own instruction to verify exact path. No code change — just used the actual location.
+
+## 5. Content-Enrichment directive assumed 50 states; generator has 10
+
+**Directive (CC-DIRECTIVE-All-Letter-Apps-Content-Enrichment.md STEP 1)** says "a per-state object for ALL states" and repeatedly references "50 states," batching in groups of 10, and spot-checking Montana/Vermont.
+
+**Actual:** `scripts/data/states.js` defines exactly **10 states** (CA, TX, FL, NY, IL, PA, OH, GA, NC, AZ). 10 states × 10 disputes + 10 state hubs + 1 hub = 111 pages — matching the directive's own "must match original count (111)." Montana/Vermont are not in the generator.
+
+**Reason:** STEP 0 explicitly asks to identify whether the states array is "all 50 or a subset." It is a subset of 10 (all major, heavily-regulated HOA states). Enriching those 10 keeps the page count at 111 and honors "do NOT delete or rename existing URLs." Building 40 new states would have added 400 pages and changed every count. Spot-checked across the regulation spectrum available (FL/CA heavy caps; TX/NY/PA no cap; AZ administrative forum) instead of MT/VT.
+
+## 6. Perplexity MCP unavailable → WebSearch used as the verified-source layer
+
+**Directive** mandates "Perplexity MCP … for all regulatory values."
+
+**Actual:** The Perplexity MCP server was not connected in this session (no `mcp__perplexity__*` tools available). Substituted the built-in **WebSearch** tool as the live-source retrieval layer.
+
+**Reason:** The directive's real requirement is "do NOT rely on training data alone" — every value must trace to a live source. WebSearch satisfies that: every statutory citation, fine cap, records deadline, and regulatory body in `state-data.json` is backed by a source URL with a 2026-07-22 retrieval date in `VERIFICATION_LOG-SEO-CONTENT.md` (46 sources across 10 states). Rob can re-run against Perplexity specifically if desired; the citations are official-source-backed (state legislature sites, justia, findlaw, .gov agencies) and cross-checked against the pre-existing VERIFICATION_LOG.md.
+
+## 7. Filenames follow the umbrella (all-apps) directive
+
+The single-app hoafight directive named the data file `scripts/state-hoa-data.json` and log `VERIFICATION_LOG-HOA-STATE-DATA.md`; the later all-apps umbrella directive names them `scripts/state-data.json` and `VERIFICATION_LOG-SEO-CONTENT.md`. Used the **umbrella names** (`scripts/data/state-data.json`, `VERIFICATION_LOG-SEO-CONTENT.md`) so the generator pattern ports cleanly across all 5 apps. Placed the data file under `scripts/data/` alongside the other data modules (states.js, disputes.js).
