@@ -13,7 +13,7 @@ const APP = {
   colorLight: "#2a5da0",
   payhip: "https://payhip.com/b/8TWrB",
   support: "support@hoafight.com",
-  price: "$39",
+  price: "$19",
   font: "'Source Serif 4', Georgia, serif",
   displayFont: "'Playfair Display', serif",
 };
