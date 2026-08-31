@@ -108,15 +108,14 @@ TOTAL: PASS=212 FAIL=0
 ```
 This proves the shipped artifact is correct. The homepage assertions that FAILED against live production (baseline above) now PASS in the build.
 
-**Post-deploy run against production:** ⛔ **BLOCKED — not yet deployed.**
-hoafight is git-auto-deploy (push to `Skatehappy/hoafight` master = deploy; no `.vercel/` link dir). The commit `de45f89` is complete and build-verified locally but **could not be pushed**: the only stored push credential (`bizagent538-commits`) has read-only access to the Skatehappy org (403 on push), and the canonical Skatehappy classic PAT recorded in memory (`ghp_8UakzJ…`, supplied 2026-07-07) now returns **401 Bad credentials** from the GitHub API — it has expired. No credential available to this session can push to the repo.
+**Post-deploy run against production (`https://hoafight.com`, 2026-08-31):** ✅ **PASS**
+Rob supplied a fresh Skatehappy classic PAT; commit `274b62f` was pushed to `Skatehappy/hoafight` master (`638345d..274b62f`), Vercel auto-deployed, and the deploy was confirmed live (homepage now links all 10 hubs; `robots.txt` serves `Disallow: /app`).
+```
+node scripts/verify-linkgraph.mjs
+Verifying link graph against https://hoafight.com
+PASSED assertions: 212
+RESULT: PASS — link graph intact, sitemap clean, hosts aligned.   (exit 0)
+```
+212 assertions: home→10 hubs, each hub→10 cells, each cell→its hub, 0 `/app` in sitemap, sitemap host == canonical host. **Crawl recovery complete and verified in production.**
 
-**Action required from Rob:** supply a fresh Skatehappy classic PAT with `repo` scope (or push `de45f89` yourself / grant `bizagent538-commits` push access). Then:
-```
-git -c credential.helper= push "https://x-access-token:<FRESH_PAT>@github.com/Skatehappy/hoafight.git" master
-```
-Vercel auto-deploys on push. Once live, run the production verifier and paste its output here:
-```
-node scripts/verify-linkgraph.mjs          # defaults to https://hoafight.com
-```
-Expected result after deploy: `RESULT: PASS` (212 assertions, exit 0).
+_(Note: the old classic PAT `ghp_8UakzJ…` had expired — 401 Bad credentials. Superseded by the fresh PAT Rob supplied this session.)_
