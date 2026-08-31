@@ -81,6 +81,7 @@ fs.writeFileSync(path.join(PUBLIC_DIR, 'sitemap.xml'), sitemap);
 
 const robots = `User-agent: *
 Allow: /
+Disallow: /app
 Sitemap: https://${APP_CONFIG.domain}/sitemap.xml
 `;
 
