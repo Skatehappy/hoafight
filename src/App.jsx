@@ -637,6 +637,10 @@ ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
                 Don't have a code?{" "}
                 <a href={APP.payhip} style={{ color: colors.goldLight, textDecoration: "none" }}>Purchase for {APP.price} →</a>
               </div>
+              <div style={{ marginTop: "12px", fontSize: "12px", color: colors.inkFaint }}>
+                Your letter tool is at <strong>hoafight.com</strong> — bookmark it.
+                <br />This product is at hoafight.com. We are not affiliated with fightmyhoa.com.
+              </div>
             </div>
           </div>
         )}
