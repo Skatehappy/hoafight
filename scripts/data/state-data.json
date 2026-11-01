@@ -127,7 +127,7 @@
       "mandatory_mediation": false,
       "mandatory_arbitration": false,
       "small_claims_available": true,
-      "notes": "Texas does not statutorily require mediation or arbitration for HOA disputes (governing documents may impose ADR contractually). Records-access disputes go to justice court under § 209.005; general disputes may be brought in justice/small claims court (jurisdiction up to $20,000) or district court. Private mediation is a voluntary option. The § 209.006/209.007 notice-and-hearing process functions as a pre-enforcement internal review rather than binding ADR."
+      "notes": "Texas does not statutorily require mediation or arbitration for HOA disputes (governing documents may impose ADR contractually). Records-access disputes go to justice court under § 209.005; general disputes may be brought in justice/small claims court (jurisdiction up to $20,000) or district court. Private mediation is a voluntary option. The § 209.006/209.007 notice-and-hearing process is a pre-enforcement review before the board; § 209.007(e) separately allows an owner or the association to use alternative dispute resolution services, and a party to a suit on a covered matter may move to compel mediation."
     },
     "unique_protections": [
       "Statewide statutory right to inspect and obtain copies of association books and records with a hard 10-business-day response deadline and a justice-court remedy for noncompliance (§ 209.005).",
@@ -365,52 +365,52 @@
     "abbreviation": "PA",
     "primary_hoa_statute": {
       "name": "Uniform Planned Community Act (UPCA)",
-      "citation": "68 Pa.C.S. Ch. 51, §§5101-5414",
+      "citation": "Pa.C.S. Title 68, Ch. 51, §§5101-5414",
       "key_sections": [
         {
-          "section": "68 Pa.C.S. §5302(a)(10)",
+          "section": "68 Pa.C.S. §5302(a)(11)",
           "topic": "Association power to levy reasonable fines/penalties only after notice and an opportunity to be heard"
         },
         {
           "section": "68 Pa.C.S. §5308",
-          "topic": "Meetings — notice hand-delivered or mailed not less than 10 nor more than 60 days before a meeting, stating time, place, and agenda; §5308(d) permits executive/closed sessions"
+          "topic": "Meetings — notice hand-delivered or mailed not less than 10 nor more than 60 days before a meeting, stating time, place, and agenda; §5308(d) pre-election candidate sessions; §5308(e) recording of meetings"
         },
         {
           "section": "68 Pa.C.S. §5316",
-          "topic": "Records — unit owners' right to inspect and copy association records, including financial records and meeting minutes, on written request"
+          "topic": "Records — all financial and other records must be made reasonably available for examination by any unit owner; annual financial statements within 180 days after fiscal year-end, with a copy due within 30 days of a written request"
         },
         {
           "section": "68 Pa.C.S. §5309 / §5310",
-          "topic": "Quorums, voting, and proxies (materially amended by Act 115 of 2022 to authorize virtual meetings and electronic voting)"
+          "topic": "Quorums, voting, and proxies (§5309 quorum provisions amended by Act 115 of 2022)"
         },
         {
           "section": "68 Pa.C.S. §5407",
-          "topic": "Public offering statement / resale certificate disclosures required on unit transfers"
+          "topic": "Resales of units — seller must furnish the declaration, bylaws, rules and an association certificate before contract or conveyance"
         }
       ]
     },
     "condo_statute": {
       "name": "Uniform Condominium Act (UCA)",
-      "citation": "68 Pa.C.S. Ch. 31, §§3101-3414",
-      "note": "Governs condominiums created after its effective date (about 120 days after July 2, 1980); some provisions apply to older condos for post-effective-date events. Parallels the UPCA — e.g., §3316 covers association records inspection. Cooperatives are separately covered by the Uniform Real Estate Cooperative Act (68 Pa.C.S. Ch. 41)."
+      "citation": "Pa.C.S. Title 68, Ch. 31, §§3101-3414",
+      "note": "Governs condominiums created after its effective date (about 120 days after July 2, 1980); some provisions apply to older condos for post-effective-date events. Parallels the UPCA — e.g., §3316 covers association records. Cooperatives are separately covered by Subpart C of Title 68 (Title 68, Ch. 41 et seq.)."
     },
-    "regulatory_body": "No standalone HOA regulatory agency for internal governance. Since Act 17 of 2018 (68 Pa.C.S. §5322), a unit owner in good standing — current in payment of assessments and fines, except amounts directly related to the complaint — may file a complaint with the Pennsylvania Office of Attorney General's Bureau of Consumer Protection about planned-community violations of the meeting (§5308), quorum (§5309), and voting/proxy (§5310) provisions. Records (§5316) and all other provisions are enforced through the courts.",
-    "complaint_process": "A unit owner in good standing may file a complaint with the PA Attorney General's Bureau of Consumer Protection (attorneygeneral.gov) for association violations of §§5308, 5309, or 5310 (68 Pa.C.S. §5322). Records disputes (§5316) and other disputes (fines, assessments, covenant enforcement) are pursued in the Court of Common Pleas or, for money claims up to $12,000, before a Magisterial District Judge.",
+    "regulatory_body": "No standalone HOA regulatory agency for internal governance. Since Act 17 of 2018 (68 Pa.C.S. §5322), a unit owner in good standing — current in payment of assessments and fines, except amounts directly related to the complaint — may file a complaint with the Pennsylvania Office of Attorney General's Bureau of Consumer Protection about planned-community violations of the meeting (§5308), quorum (§5309), and voting/proxy (§5310) provisions. Under §5316(c) an owner may also complain to the Bureau if the association fails to provide annual financial statements within 30 days of a written request or does not make its financial records reasonably available. All other provisions are enforced through the courts.",
+    "complaint_process": "A unit owner in good standing may file a complaint with the PA Attorney General's Bureau of Consumer Protection (attorneygeneral.gov) for association violations of §§5308, 5309, or 5310 (68 Pa.C.S. §5322), or under 68 Pa.C.S. §5316(c) for failure to provide annual financial statements within 30 days or to make financial records reasonably available. Other disputes (fines, assessments, covenant enforcement) are pursued in the Court of Common Pleas or, for money claims up to $12,000, before a Magisterial District Judge.",
     "fine_limits": {
       "max_per_violation": null,
       "max_aggregate": null,
       "hearing_required": true,
-      "hearing_details": "Pennsylvania sets NO statewide dollar cap on HOA fines. Under 68 Pa.C.S. §5302(a)(10) an association may levy reasonable fines only after notice of the alleged violation and an opportunity to be heard; any dollar limit is whatever the association's own declaration/bylaws/adopted fine schedule provides."
+      "hearing_details": "Pennsylvania sets NO statewide dollar cap on HOA fines. Under 68 Pa.C.S. §5302(a)(11) an association may levy reasonable fines only after notice of the alleged violation and an opportunity to be heard; any dollar limit is whatever the association's own declaration/bylaws/adopted fine schedule provides."
     },
     "records_access": {
       "right_to_inspect": true,
-      "response_deadline": "Owners may examine and copy association records on written request; the association must make them available within 10 business days (68 Pa.C.S. §5316(a)) and may charge a reasonable fee for copies.",
-      "penalty_for_noncompliance": "No fixed statutory monetary penalty; the owner's remedy is a court action to compel production. The Act 17 / §5322 Attorney General complaint route does not cover §5316 records."
+      "response_deadline": "All financial and other records must be made reasonably available for examination by any unit owner and authorized agents (68 Pa.C.S. §5316(a)); the association must furnish a copy of its annual financial statements within 30 days after a written request (§5316(b)) and may charge a fee not to exceed the cost of producing copies of other records. §5316 sets no business-day deadline for general record requests, so state your own reasonable deadline in the request.",
+      "penalty_for_noncompliance": "No fixed statutory monetary penalty. The owner may sue to compel production, and under §5316(c) may complain to the Attorney General's Bureau of Consumer Protection if annual financial statements are not provided within 30 days or the financial records are not made reasonably available."
     },
     "meeting_requirements": {
       "notice_period": "Not less than 10 and not more than 60 days before the meeting, by hand delivery or mail, stating time, place, and agenda (68 Pa.C.S. §5308). Act 115 of 2022 added a 14-day prior-notice requirement for meetings to amend bylaws.",
       "open_to_members": true,
-      "executive_session_allowed": "Yes — 68 Pa.C.S. §5308(d) allows executive/closed sessions for matters such as pending or probable litigation (including attorney consultation), personnel, and owner delinquencies, with binding action taken in the open portion."
+      "executive_session_allowed": "The UPCA meeting section (68 Pa.C.S. §5308) does not itself address executive sessions; check the bylaws and declaration."
     },
     "dispute_resolution": {
       "mandatory_mediation": false,
@@ -420,17 +420,17 @@
     },
     "unique_protections": [
       "Act 17 of 2018 (68 Pa.C.S. §5322) created an unusual administrative remedy: owners in good standing can complain to the AG's Bureau of Consumer Protection about violations of the meeting (§5308), quorum (§5309), and voting (§5310) provisions — a state-agency backstop many states lack.",
-      "Statutory notice-and-opportunity-to-be-heard requirement before any fine (§5302(a)(10)), even though PA imposes no dollar cap on the fine itself.",
-      "Act 115 of 2022 (effective May 2023) modernized governance — authorizing virtual meetings and electronic voting without a bylaw change, and requiring 14-day notice plus a minimum 51% vote to amend bylaws.",
-      "Act 115 requires an 'independent reviewer' to monitor and tally election ballots in communities of 500+ units — an anti-fraud election safeguard.",
+      "Statutory notice-and-opportunity-to-be-heard requirement before any fine (§5302(a)(11)), even though PA imposes no dollar cap on the fine itself.",
+      "Act 115 of 2022 modernized governance — allowing participation in association and board meetings by remote technology unless the bylaws provide otherwise (§5308(c)), and requiring 14 days' advance notice plus at least 51% of the votes to amend the bylaws (§5306(a)(6)).",
+      "Under §5306(a)(6)(ii), absentee ballots on bylaw amendments must be submitted to an independent reviewer — an anti-fraud safeguard.",
       "Uniform-act structure (UPCA + UCA + Cooperative Act) gives owners consistent statutory rights across community types, all under Title 68."
     ],
     "common_issues": [
       "Denied or delayed access to association financial records and meeting minutes (§5316 disputes, including the 30-day financial-statement trigger for AG complaints).",
       "Improper meeting notice, closed/executive-session abuse, and virtual-meeting/electronic-voting/election-tally disputes under Act 115.",
-      "Uncapped fines and covenant/rule enforcement challenged on notice-and-opportunity-to-be-heard or reasonableness grounds (§5302(a)(10))."
+      "Uncapped fines and covenant/rule enforcement challenged on notice-and-opportunity-to-be-heard or reasonableness grounds (§5302(a)(11))."
     ],
-    "last_major_reform": "Act 115 of 2022 (House Bill 1795), effective May 2023 — sweeping amendments to Title 68 (UPCA and UCA) authorizing virtual meetings and electronic voting, adding 14-day bylaw-amendment notice with a 51% minimum threshold, and requiring an independent election reviewer for communities of 500+ units. The earlier Act 17 of 2018 created the AG Bureau of Consumer Protection complaint mechanism."
+    "last_major_reform": "Act 115 of 2022 (House Bill 1795), effective May 2023 — amendments to Title 68 (UPCA and UCA) addressing virtual-meeting notice and remote participation, quorums, and bylaw amendments (14 days' advance notice, 51% minimum vote, independent reviewer for absentee ballots). The earlier Act 17 of 2018 created the AG Bureau of Consumer Protection complaint mechanism."
   },
   "OH": {
     "state": "Ohio",

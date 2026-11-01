@@ -168,3 +168,112 @@ Trigger: buyer confusion between hoafight.com (ours) and fightmyhoa.com (competi
 | PA | regulatory_body / complaint_process / records_access / unique_protections / dispute_resolution | WRONG: AG route (§5322) covers §§5308-5310 only, not §5316 records; "30-day financial statements" has no basis; records = 10 business days |
 | OH | fine_limits / records_access / amendment threshold | CONFIRMED with refinements (30-day post-hearing notice; "reasonable standards" not "reasonable request"; 75% is a default the documents can change) |
 | GA | key_sections / fine_limits / records_access / regulatory_body / unique_protections | 44-3-231 citation WRONG → 14-3-1602; SB 406 fine-notice claim not in signed text → replaced with verified SB 406 provisions incl. foreclosure-threshold figures |
+
+## Phase B — earning-page citation verification (2026-11-01)
+
+Sources key: **Official** = the legislature's own site or PDF (leg.state.fl.us, palegis.us, azleg.gov, ncleg.gov, tcss.legis.texas.gov). **Secondary** = law.cornell.edu (U.S. Code) and CourtListener/Perplexity for case law. Every row was checked against the text on the date above; wording that the text did not support was reworded or removed on the page.
+
+### Florida (FL) — hoa-board-harassment-letter, hoa-fine-dispute-letter
+| Citation as it now appears | Status | What it says | Source |
+|---|---|---|---|
+| Fla. Stat. § 720.303 / § 720.303(1) / § 720.303(5) | VERIFIED | (1) officers and directors have a fiduciary relationship to the members; (5) official records available for inspection within 10 business days of a written request. The page's claim that (5) "limits the board's ability to retaliate" was REMOVED (no such text). | Official: http://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0700-0799/0720/Sections/0720.303.html |
+| Fla. Stat. § 720.3033 | VERIFIED | Officers and directors: director education certificate, contracts with directors (two-thirds vote, disclosure), kickback prohibition. | Official: .../0720/Sections/0720.3033.html |
+| Fla. Stat. § 720.304 | CORRECTED | Owners' right to peaceably assemble and invite public officers/candidates to speak in common areas; display of listed flags; SLAPP suits prohibited. "Communicate with other members" wording removed. | Official: .../0720/Sections/0720.304.html |
+| Fla. Stat. § 720.305 / § 720.305(1) | VERIFIED | Actions at law or in equity for noncompliance; prevailing party entitled to reasonable attorney fees and costs; (2) fines up to $100 per violation. | Official: .../0720/Sections/0720.305.html |
+| Fla. Stat. § 784.0485 | CORRECTED | Creates a cause of action for an injunction for protection against stalking; no filing fee; filed in circuit court. The page's description of it as "civil stalking" damages claim and "does not require mediation" were REMOVED; the "definition of stalking" wording was removed (definition is in § 784.048). | Official: .../0700-0799/0784/Sections/0784.0485.html |
+| Fla. Stat. § 95.11 / § 95.11(2)(b) | CORRECTED | (2)(b) five years: action on a contract, obligation or liability founded on a written instrument; (3)(e) four years: action founded on a statutory liability; (4)(a) two years: negligence. The "four years for tort claims" generalization was replaced. | Official: .../0000-0099/0095/Sections/0095.11.html |
+| Fla. Stat. § 617.0834 | CORRECTED | Director/officer not personally liable for monetary damages unless breach of duty plus criminal violation, improper personal benefit, conscious disregard/willful misconduct (corporation or member proceeding), or recklessness/bad faith/malicious purpose/wanton and willful disregard (other proceedings). The "intentional tort like defamation" gloss was removed. | Official: .../0600-0699/0617/Sections/0617.0834.html |
+| Chattel Shipping & Inv., Inc. v. Brickell Place Condo. Ass'n, 481 So. 2d 29 (Fla. 3d DCA 1985) | CORRECTED | Court held an announced, prospectively applied balcony policy was NOT selective or arbitrary enforcement and affirmed the injunction; page previously said it recognized selective enforcement as a basis for affirmative claims. Reworded. | Secondary: https://www.courtlistener.com/opinion/1152805/chattel-ship-inv-v-brickell-place-condo/ (via Perplexity) |
+| Fla. Stat. § 720.3035 | VERIFIED | (4)(a): a denial of an owner's improvement request must be in writing and state with specificity the rule or covenant relied on and the nonconforming aspect. | Official: .../0720/Sections/0720.3035.html |
+| Fla. Stat. Chapter 718 / Ch. 718 | VERIFIED | Chapter 718 is "Condominiums" (Parts I-VII). | Official: http://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0700-0799/0718/0718.html |
+
+### Pennsylvania (PA) — hoa-fine-dispute-letter
+Source: 68 Pa.C.S. Chapters 31, 33, 34, 41, 51, 53, 54 and 42 Pa.C.S. Ch. 55, consolidated statutes PDFs on palegis.us (`https://www.palegis.us/statutes/consolidated/view-statute?txtType=PDF&ttl=68&div=0&chapter=53`) — Official.
+
+| Citation as it now appears | Status | What it says | Source |
+|---|---|---|---|
+| 68 Pa.C.S. § 5302 / § 5302(a)(11) | VERIFIED | UPCA powers: (11) impose charges for late payment of assessments and, after notice and an opportunity to be heard, levy reasonable fines for violations of the declaration, bylaws and rules. State-data previously cited (a)(10) (which is payments for use of common elements) — CORRECTED to (a)(11). | Official (Ch. 53) |
+| 68 Pa.C.S. § 3302 / § 3302(a)(11) | VERIFIED | Condominium Act powers: same text as § 5302(a)(11). | Official (Ch. 33) |
+| 68 Pa.C.S. §§ 5101–5414 / 68 Pa.C.S. Ch. 51, §§5101-5414 | VERIFIED | Planned communities subpart (Chapters 51-54, §§ 5101 through 5414). | Official (Chs. 51-54) |
+| 68 Pa.C.S. §§ 3101–3414 / 68 Pa.C.S. Ch. 31, §§3101-3414 | VERIFIED | Condominium subpart (Chapters 31-34, §§ 3101 through 3414). | Official (Chs. 31-34) |
+| 68 Pa.C.S. § 5315 / § 5315(a) | CORRECTED | Lien for assessments: association has a lien for any assessment or fine from the time it becomes due; unless the declaration provides otherwise, fines and charges under § 5302(a)(10)-(12) are enforceable as assessments. The page's statement that fines do not enjoy lien priority was WRONG and was rewritten. | Official (Ch. 53) |
+| 68 Pa.C.S. § 5412 | CORRECTED | Effect of violations: claim for appropriate relief; punitive damages for willful violation; "if appropriate, the prevailing party may be entitled to an award of costs and reasonable attorney fees" (discretionary). Page said recovery as of right. | Official (Ch. 54) |
+| 68 Pa.C.S. § 3412 | CORRECTED | Condominium parallel to § 5412 (same text). | Official (Ch. 34) |
+| 42 Pa.C.S. § 5525 | VERIFIED | (a)(8) four years: action upon a contract, obligation or liability founded upon a writing, unless another limit applies. | Official (42 Pa.C.S. Ch. 55) |
+| 68 Pa.C.S. § 5308 / §5308 | CORRECTED | Meetings: notice not less than 10 nor more than 60 days in advance, stating time, place and agenda items; (b) notice of virtual meetings; (c) remote technology; (d) pre-election candidate sessions; (e) recording. State-data wrongly cited § 5308(d) for executive sessions — no executive-session provision exists in Ch. 53; REMOVED. | Official (Ch. 53) |
+| 68 Pa.C.S. § 5309 / §5309 | VERIFIED | Quorums (association 20% default; executive board 50%). | Official (Ch. 53) |
+| 68 Pa.C.S. § 5310 / §5310 | VERIFIED | Voting; proxies. | Official (Ch. 53) |
+| 68 Pa.C.S. § 5316 / §5316 | CORRECTED | Association records: financial and other records reasonably available for examination by any unit owner; annual financial statements within 180 days of fiscal year-end, copy within 30 days of written request; (c) complaint to the AG Bureau of Consumer Protection if statements are not provided within 30 days or financial records are not made reasonably available. The earlier "10 business days" claim and "AG route does not cover § 5316" claim were WRONG (10 business days is for the § 5315(h) statement of unpaid assessments) and were corrected. | Official (Ch. 53) |
+| 68 Pa.C.S. § 5322 / §5322 | VERIFIED | Complaints to the AG Bureau of Consumer Protection for violations of §§ 5308, 5309 and 5310 by a unit owner in good standing; ADR exhaustion or 100 days. | Official (Ch. 53) |
+| 68 Pa.C.S. § 5407 / §5407 | VERIFIED | Resales of units: seller furnishes declaration, bylaws, rules and an association certificate. State-data topic reworded (it is not a public offering statement). | Official (Ch. 54) |
+| 68 Pa.C.S. § 3316 / §3316 | VERIFIED | Condominium association records. | Official (Ch. 33) |
+| 68 Pa.C.S. § 5306(a)(6) / §5306 | VERIFIED | Bylaws amendment by at least 51% of votes, vote only at a scheduled meeting after 14 days' notice, absentee ballots to an independent reviewer. The "500+ units independent reviewer" claim in state-data was not found and was REMOVED. | Official (Ch. 53) |
+| 68 Pa.C.S. Ch. 41 / Title 68 | VERIFIED | Subpart C (Cooperatives), Chapter 41 General Provisions; Title 68 is Real and Personal Property. | Official (Ch. 41) |
+
+### Arizona (AZ) — hoa-special-assessment-challenge, hoa-discrimination-letter, selective-enforcement-challenge
+Source: A.R.S. on azleg.gov (`https://www.azleg.gov/ars/33/01803.htm` etc.) — Official. Federal statutes: law.cornell.edu U.S. Code — Secondary.
+
+| Citation as it now appears | Status | What it says | Source |
+|---|---|---|---|
+| A.R.S. § 33-1803 / § 33-1803(A)-(D) | CORRECTED | (A) no regular assessment more than 20% above the prior year without majority member approval, unless the documents set a lower limit; (B) reasonable monetary penalties after notice and opportunity to be heard; (C) 21 calendar days to respond by certified mail to a violation notice; (D) association replies in 10 business days. Pages previously said the declaration could authorize a higher increase and that a "$1,200 civil penalty" and a 21-day "hearing request" existed — REMOVED/CORRECTED. | Official: https://www.azleg.gov/ars/33/01803.htm |
+| A.R.S. § 33-1255 | CORRECTED | Condominium assessments made at least annually, based on a budget adopted at least annually. The "budget members may reject" claim was REMOVED. | Official: https://www.azleg.gov/ars/33/01255.htm |
+| A.R.S. § 33-1804 | VERIFIED | Open meetings of the association and board; members may attend and speak. | Official: https://www.azleg.gov/ars/33/01804.htm |
+| A.R.S. § 33-1805 | VERIFIED | Records reasonably available; 10 business days to fulfill a request; no charge for review; copies up to 15 cents per page; listed exceptions. | Official: https://www.azleg.gov/ars/33/01805.htm |
+| A.R.S. § 33-1258 | VERIFIED | Condominium records (same rules). | Official: https://www.azleg.gov/ars/33/01258.htm |
+| A.R.S. § 33-1807 / § 33-1807(F) / § 33-1807(I) | CORRECTED | Common expense liens; foreclosure only after 18 months' delinquency or $10,000 (special assessment of $10,000 or more: 18 months only); board must offer a payment plan; (I) a judgment in an action under the section may include costs and reasonable attorney fees for the prevailing party. The pages' general "prevailing party in any HOA dispute" and "(F)" claims were REMOVED. | Official: https://www.azleg.gov/ars/33/01807.htm |
+| A.R.S. § 33-1817 | REMOVED | Declaration amendment; design and architectural committee review. Does not "restrict applying restrictions to single out lots" — claim and citation removed from the selective-enforcement page. | Official: https://www.azleg.gov/ars/33/01817.htm |
+| A.R.S. § 33-1809 | REMOVED | Parking for utility/public-safety employees; not an ADRE dispute statute. | Official: https://www.azleg.gov/ars/33/01809.htm |
+| A.R.S. §§ 33-1201 et seq. / Chapter 9 | VERIFIED | Condominium Act applies to all condominiums created in the state. | Official: https://www.azleg.gov/ars/33/01201.htm |
+| A.R.S. § 32-2199 | VERIFIED | Administrative law judge adjudicates complaints under Title 33, chapter 9 and chapter 16. | Official: https://www.azleg.gov/ars/32/02199.htm |
+| A.R.S. § 32-2199.01 | CORRECTED | Petition to the Department of Real Estate for a hearing; filing fee "in an amount to be established by the commissioner" (the $500 figure is NOT in the statute and was REMOVED); refund only if dismissed or stipulated before a hearing is scheduled. | Official: https://www.azleg.gov/ars/32/02199-01.htm |
+| A.R.S. § 32-2199.02 | CORRECTED | ALJ may order a party to abide and levy a civil penalty; if the petitioner prevails the ALJ orders the respondent to pay the filing fee. No attorney-fee provision (claim REMOVED). | Official: https://www.azleg.gov/ars/32/02199-02.htm |
+| A.R.S. § 12-548 | CORRECTED | Six years for an action for debt evidenced by a written contract executed in Arizona. | Official: https://www.azleg.gov/ars/12/00548.htm |
+| A.R.S. § 12-341.01 | VERIFIED (added) | Court may award reasonable attorney fees to the successful party in a contested action arising out of a contract. | Official: https://www.azleg.gov/ars/12/00341-01.htm |
+| A.R.S. § 22-503 / § 22-201 | VERIFIED (added) | Small claims limit $5,000 (pages said $3,500); justice court civil jurisdiction $10,000. | Official: https://www.azleg.gov/ars/22/00503.htm |
+| A.R.S. §§ 41-1491 to 41-1491.37 / § 41-1491 through 41-1491.37 | VERIFIED | Arizona Fair Housing Act, article through § 41-1491.37 (superior court enforcement of local ordinances). | Official: https://www.azleg.gov/ars/41/01491.htm |
+| A.R.S. § 41-1491.14 | CORRECTED | Discrimination in sale or rental, including terms, conditions, privileges and services or facilities, because of race, color, religion, sex, familial status or national origin. | Official: https://www.azleg.gov/ars/41/01491-14.htm |
+| A.R.S. § 41-1491.19 | VERIFIED | Disability discrimination; reasonable accommodations in rules, policies, practices or services. | Official: https://www.azleg.gov/ars/41/01491-19.htm |
+| A.R.S. § 41-1491.22 / § 41-1491.31 / § 41-1491.33 / § 41-1491.35 / § 41-1491.36 | VERIFIED (added) | .22 AG complaint within one year; .31 superior court civil action within two years; .33 actual and punitive damages, fees, costs, injunction; .35 AG pattern-or-practice civil penalty up to $50,000 first violation; .36 court shall award fees and costs to prevailing plaintiff. | Official: https://www.azleg.gov/ars/41/01491-31.htm (and siblings) |
+| A.R.S. § 41-1491.37 | REMOVED | Superior court enforcement of local fair housing ordinances; it is not the remedies section. Remedies cited to .33/.36 instead. The "$16,000 civil penalty" figure was not in the AZ statutes and was REMOVED. | Official: https://www.azleg.gov/ars/41/01491-37.htm |
+| 42 U.S.C. §§ 3601-3619 / 42 U.S.C. § 3604 | VERIFIED | Fair Housing Act, subchapter I of chapter 45; § 3604(f) reasonable accommodations. | Secondary: https://www.law.cornell.edu/uscode/text/42/3604 |
+| 42 U.S.C. § 3613 | VERIFIED | Civil action within 2 years. | Secondary: https://www.law.cornell.edu/uscode/text/42/3613 |
+| 42 U.S.C. § 3610 | VERIFIED (added) | HUD complaint within one year. | Secondary: https://www.law.cornell.edu/uscode/text/42/3610 |
+| Arizona Biltmore Estates Ass'n v. Tezak; Powell v. Washburn | REMOVED | Powell v. Washburn, 211 Ariz. 553 (2006) interprets covenants by intent and does not decide selective enforcement; no primary source found for a Tezak holding on uniform enforcement. Sentence removed. | Secondary: https://www.courtlistener.com/opinion/867430/powell-v-washburn/ (via Perplexity) |
+
+### North Carolina (NC) — hoa-records-request-letter
+Source: ncleg.gov BySection HTML (`https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_47F/GS_47F-3-118.html`) — Official.
+
+| Citation as it now appears | Status | What it says | Source |
+|---|---|---|---|
+| N.C. Gen. Stat. § 47F-3-118 / N.C.G.S. § 47F-3-118 | CORRECTED | (a) financial records sufficiently detailed; all financial and other records, including records of association and executive board meetings, reasonably available for examination as required in the bylaws and Chapter 55A; annual income and expense statement and balance sheet at no charge within 75 days after fiscal year-end; (b) statement of unpaid assessments within 10 business days. The page's list of seven-year records, "no charge for inspection" and fee-shifting claims are not in the section and were REMOVED. | Official |
+| § 47C-3-118 | VERIFIED | Condominium parallel; Chapter 55A applies if the association is a nonprofit corporation. | Official: .../Chapter_47C/GS_47C-3-118.html |
+| G.S. 47F-1-102 / G.S. 47C-1-102 | VERIFIED | Ch. 47F applies to planned communities created on or after Jan. 1, 1999, with § 47F-3-118 also applying to earlier ones; Ch. 47C applies to condominiums created after Oct. 1, 1986, with § 47C-3-118 also applying to earlier ones. | Official |
+| G.S. 47F-3-120 | VERIFIED | Court may award reasonable attorneys' fees to the prevailing party only if the declaration allows recovery of fees. | Official |
+| G.S. 47C-4-117 | VERIFIED | Condominium: claim for appropriate relief; court may award reasonable attorney's fees to the prevailing party. | Official |
+| G.S. 7A-210 | VERIFIED | Small claim action: amount in controversy up to $10,000 and relief monetary, specific personal property, or summary ejectment. | Official |
+| G.S. 55A-16-01 / G.S. 55A-16-02 / Chapter 55A | VERIFIED | Nonprofit corporation records (permanent minutes, accounting records, member list; articles, bylaws, three years of member minutes and communications) and member inspection on five business days' written notice (proper-purpose limits for accounting records). | Official: .../Chapter_55A/GS_55A-16-01.html, .../GS_55A-16-02.html |
+
+### Texas (TX) — hoa-board-harassment-letter
+Source: Texas Constitution and Statutes, `https://tcss.legis.texas.gov/resources/PR/htm/PR.209.htm` etc. — Official.
+
+| Citation as it now appears | Status | What it says | Source |
+|---|---|---|---|
+| Tex. Prop. Code § 209.006 / Section 209.006 | CORRECTED | Notice before enforcement: certified/verified mail, reasonable period to cure a curable violation, right to request a hearing within 30 days after mailing. It contains NO $500 civil penalty (claim REMOVED). | Official |
+| Tex. Prop. Code § 209.007 / Section 209.007 | CORRECTED | Hearing before the board; (e) owner or association may use ADR services; (d) a party to a covered suit may move to compel mediation. The page's "association must offer ADR" claim was REMOVED. | Official |
+| Tex. Prop. Code § 209.008 / Section 209.008 | CORRECTED | Association may collect attorney's fees from an owner only after written notice; owner not liable for fees before the conclusion of the § 209.007 hearing. It is NOT a prevailing-party fee-shifting provision (claims REMOVED). | Official |
+| Tex. Prop. Code § 209.005 / § 209.0051 | VERIFIED | Records inspection; open board meetings. | Official |
+| Texas Business Organizations Code Chapter 22 / Section 22.221 | CORRECTED | Nonprofit corporations; § 22.221 director standard: good faith, ordinary care, reasonable belief in the corporation's best interest (not "loyalty"). | Official: https://tcss.legis.texas.gov/resources/BO/htm/BO.22.htm |
+| Texas Penal Code § 42.07 | VERIFIED | Harassment, incl. (a)(7) repeated electronic communications reasonably likely to harass, annoy, alarm, abuse, torment, embarrass or offend. | Official |
+| Texas Fair Housing Act, Prop. Code Chapter 301 / Section 301.153 | VERIFIED | Title 15; § 301.153 court may award actual and punitive damages, attorney fees, costs, injunction; § 301.112 commission civil penalties. | Official |
+| Civil Practice and Remedies Code Chapter 41 / Section 41.003 | VERIFIED | Exemplary damages require clear and convincing evidence of fraud, malice or gross negligence. | Official |
+| Tex. Prop. Code Title 7, Chapter 82 / Chapter 81 | VERIFIED | Title 7 Condominiums: Ch. 82 Uniform Condominium Act (declaration recorded on/after Jan. 1, 1994); Ch. 81 Condominium Act (before Jan. 1, 1994). | Official |
+
+### Literal forms used on the FightMyHOA pages (Phase B cross-reference)
+| Literal form | Status | Note |
+|---|---|---|
+| Tex. Prop. Code Title 7, Chapter 82 (§§ 82.001 et seq.) | VERIFIED | Uniform Condominium Act, Title 7. Official (tcss.legis.texas.gov, PR.82). |
+| § 209.006/209.007 | VERIFIED | Notice before enforcement (§ 209.006) and hearing before the board (§ 209.007). Official (PR.209). |
+| North Carolina Chapter 55A, Article 16 | VERIFIED | Article 16, Records and Reports (G.S. 55A-16-01 through 55A-16-02). Official (ncleg.gov). |
+| Pa.C.S. Title 68, Ch. 51, §§5101-5414; Pa.C.S. Title 68, Ch. 31, §§3101-3414; Title 68, Ch. 41 et seq. | VERIFIED | Title 68, planned communities (Chs. 51-54), condominiums (Chs. 31-34), cooperatives (Ch. 41 et seq.). Official (palegis.us). |
+
+| Georgia discrimination page: "private lawsuit must be filed within two years under 42 U.S.C. § 3613, though the deadline pauses during agency proceedings" | VERIFIED (cross-page) | Matches 42 U.S.C. § 3613(a)(1)(A)-(B) as verified above; un-held by the shared federal citation, not separately reviewed for other Georgia text. | Secondary: https://www.law.cornell.edu/uscode/text/42/3613 |
