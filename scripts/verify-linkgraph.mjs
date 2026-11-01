@@ -103,7 +103,7 @@ let sitemapBody = '';
   if (status >= 400) fail(`sitemap.xml returned HTTP ${status}`);
   const locs = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
   const appLocs = locs.filter(u => { try { return new URL(u).pathname.replace(/\/+$/, '') === '/app' || new URL(u).pathname.startsWith('/app/'); } catch { return /\/app(\/|$)/.test(u); } });
-  const mergedLocs = locs.filter(u => { try { return MERGED.has(new URL(u).pathname.replace(/^/+|/+$/g, '')); } catch { return false; } });
+  const mergedLocs = locs.filter(u => { try { return MERGED.has(new URL(u).pathname.replace(/^\/+|\/+$/g, '')); } catch { return false; } });
   if (mergedLocs.length) fail(`sitemap contains ${mergedLocs.length} merged URL(s): ${mergedLocs.slice(0, 5).join(', ')}`);
   if (appLocs.length) fail(`sitemap contains ${appLocs.length} /app URL(s): ${appLocs.join(', ')}`);
   else ok(`sitemap has 0 /app URLs (${locs.length} URLs total)`);
