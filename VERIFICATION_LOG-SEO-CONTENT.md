@@ -277,3 +277,48 @@ Source: Texas Constitution and Statutes, `https://tcss.legis.texas.gov/resources
 | Pa.C.S. Title 68, Ch. 51, §§5101-5414; Pa.C.S. Title 68, Ch. 31, §§3101-3414; Title 68, Ch. 41 et seq. | VERIFIED | Title 68, planned communities (Chs. 51-54), condominiums (Chs. 31-34), cooperatives (Ch. 41 et seq.). Official (palegis.us). |
 
 | Georgia discrimination page: "private lawsuit must be filed within two years under 42 U.S.C. § 3613, though the deadline pauses during agency proceedings" | VERIFIED (cross-page) | Matches 42 U.S.C. § 3613(a)(1)(A)-(B) as verified above; un-held by the shared federal citation, not separately reviewed for other Georgia text. | Secondary: https://www.law.cornell.edu/uscode/text/42/3613 |
+
+## Phase B — non-earning kept pages, batch 1 (2026-11-01): PA, AZ, FL
+
+Sources key as above: **Official** = palegis.us / azleg.gov / leg.state.fl.us; **Secondary** = law.cornell.edu (U.S. Code), CourtListener via Perplexity.
+
+### Pennsylvania (PA) — board-harassment, ccr-violation, election-challenge, lien-threat, special-assessment pages
+| Citation as it now appears | Status | What it says | Source |
+|---|---|---|---|
+| 68 Pa.C.S. § 5303 / § 5303(a) / § 5303(b) | VERIFIED | (a) officers and executive board members stand in a fiduciary relation and must act in good faith, in the association's best interests, with the care of a person of ordinary prudence; (b) board delivers each approved budget and capital-expenditure notice promptly after approval and owners may reject either within 30 days by majority or larger specified vote. | Official (68 Pa.C.S. Ch. 53) |
+| 68 Pa.C.S. § 3303 / § 3303(b) | VERIFIED | Condominium parallel of § 5303 (same fiduciary and 30-day rejection text). | Official (Ch. 33) |
+| 68 Pa.C.S. § 5311 | REMOVED | Tort and contract liability of the association; it has no attorney-fee provision. The pages' fee claims were moved to § 5412. | Official (Ch. 53) |
+| 68 Pa.C.S. § 3308 / § 5308 and § 3308 | CORRECTED | § 3308 Meetings: notice not less than 10 nor more than 60 days in advance (parallel to § 5308). The pages' use of §§ 5308/3308 for records inspection was WRONG; corrected to §§ 5316/3316. | Official (Chs. 33, 53) |
+| 68 Pa.C.S. § 3316 / § 5316 and § 3316 | VERIFIED | Association records: all financial and other records reasonably available for examination by any unit owner and authorized agents. | Official (Chs. 33, 53) |
+| 68 Pa.C.S. § 3412 / § 5412 and § 3412 | VERIFIED | Effect of violations: claim for appropriate relief; if appropriate the prevailing party may be entitled to costs and reasonable attorney fees. | Official (Chs. 34, 54) |
+| 68 Pa.C.S. § 5413 / § 3413 / § 3411 | REMOVED | Labeling of promotional material / warranty against structural defects; not remedy provisions. Pages corrected to §§ 5412/3412. | Official (Chs. 34, 54) |
+| 68 Pa.C.S. § 3315 / § 5315 or § 3315 | VERIFIED | Condominium lien for assessments (same as § 5315): lien from the time due; foreclosed like a mortgage; (g) statement of unpaid assessments within ten business days of a written request. | Official (Ch. 33) |
+| 68 Pa.C.S. § 5315(h) and § 3315(g) | VERIFIED | Statement of unpaid assessments within ten business days (§ 5315(h) planned communities; § 3315(g) condominiums). The pages previously cited §§ 5407/3407 (resales) for this. | Official (Chs. 33, 53) |
+| 68 Pa.C.S. § 3407 | REMOVED | Condominium resales; not a statement-of-account provision. | Official (Ch. 34) |
+| 68 Pa.C.S. § 5314 / § 3314 / § 5314(a) and § 3314(a) | CORRECTED | Assessments for common expenses: made at least annually based on a budget adopted at least annually. The "budget summary within 30 days" claim is not in the section and was REMOVED. | Official (Chs. 33, 53) |
+| 42 Pa.C.S. § 5524 | VERIFIED | Two years: actions founded on negligent, intentional or otherwise tortious conduct (§ 5524(7)) and other listed actions. | Official (42 Pa.C.S. Ch. 55) |
+| 43 P.S. § 951 | VERIFIED | Pennsylvania Human Relations Act, Act of Oct. 27, 1955, P.L. 744, No. 222; addresses housing discrimination. | Official: https://www.palegis.us/statutes/unconsolidated/law-information/view-statute?txtType=HTM&yr=1955&sessInd=0&smthLwInd=0&act=222&chpt=0&sctn=1&subsctn=0 (via Perplexity) |
+| Vernon Township Volunteer Fire Dept. v. Connor, 855 A.2d 873 (Pa. 2004) | VERIFIED | Land use restrictions are not favored; they are strictly construed and nothing is a violation unless in plain disregard of the express words; ambiguities are resolved in favor of the person against whom enforcement is sought (Pocono Summit, quoted in later decisions). | Secondary: https://www.courtlistener.com/opinion/2336493/vernon-township-volunteer-fire-dept-inc-v-connor/ |
+
+### Arizona (AZ) — hoa-board-harassment-letter
+| Citation as it now appears | Status | What it says | Source |
+|---|---|---|---|
+| A.R.S. § 12-1809 | CORRECTED | Injunction against harassment: petition filed with a magistrate, justice of the peace or superior court judge; no fee for filing; injunction expires one year after service; "harassment" = a series of acts over any period of time directed at a specific person that would seriously alarm, annoy or harass a reasonable person, actually does, and serves no legitimate purpose. The pages' "superior court required", "one year from the last act" and "$1,200/$1,000 penalty" claims were not in the statute and were REMOVED. | Official: https://www.azleg.gov/ars/12/01809.htm |
+| A.R.S. § 33-1242 | VERIFIED | Condominium: powers of the association; notice to unit owner of violation. | Official: https://www.azleg.gov/ars/33/01242.htm |
+| A.R.S. § 33-1256 | VERIFIED | Condominium common expense liens; (I) a judgment in an action under the section may include costs and reasonable attorney fees for the prevailing party. | Official: https://www.azleg.gov/ars/33/01256.htm |
+| A.R.S. § 33-1270 | REMOVED | Department of Real Estate's role in public reports; not part of a "Condominium Act §§ 33-1201 through 33-1270" description that was replaced with "et seq.". | Official: https://www.azleg.gov/ars/33/01270.htm |
+| A.R.S. § 33-1801 et seq. | VERIFIED | Planned communities chapter applies to all planned communities. | Official: https://www.azleg.gov/ars/33/01801.htm |
+
+### Florida (FL) — hoa-discrimination-letter, hoa-special-assessment-challenge
+| Citation as it now appears | Status | What it says | Source |
+|---|---|---|---|
+| Fla. Stat. §§ 760.20–760.37 / ss. 760.20 - 760.37 | VERIFIED | Florida Fair Housing Act range (760.34 and 760.35 refer to "ss. 760.20 - 760.37"). | Official: http://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0700-0799/0760/0760.html |
+| Fla. Stat. § 760.23 / § 760.23(2) / § 760.23(9) / § 760.23(9)(b) | VERIFIED | (2) discrimination in terms, conditions, privileges, services or facilities because of protected status incl. disability and familial status; (9)(b) refusal to make reasonable accommodations in rules, policies, practices or services is discrimination. | Official: .../0760/Sections/0760.23.html |
+| Fla. Stat. § 760.27 | VERIFIED | Emotional support animals: reasonable accommodation requests; housing provider may request reliable information. Page reworded ("ESA documentation standards" overstated). | Official: .../0760/Sections/0760.27.html |
+| Fla. Stat. § 760.29 / § 760.29(4) | VERIFIED | Housing for older persons exemption from familial status provisions (62+; 55+ with 80% occupancy and other requirements). | Official: .../0760/Sections/0760.29.html |
+| Fla. Stat. § 760.34 / § 760.34(2) | VERIFIED | Complaint to the Commission within 1 year after the alleged practice. | Official: .../0760/Sections/0760.34.html |
+| Fla. Stat. § 760.35 / § 760.35(1) | CORRECTED | (1) civil action within 2 years; (4) court order includes injunctive relief, actual and punitive damages, reasonable attorney fees and costs. The "(2)" fee cite was wrong. | Official: .../0760/Sections/0760.35.html |
+| 42 U.S.C. § 3607 | VERIFIED | Housing for older persons exemption (subsection (b)). | Secondary: https://www.law.cornell.edu/uscode/text/42/3607 |
+| Fla. Stat. § 720.3085 | VERIFIED | Lien for assessments; association may foreclose in the same manner as a mortgage; entitled to reasonable attorney's fees in foreclosure or collection action. | Official: .../0720/Sections/0720.3085.html |
+| Fla. Stat. § 720.315 | VERIFIED | Special assessments before turnover require approval of a majority of non-developer owners at a special meeting. | Official: .../0720/Sections/0720.315.html |
+| Fla. Stat. § 720.303(2) | VERIFIED | Board meetings open to members; written notice at least 14 days before a meeting at which special assessments will be considered. | Official: .../0720/Sections/0720.303.html |
