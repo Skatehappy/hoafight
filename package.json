@@ -16,10 +16,12 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/build-verified-citations.mjs && vite build",
     "preview": "vite preview",
     "generate:content": "node scripts/generate-content.js",
     "generate:pages": "node scripts/build-pages.js",
-    "generate:all": "npm run generate:content && npm run generate:pages"
+    "generate:all": "npm run generate:content && npm run generate:pages",
+    "build:citations": "node scripts/build-verified-citations.mjs",
+    "test:citelint": "node scripts/test-citelint.mjs"
   }
 }

@@ -314,7 +314,7 @@ export default function App() {
     const res = await fetch("/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ accessCode, systemPrompt, userPrompt, reviewMode: !!reviewMode, draftLetter: draftLetter || "" }),
+      body: JSON.stringify({ accessCode, systemPrompt, userPrompt, reviewMode: !!reviewMode, draftLetter: draftLetter || "", state: formData.state || "", disputeType: formData.disputeType || "" }),
     });
     if (!res.ok) { const err = await res.json(); throw new Error(err.error || "Generation failed"); }
     return (await res.json()).text;
