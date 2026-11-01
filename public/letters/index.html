@@ -34,6 +34,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(248,250,252,0.92);backdrop
 .hub-list a:hover{color:#1a3a5c}
 footer{background:#0f0f0f;color:rgba(255,255,255,0.5);text-align:center;padding:32px 24px;font-size:12px}
 footer a{color:rgba(255,255,255,0.7);text-decoration:none}
+.nav-actions{display:flex;align-items:center;gap:16px}.nav-key{color:inherit;font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px}@media(max-width:640px){nav{flex-wrap:wrap;gap:8px}.nav-actions{gap:10px;flex-wrap:wrap;justify-content:flex-end}.nav-key{font-size:12px}.nav-cta{padding:7px 12px!important;font-size:13px!important}}
 </style>
 </head>
 <body>
@@ -42,7 +43,7 @@ footer a{color:rgba(255,255,255,0.7);text-decoration:none}
     <div class="nav-icon">📜</div>
     <span class="nav-name">FightMyHOA</span>
   </a>
-  <a class="nav-cta" href="https://payhip.com/b/8TWrB">Fight My HOA →</a>
+  <span class="nav-actions"><a class="nav-key" href="/app">Already purchased? Enter your license key →</a><a class="nav-cta" href="https://payhip.com/b/8TWrB">Fight My HOA →</a></span>
 </nav>
 <section class="hero">
   <h1>All HOA Dispute Letters by State</h1>
@@ -84,7 +85,7 @@ footer a{color:rgba(255,255,255,0.7);text-decoration:none}
   </section>
   <section class="hub-state">
     <h2><a class="hub-state-link" href="/florida">Florida HOA Dispute Letters</a></h2>
-    <p class="hub-teaser">Governed by Florida Homeowners&#039; Association Act (Fla. Stat. Chapter 720), fines capped at $100 per violation, per day</p>
+    <p class="hub-teaser">Governed by Florida Homeowners&#039; Association Act (Fla. Stat. Chapter 720), fines capped at $100 per violation unless the governing documents provide otherwise</p>
     <ul class="hub-list">
       <li><a href="/florida/hoa-fine-dispute-letter">Florida HOA Fine Dispute Letter</a></li>
       <li><a href="/florida/selective-enforcement-challenge">Florida Selective Enforcement Challenge</a></li>

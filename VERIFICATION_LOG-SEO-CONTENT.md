@@ -45,8 +45,10 @@ Scope: the 10 states in scripts/data/states.js (NOT 50 — see DEVIATIONS.md #5)
     - Under § 720.303(5), failure to produce within 10 business days creates a rebuttable presumption of willful noncompliance; $50/day statutory damages up to $500 accrue plus attorney's fees; § 718.111(12)(c) parallel condo remedy.
   - [fine_limits] https://effortlesshoa.com/blog/hoa-laws-florida (retrieved 2026-07-22)
     - Fines capped at $100 per violation per day, not to exceed $1,000 aggregate for a single continuous violation; fines over $100 require a hearing before a committee of at least three members who are not board members or relatives; 14-day notice required.
-  - [fine_limits (hearing details)] https://fightmyhoa.com/rights/florida (retrieved 2026-07-22)
-    - § 720.305 requires at least 14 days' written notice and an independent fining/compliance committee of 3+ members (not officers, directors, employees, or relatives) that must confirm or reject a fine before it can be imposed.
+  - [fine_limits (caps + hearing details)] https://www.flsenate.gov/Laws/Statutes/2025/720.305 (retrieved 2026-11-01; replaces competitor source fightmyhoa.com)
+    - §720.305(2): $100/violation and $1,000 aggregate caps both apply "unless otherwise provided in the governing documents"; 14 days' written notice of the right to a hearing; hearing within 90 days before a 3+ member independent committee that may only confirm or reject; written findings within 7 days; payment due no sooner than 30 days after that notice.
+  - [fine_limits (2024 amendments)] https://www.flsenate.gov/session/Bill/2024/1203 (retrieved 2026-11-01)
+    - CS/HB 1203, effective July 1, 2024 (90-day hearing, 7-day findings, 30-day payment rules).
   - [regulatory_body / complaint_process] https://www2.myfloridalicense.com/condos-timeshares-mobile-homes/homeowners-associations/ (retrieved 2026-07-22)
     - The DBPR Division does NOT have statutory authority to investigate complaints against HOAs under Chapter 720; its Ch. 720 authority is limited to arbitrating election and recall disputes.
   - [dispute_resolution] https://www.flsenate.gov/laws/statutes/2024/720.311 (retrieved 2026-07-22)
@@ -71,8 +73,10 @@ Scope: the 10 states in scripts/data/states.js (NOT 50 — see DEVIATIONS.md #5)
 - **Sources (4):**
   - [records_access + fine_limits / 765 ILCS 160/1-30] https://www.ilga.gov/documents/legislation/ilcs/documents/076501600K1-30.htm (retrieved 2026-07-22)
     - Official ILGA text: 30-day response to records requests (failure deemed denial), attorney's-fees/costs recovery; §(g) reasonable fines only after notice and opportunity to be heard.
-  - [meeting_requirements + 2022 reform] https://fightmyhoa.com/rights/illinois (retrieved 2026-07-22)
-    - 48-hour board-meeting notice, open meetings with member-comment period; 2022 escalating-remedy amendment (4 consecutive quarters before self-help remediation charged).
+  - [meeting_requirements] https://www.ilga.gov/documents/legislation/ilcs/documents/076501600K1-40.htm (retrieved 2026-11-01; replaces competitor source fightmyhoa.com)
+    - 765 ILCS 160/1-40(b)(4) 48-hour board-meeting notice (10-60 days for budget/assessment meetings); (b)(5) closed-session topics, votes in open session; (b)(6) member-comment period. Verbatim from ilga.gov.
+  - [last_major_reform] https://www.ilga.gov/Legislation/PublicActs/View/104-0377 and https://www.ilga.gov/Legislation/PublicActs/View/102-0921 (retrieved 2026-11-01)
+    - P.A. 104-0377 eff. 8/15/2025 (§1-90 repeal date → 1/1/2029); P.A. 102-921 eff. 5/27/2022 amended §1-30 and §1-90. §1-30 source line (076501600K1-30.htm) also lists P.A. 103-486 (eff. 1/1/2024) and P.A. 104-797 (eff. 1/1/2027). The previously logged "2022 escalating-remedy / 4 consecutive quarters" claim was NOT found in CICAA §§1-20, 1-30, 1-40, 1-45, 1-50 to 1-75 or P.A. 102-921 → REMOVED from state-data.json.
   - [condo_statute + ombudsperson] https://idfpr.illinois.gov/ccico.html (retrieved 2026-07-22)
     - IDFPR CCIC Ombudsperson page; provides information under the ICPA and CICAA; ICPA 605/19 records; PA 104-0377 extended sunset to Jan 1, 2029; current ICPA text effective Jan 1, 2025.
   - [regulatory_body / ombudsperson limits] https://forthgrp.com/ccic-ombudsperson/ (retrieved 2026-07-22)
@@ -83,8 +87,12 @@ Scope: the 10 states in scripts/data/states.js (NOT 50 — see DEVIATIONS.md #5)
 - **Sources (4):**
   - [fine_limits + records + AG complaint] https://fixmyhoaviolation.com/blog/pennsylvania-hoa-fine-limits-2026 (retrieved 2026-07-22)
     - PA has no statewide dollar cap on HOA fines; §5302(a)(10)(i) requires notice and opportunity to be heard before a fine.
-  - [records + AG complaint scope (Act 17 of 2018)] https://fightmyhoa.com/rights/pennsylvania (retrieved 2026-07-22)
-    - Act 17 of 2018 lets good-standing owners complain to the PA Bureau of Consumer Protection for violations of §§5308, 5309, 5310, 5316; 30-day financial-statement trigger; §5316 records right.
+  - [regulatory_body / complaint_process (Act 17 of 2018)] https://www.palegis.us/statutes/unconsolidated/law-information/view-statute?txtType=HTM&SessYr=2018&ActNum=0017.&SessInd=0 (retrieved 2026-11-01; replaces competitor source fightmyhoa.com)
+    - Act 17 of 2018 (HB 595) added 68 Pa.C.S. §5322: an owner in good standing (current in assessments and fines, except amounts related to the complaint) may complain to the AG Bureau of Consumer Protection for violations of §§5308, 5309, 5310 ONLY. CORRECTED: earlier data also listed §5316 (records) — WRONG.
+  - [records_access] https://www.palegis.us/statutes/consolidated/view-statute?txtType=HTM&ttl=68&div=0&chapter=53 (retrieved 2026-11-01)
+    - §5316(a): records available for examination and copying within 10 business days of a written request; reasonable copy fee. CORRECTED: the earlier "30-day financial statements → AG complaint" claim has no basis in §5316 or §5322 — removed.
+  - [dispute_resolution ($12,000 MDJ limit)] https://www.palegis.us/statutes/consolidated/view-statute?TTL=42&DIV=00.&CHAPTER=015.&SECTION=015.&SUBSCTN=000. (retrieved 2026-11-01)
+    - 42 Pa.C.S. §1515(a)(3): magisterial district judge civil jurisdiction where the sum demanded does not exceed $12,000.
   - [meeting_requirements + executive session §5308] https://law.justia.com/codes/pennsylvania/title-68/chapter-53/section-5308/ (retrieved 2026-07-22)
     - 68 Pa.C.S. §5308 (2024) 'Meetings' — 10-to-60-day notice with time/place/agenda; §5308(d) executive-session authority.
   - [last_major_reform / Act 115 of 2022] https://www.saxtonstump.com/news-and-insights/pennsylvania-enacts-significant-changes-to-condominium-cooperative-and-planned-community-hoa-laws/ (retrieved 2026-07-22)
@@ -95,8 +103,12 @@ Scope: the 10 states in scripts/data/states.js (NOT 50 — see DEVIATIONS.md #5)
 - **Sources (4):**
   - [primary_hoa_statute / fine_limits / records_access] https://fixmyhoaviolation.com/states/ohio (retrieved 2026-07-22)
     - ORC 5312.11 fine hearing procedure (10 days to request hearing, 7 days' advance notice); ORC 5312.07 records access; no statutory fine cap in Chapter 5312
-  - [fine_limits / records_access / regulatory_body] https://fightmyhoa.com/rights/ohio (retrieved 2026-07-22)
-    - Ohio sets no maximum fine amount in Chapter 5312; fines must be authorized by governing documents and reasonable; records rights under 5312.07; ~75% amendment supermajority
+  - [fine_limits] https://codes.ohio.gov/ohio-revised-code/section-5312.11 (retrieved 2026-11-01; replaces competitor source fightmyhoa.com)
+    - ORC 5312.11(C)-(D): written notice of violation + proposed amount + hearing right; hearing request by the 10th day; 7 days' notice of hearing; no charge before the hearing; written notice of the charge within 30 days after a hearing that imposes one. No statutory maximum fine.
+  - [records_access] https://codes.ohio.gov/ohio-revised-code/section-5312.07 (retrieved 2026-11-01)
+    - ORC 5312.07(A): examine/copy records "pursuant to reasonable standards" in governing documents or board rules (no day count); (B) exceptions incl. records over five years old.
+  - [amendment threshold] https://codes.ohio.gov/ohio-revised-code/section-5312.05 (retrieved 2026-11-01)
+    - ORC 5312.05(A): default consent of 75% of the owners unless the declaration or bylaws specify otherwise (verbatim).
   - [condo_statute / regulatory_body / dispute_resolution] https://communityassociations.law/ohio-condominium-act/ (retrieved 2026-07-22)
     - ORC 5311.09 record-keeping/inspection; court of competent jurisdiction is final decision-maker; no dedicated state HOA agency; no self-help enforcement
   - [last_major_reform / meeting_requirements] https://www.hoaexplore.com/ohio-hoa-laws-update/ (retrieved 2026-07-22)
@@ -107,8 +119,12 @@ Scope: the 10 states in scripts/data/states.js (NOT 50 — see DEVIATIONS.md #5)
 - **Sources (4):**
   - [primary_hoa_statute (opt-in)] https://law.justia.com/codes/georgia/title-44/chapter-3/article-6/section-44-3-220/ (retrieved 2026-07-22)
     - O.C.G.A. 44-3-220 short title; GPOAA is opt-in — association must record/amend declaration to expressly elect to be governed; pre-existing associations not automatically subject
-  - [fine_limits / late fees / records] https://fightmyhoa.com/rights/georgia (retrieved 2026-07-22)
-    - Late fee greater of $10 or 10% and 10%/yr interest (44-3-232); fines must be CC&R-authorized (44-3-223); records under 44-3-231; 10-day notice tied to injunctive relief; SB 406 excludes fines from foreclosure threshold
+  - [fine_limits / late fees] https://law.justia.com/codes/georgia/title-44/chapter-3/article-6/section-44-3-232/ and https://www.legis.ga.gov/api/document/docs/default-source/joint-features-document-library/t44-ch1-7-(v31)-pdf.pdf (retrieved 2026-11-01; replaces competitor source fightmyhoa.com)
+    - 44-3-232(b): if the instrument provides, late charge ≤ greater of $10 or 10%, interest ≤ 10%/yr. 44-3-223: fines/suspension only as provided in the instrument; 10 days' notice + opportunity to cure before injunctive relief; no general pre-fine hearing.
+  - [records_access] https://law.justia.com/codes/georgia/title-14/chapter-3/article-16/part-1/section-14-3-1602/ (via Perplexity Sonar Pro, 2026-11-01; direct fetch returned 403)
+    - CORRECTED: 44-3-231 is association powers/duties, NOT records (earlier citation WRONG). Members' inspection right comes from O.C.G.A. 14-3-1602 (nonprofit corporations; written demand 5 business days ahead). The POAA has no general records-inspection section.
+  - [SB 406] https://gov.georgia.gov/document/2026-signed-legislation/sb-406/download (signed text, PDF read 2026-11-01)
+    - Effective 1/1/2027: new 43-17A-2(g) 10-year records retention incl. electronic; 43-17A-5 Secretary of State complaint + hearing officer; 43-17A-8 payment priority regular → special → specific assessments → fees/fines; nonregistered associations may not collect fines; §5 amends 44-3-232(c): foreclosure only if the lien is at least the lesser of $4,000 or 12 months of regular assessments (not less than $2,000), excluding specific assessments, fines, and fees; notice 30 → 60 days. CORRECTED: earlier "more detailed notice procedures before assessing fines" claim not found in the signed text — removed.
   - [regulatory_body / dispute_resolution] https://ipropertymanagement.com/laws/georgia-hoa-rules-regulations (retrieved 2026-07-22)
     - No specific state agency governs HOAs; disputes go to court; voluntary ADR via Office of Dispute Resolution / AAA / GA Academy of Mediators & Arbitrators
   - [last_major_reform / SB 406] https://www.fmglaw.com/hoa/georgia-property-owners-bill-of-rights-act-whats-new-and-when-it-takes-effect/ (retrieved 2026-07-22)
@@ -138,3 +154,17 @@ Scope: the 10 states in scripts/data/states.js (NOT 50 — see DEVIATIONS.md #5)
   - [records_access ($500 penalty)] https://codes.findlaw.com/az/title-33-property/az-rev-st-sect-33-1805/ (retrieved 2026-07-22)
     - Full text of A.R.S. 33-1805 records inspection, 10-business-day availability and statutory penalty
 
+
+
+## Re-verification — competitor-sourced data points (2026-11-01)
+
+Trigger: buyer confusion between hoafight.com (ours) and fightmyhoa.com (competitor, not affiliated). Every state-data.json point previously sourced from fightmyhoa.com was re-verified against the primary statute (official legislature/code sites; Perplexity Sonar Pro restricted to those domains + direct fetch) and the citation replaced above. Zero fightmyhoa.com sources remain.
+
+| State | Field | Result |
+|---|---|---|
+| FL | fine_limits | PARTLY: caps yield to governing documents (data said docs may only set *lower* caps); added 90-day hearing, 7-day findings, 30-day payment (HB 1203) |
+| IL | key_sections / meeting_requirements | Substance CONFIRMED; section WRONG (§1-25 → §1-40(b)(4)-(6)). Also fixed mislabeled §1-20 (amendments) and §1-45 (finances) |
+| IL | last_major_reform / fine_limits | "2022 escalating remedy, 4 consecutive quarters" NOT FOUND in CICAA → removed; reform text rewritten from Public Acts |
+| PA | regulatory_body / complaint_process / records_access / unique_protections / dispute_resolution | WRONG: AG route (§5322) covers §§5308-5310 only, not §5316 records; "30-day financial statements" has no basis; records = 10 business days |
+| OH | fine_limits / records_access / amendment threshold | CONFIRMED with refinements (30-day post-hearing notice; "reasonable standards" not "reasonable request"; 75% is a default the documents can change) |
+| GA | key_sections / fine_limits / records_access / regulatory_body / unique_protections | 44-3-231 citation WRONG → 14-3-1602; SB 406 fine-notice claim not in signed text → replaced with verified SB 406 provisions incl. foreclosure-threshold figures |

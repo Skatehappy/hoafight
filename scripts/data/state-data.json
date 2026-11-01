@@ -180,10 +180,10 @@
     "regulatory_body": "Department of Business and Professional Regulation (DBPR), Division of Florida Condominiums, Timeshares, and Mobile Homes. For HOAs under Chapter 720 its role is limited — it arbitrates election and recall disputes only and does NOT investigate general Ch. 720 HOA complaints. HB 1203 (2024) expanded DBPR investigative/enforcement authority somewhat, but broad complaint investigation remains centered on condos (Ch. 718).",
     "complaint_process": "There is no general state-agency complaint intake for Chapter 720 HOA disputes. Most HOA disputes (covenant enforcement, records access, meetings, amendments, use of parcel/common areas) must go through mandatory pre-suit mediation under § 720.311, then to county/circuit court. Only election and recall disputes are filed with the DBPR Division of Florida Condominiums, Timeshares, and Mobile Homes for binding arbitration. Homeowners may also file a civil action to compel records production (§ 720.303(5)).",
     "fine_limits": {
-      "max_per_violation": "$100 per violation, per day",
-      "max_aggregate": "$1,000 in the aggregate for a single continuing violation",
+      "max_per_violation": "$100 per violation unless the governing documents provide otherwise",
+      "max_aggregate": "$1,000 in the aggregate for a continuing violation (which may be fined per day with a single notice and opportunity for hearing), unless otherwise provided in the governing documents",
       "hearing_required": true,
-      "hearing_details": "Under § 720.305, a fine or suspension may not be imposed unless the association first provides at least 14 days' written notice and an opportunity for a hearing before an independent fining/compliance committee of at least three members who are not officers, directors, employees, or the spouse/parent/child/sibling of the same. The committee must confirm or reject the fine; the final decision is provided in writing. Governing documents may set lower caps, and some documents/court interpretations require notice before fines can begin accruing."
+      "hearing_details": "Under § 720.305(2), the association must give at least 14 days' written notice of the owner's right to a hearing, which must be held within 90 days after the notice, before a committee of at least three members appointed by the board who are not officers, directors, or employees of the association, or the spouse, parent, child, brother, or sister of an officer, director, or employee. The committee may only confirm or reject the fine or suspension levied by the board. Within 7 days after the hearing the committee must give written notice of its findings (including, as applicable, how to cure or the payment date), and payment may not be due until at least 30 days after that notice is delivered (CS/HB 1203, effective July 1, 2024). Note that both dollar caps yield to the governing documents."
     },
     "records_access": {
       "right_to_inspect": true,
@@ -296,7 +296,7 @@
       "citation": "765 ILCS 160/1-1 et seq.",
       "key_sections": [
         {
-          "section": "765 ILCS 160/1-25",
+          "section": "765 ILCS 160/1-40(b)(4)-(6)",
           "topic": "Board meetings — must be open to members with a member-comment period; written notice to members at least 48 hours before a board meeting (by prescribed delivery or conspicuous posting in common areas)"
         },
         {
@@ -309,11 +309,11 @@
         },
         {
           "section": "765 ILCS 160/1-45",
-          "topic": "Adoption of rules and the escalating-remedy process (notice + opportunity to cure/be heard over consecutive quarters before self-help remediation costs may be charged)"
+          "topic": "Finances — each member must receive the proposed annual budget by prescribed delivery method 30 to 60 days before the board adopts it; budget, assessment, and reserve requirements"
         },
         {
           "section": "765 ILCS 160/1-20",
-          "topic": "Board powers and duties, budgets, and assessments"
+          "topic": "Amendments to the declaration, bylaws, or operating agreement — valid only when set forth in a recorded amendment, effective on recording unless it states otherwise"
         }
       ]
     },
@@ -328,7 +328,7 @@
       "max_per_violation": null,
       "max_aggregate": null,
       "hearing_required": true,
-      "hearing_details": "No statutory dollar cap — fines must simply be 'reasonable' and levied only after written notice of the violation and an opportunity to be heard (765 ILCS 160/1-30(g) for CICAA; parallel due-process expectations under ICPA). Under a 2022 CICAA amendment, if the board affords notice and opportunity to be heard for 4 consecutive quarters (or 4 consecutive meetings if it meets monthly) and the owner still fails to cure, the board may arrange remediation and charge the cost to the owner."
+      "hearing_details": "No statutory dollar cap — fines must simply be 'reasonable' and levied only after written notice of the violation and an opportunity to be heard (765 ILCS 160/1-30(g) for CICAA; parallel due-process expectations under ICPA)."
     },
     "records_access": {
       "right_to_inspect": true,
@@ -336,9 +336,9 @@
       "penalty_for_noncompliance": "A member may seek 'appropriate relief' in court and, if the member prevails and the court finds the board's failure resulted from its acts or omissions, recover reasonable attorney's fees and costs (765 ILCS 160/1-30)."
     },
     "meeting_requirements": {
-      "notice_period": "At least 48 hours' written notice to members before a board meeting (765 ILCS 160/1-25), by prescribed delivery or by posting in entranceways/elevators/other conspicuous common-area places; separate notice rules apply to member meetings under §1-40.",
+      "notice_period": "At least 48 hours' notice to members before every board meeting (765 ILCS 160/1-40(b)(4)), by prescribed delivery method or by posting in entranceways, elevators, or other conspicuous common-area places; meetings to adopt the annual budget or regular/special assessments require notice by prescribed delivery method 10 to 60 days before the meeting. Separate notice rules apply to member meetings.",
       "open_to_members": true,
-      "executive_session_allowed": "Yes — the board may close portions of a meeting to discuss litigation, employment/personnel, violations, and unpaid assessments, but must take any final/binding action in the open portion; a member-comment period is required at open meetings."
+      "executive_session_allowed": "Yes — under 765 ILCS 160/1-40(b)(5) the board may close a portion of a noticed meeting to discuss pending or probable litigation; third-party contracts or the appointment, employment, engagement, or dismissal of an employee, contractor, agent, or other provider; interviews of potential providers; violations of association rules; an owner's unpaid share of common expenses; or to consult legal counsel. Any vote on those matters must be taken in a portion of the meeting open to members, and §1-40(b)(6) requires the board to reserve a member-comment period at board meetings."
     },
     "dispute_resolution": {
       "mandatory_mediation": false,
@@ -358,7 +358,7 @@
       "Improper or closed board meetings and inadequate 48-hour notice, including binding action taken in executive session.",
       "Disputed fines, special assessments, and rule enforcement (adequacy of notice and opportunity to be heard)."
     ],
-    "last_major_reform": "Public Act 104-0377 (effective August 15, 2025) extended the Condominium and Common Interest Community Ombudsperson Act to a January 1, 2029 sunset. The most substantive CICAA governance changes came via the 2022 amendments (effective May 27, 2022) refining records, fines, and the escalating notice/opportunity-to-cure remedy."
+    "last_major_reform": "Public Act 104-0377 (effective August 15, 2025) extended the CICAA's Ombudsperson Act compliance section (§1-90) to a January 1, 2029 repeal date. Earlier, P.A. 102-921 (effective May 27, 2022) amended §1-30 (board records) and §1-90; §1-30 has since been further amended by P.A. 103-486 (effective January 1, 2024) and P.A. 104-797 (effective January 1, 2027)."
   },
   "PA": {
     "state": "Pennsylvania",
@@ -394,8 +394,8 @@
       "citation": "68 Pa.C.S. Ch. 31, §§3101-3414",
       "note": "Governs condominiums created after its effective date (about 120 days after July 2, 1980); some provisions apply to older condos for post-effective-date events. Parallels the UPCA — e.g., §3316 covers association records inspection. Cooperatives are separately covered by the Uniform Real Estate Cooperative Act (68 Pa.C.S. Ch. 41)."
     },
-    "regulatory_body": "No standalone HOA regulatory agency for internal governance. Since Act 17 of 2018, the Pennsylvania Office of Attorney General's Bureau of Consumer Protection accepts complaints from owners 'in good standing' about association violations of specific UPCA/UCA sections — meetings (§5308), quorums (§5309), voting/proxies (§5310), and records (§5316). Beyond those enumerated provisions, enforcement is through the courts.",
-    "complaint_process": "A homeowner in good standing may file a complaint with the PA Attorney General's Bureau of Consumer Protection (attorneygeneral.gov) for association violations of §§5308, 5309, 5310, or 5316. Other disputes (fines, assessments, covenant enforcement) are pursued in the Court of Common Pleas or, for smaller money claims, before a Magisterial District Judge.",
+    "regulatory_body": "No standalone HOA regulatory agency for internal governance. Since Act 17 of 2018 (68 Pa.C.S. §5322), a unit owner in good standing — current in payment of assessments and fines, except amounts directly related to the complaint — may file a complaint with the Pennsylvania Office of Attorney General's Bureau of Consumer Protection about planned-community violations of the meeting (§5308), quorum (§5309), and voting/proxy (§5310) provisions. Records (§5316) and all other provisions are enforced through the courts.",
+    "complaint_process": "A unit owner in good standing may file a complaint with the PA Attorney General's Bureau of Consumer Protection (attorneygeneral.gov) for association violations of §§5308, 5309, or 5310 (68 Pa.C.S. §5322). Records disputes (§5316) and other disputes (fines, assessments, covenant enforcement) are pursued in the Court of Common Pleas or, for money claims up to $12,000, before a Magisterial District Judge.",
     "fine_limits": {
       "max_per_violation": null,
       "max_aggregate": null,
@@ -404,8 +404,8 @@
     },
     "records_access": {
       "right_to_inspect": true,
-      "response_deadline": "Owners have a statutory right to inspect and copy records under 68 Pa.C.S. §5316 on written request. If the association fails to provide financial statements within 30 days of a written request, the owner may file a complaint with the PA Bureau of Consumer Protection.",
-      "penalty_for_noncompliance": "No fixed statutory monetary penalty; the enforcement mechanisms are (1) an AG/Bureau of Consumer Protection complaint under Act 17 of 2018 for §5316 violations, and (2) a court action to compel production."
+      "response_deadline": "Owners may examine and copy association records on written request; the association must make them available within 10 business days (68 Pa.C.S. §5316(a)) and may charge a reasonable fee for copies.",
+      "penalty_for_noncompliance": "No fixed statutory monetary penalty; the owner's remedy is a court action to compel production. The Act 17 / §5322 Attorney General complaint route does not cover §5316 records."
     },
     "meeting_requirements": {
       "notice_period": "Not less than 10 and not more than 60 days before the meeting, by hand delivery or mail, stating time, place, and agenda (68 Pa.C.S. §5308). Act 115 of 2022 added a 14-day prior-notice requirement for meetings to amend bylaws.",
@@ -416,10 +416,10 @@
       "mandatory_mediation": false,
       "mandatory_arbitration": false,
       "small_claims_available": true,
-      "notes": "No statewide mandatory mediation/arbitration for HOA disputes. Small money claims (generally up to $12,000) can be brought before a Magisterial District Judge; larger or injunctive/covenant matters go to the Court of Common Pleas. For the enumerated UPCA/UCA sections, the AG Bureau of Consumer Protection complaint route (Act 17 of 2018) provides an administrative alternative to litigation."
+      "notes": "No statewide mandatory mediation/arbitration for HOA disputes. Money claims up to $12,000 can be brought before a Magisterial District Judge (42 Pa.C.S. §1515(a)(3)); larger or injunctive/covenant matters go to the Court of Common Pleas. For meeting, quorum, and voting violations (§§5308-5310), the AG Bureau of Consumer Protection complaint route (Act 17 of 2018, §5322) provides an administrative alternative to litigation."
     },
     "unique_protections": [
-      "Act 17 of 2018 created an unusual administrative remedy: owners in good standing can complain to the AG's Bureau of Consumer Protection about violations of the meeting (§5308), quorum (§5309), voting (§5310), and records (§5316) provisions — a state-agency backstop many states lack.",
+      "Act 17 of 2018 (68 Pa.C.S. §5322) created an unusual administrative remedy: owners in good standing can complain to the AG's Bureau of Consumer Protection about violations of the meeting (§5308), quorum (§5309), and voting (§5310) provisions — a state-agency backstop many states lack.",
       "Statutory notice-and-opportunity-to-be-heard requirement before any fine (§5302(a)(10)), even though PA imposes no dollar cap on the fine itself.",
       "Act 115 of 2022 (effective May 2023) modernized governance — authorizing virtual meetings and electronic voting without a bylaw change, and requiring 14-day notice plus a minimum 51% vote to amend bylaws.",
       "Act 115 requires an 'independent reviewer' to monitor and tally election ballots in communities of 500+ units — an anti-fraud election safeguard.",
@@ -441,7 +441,7 @@
       "key_sections": [
         {
           "section": "ORC 5312.07",
-          "topic": "Right of owners to examine and copy the association's books, records, and minutes upon reasonable written request"
+          "topic": "Right of owners to examine and copy the books, records, and minutes described in ORC 5312.06(C), pursuant to reasonable standards in the governing documents or board rules; exceptions in 5312.07(B)"
         },
         {
           "section": "ORC 5312.11",
@@ -457,7 +457,7 @@
         },
         {
           "section": "ORC 5312.05",
-          "topic": "Amendment of the declaration; strong supermajority (about 75%) protection for CC&R changes"
+          "topic": "Amendment of the declaration and bylaws — default consent of 75% of the owners unless the declaration or bylaws specify otherwise; effective only when filed with the county recorder"
         }
       ]
     },
@@ -472,11 +472,11 @@
       "max_per_violation": null,
       "max_aggregate": null,
       "hearing_required": true,
-      "hearing_details": "ORC 5312.11: the board must give written notice of the violation and the proposed enforcement assessment; the owner has 10 days to request a hearing; and the board must give at least 7 days' advance written notice of the hearing. No fine may be imposed or collected until the hearing process is complete. Ohio sets NO statutory maximum fine amount in Chapter 5312 — fines must merely be authorized by the governing documents and reasonable."
+      "hearing_details": "ORC 5312.11(C): before imposing an enforcement assessment, the board must give the owner written notice describing the violation and the amount of the proposed charge, and explaining the right to a hearing and how to request one. The owner may request a hearing not later than the 10th day after receiving the notice; if requested, the board must give at least 7 days' written notice of the hearing and may not levy the charge before holding it. Within 30 days after a hearing at which the board imposes a charge, the association must deliver written notice of the charge to the owner. Chapter 5312 sets NO statutory maximum fine amount."
     },
     "records_access": {
       "right_to_inspect": true,
-      "response_deadline": "No fixed statutory number of days; ORC 5312.07 requires access upon 'reasonable' written request, and the board may set reasonable times/places but may not refuse records outright.",
+      "response_deadline": "No fixed statutory day count. Under ORC 5312.07(A) any owner may examine and copy the books, records, and minutes described in §5312.06(C), pursuant to reasonable standards set in the governing documents or board rules. §5312.07(B) excepts records more than five years old and specified confidential, personnel, legal-advice, pending-negotiation, other-owner-enforcement, and legally protected information unless the board approves release.",
       "penalty_for_noncompliance": "No specific statutory monetary penalty; an owner enforces the right by court action (e.g., an order compelling production), potentially with attorney fees as allowed by governing documents/court."
     },
     "meeting_requirements": {
@@ -491,7 +491,7 @@
       "notes": "No statewide mandatory mediation or arbitration for HOA disputes. Disputes are resolved through the association's internal hearing process and then the courts; small-claims/municipal court is available for smaller money claims. Associations may not use 'self-help' enforcement beyond recording liens and suspending certain privileges."
     },
     "unique_protections": [
-      "Strong CC&R amendment protection — roughly a 75% supermajority of owners generally required to amend the declaration, among the strongest in the country",
+      "CC&R amendment protection — by default the declaration and bylaws can be amended only with the consent of 75% of the owners (ORC 5312.05(A)), unless the declaration or bylaws set a different threshold.",
       "Mandatory pre-fine due process: written notice + 10 days to request a hearing + 7 days' advance hearing notice under ORC 5312.11",
       "Statutory records-inspection right for every owner under ORC 5312.07 (financials, minutes, governing documents, enforcement records)",
       "U.S. and POW/MIA flag display protection — a housing entity may not prohibit display consistent with patriotic customs",
@@ -517,15 +517,15 @@
         },
         {
           "section": "O.C.G.A. 44-3-223",
-          "topic": "Enforcement / fines; requires written notice of the violation and, for injunctive relief, a 10-day written notice; fines must be authorized by the CC&Rs"
+          "topic": "Enforcement / fines — fines and suspension of common-area use only if and to the extent provided in the instrument; no general statutory pre-fine hearing; before an action for injunctive relief, not less than 10 days' notice and an opportunity to comply or begin curing"
         },
         {
           "section": "O.C.G.A. 44-3-232",
           "topic": "Late fees and interest — a late charge of the greater of $10 or 10% of the unpaid amount, plus interest up to 10% per year, and collection costs including reasonable attorneys' fees"
         },
         {
-          "section": "O.C.G.A. 44-3-231",
-          "topic": "Records — association must maintain itemized financial records, meeting minutes, and books necessary to track its affairs"
+          "section": "O.C.G.A. 14-3-1602",
+          "topic": "Records inspection (associations organized as Georgia nonprofit corporations) — on written demand at least 5 business days in advance, at a reasonable time and location the corporation specifies; minutes, accounting records, and the membership list require a good-faith, proper-purpose request. The POAA itself has no general member records-inspection section."
         },
         {
           "section": "O.C.G.A. 44-3-225",
@@ -538,18 +538,18 @@
       "citation": "O.C.G.A. §§ 44-3-70 et seq. (Title 44, Chapter 3, Article 3)",
       "note": "Governs condominiums and, unlike the POAA, applies automatically to qualifying condominiums. Contains its own assessment, lien, records, and meeting provisions."
     },
-    "regulatory_body": "No state agency regulates HOA disputes (as of mid-2026). Homeowners have no state office for HOA complaints; disputes go to court. NOTE: SB 406 (Property Owners' Bill of Rights Act), signed May 12, 2026, will create a state registration and complaint-and-hearing process, with most provisions effective January 1, 2027.",
+    "regulatory_body": "No state agency regulates HOA disputes under current law; disputes go to court. SB 406 (Property Owners' Bill of Rights Act, signed 2026) creates Secretary of State registration of owners' associations and a complaint-and-hearing process, with most provisions effective January 1, 2027.",
     "complaint_process": "Historically: pursue the association's internal complaint process, then optional mediation/arbitration (e.g., Georgia Office of Dispute Resolution, AAA, or Georgia Academy of Mediators & Arbitrators), with a lawsuit in state court (Superior/State/Magistrate) as the last resort. Beginning 2027 under SB 406, associations must register with the Georgia Secretary of State and submit to a state complaint-and-hearing process.",
     "fine_limits": {
       "max_per_violation": null,
       "max_aggregate": null,
       "hearing_required": false,
-      "hearing_details": "No statewide statutory fine cap. Fines must be expressly authorized by the CC&Rs, and the association must follow whatever notice/hearing procedure its own governing documents require. The 10-day written notice in O.C.G.A. 44-3-223 applies specifically when the association seeks injunctive relief, not as a universal pre-fine hearing mandate. Late fees are statutorily capped at the greater of $10 or 10% of the unpaid amount, with interest up to 10%/yr (O.C.G.A. 44-3-232). Under SB 406, more detailed notice procedures before assessing fines take effect Jan 1, 2027, and payments must be applied to assessments before fines/fees."
+      "hearing_details": "No statewide statutory fine cap. Fines must be expressly authorized by the instrument (O.C.G.A. 44-3-223), and the association must follow whatever notice/hearing procedure its own governing documents require. The 10-day notice in O.C.G.A. 44-3-223 applies specifically before an action for injunctive relief, not as a universal pre-fine hearing mandate. If the instrument provides, late charges may not exceed the greater of $10 or 10% of the unpaid assessment, with interest up to 10% per year (O.C.G.A. 44-3-232(b)). SB 406 (effective January 1, 2027) bars nonregistered associations from assessing or collecting fines, creates a Secretary of State complaint-and-hearing process, and requires owner payments to be applied first to regular, then special, then specific assessments, and only then to other fees and fines (new O.C.G.A. 43-17A-8)."
     },
     "records_access": {
       "right_to_inspect": true,
-      "response_deadline": "No specific statutory day-count in the current POAA; the association must maintain itemized financial records and meeting minutes (O.C.G.A. 44-3-231) available to members. SB 406 will add a 10-year retention requirement (including electronic records) effective 2027.",
-      "penalty_for_noncompliance": "No specific statutory monetary penalty in the current POAA; enforced by court action. SB 406 adds enforcement mechanisms effective 2027."
+      "response_deadline": "The POAA has no general records-inspection section. For associations organized as Georgia nonprofit corporations, O.C.G.A. 14-3-1602 gives members inspection rights on written demand at least 5 business days in advance. SB 406 (effective January 1, 2027) adds an owner right to inspect association records on written demand and requires associations to keep all records relating to assessments, fines, fees, liens, and foreclosures — including electronic records — for at least 10 years (new O.C.G.A. 43-17A-2(g)).",
+      "penalty_for_noncompliance": "No specific statutory monetary penalty under current law; enforced by court action. Beginning January 1, 2027, SB 406 adds a Secretary of State complaint-and-hearing process (new O.C.G.A. 43-17A-5)."
     },
     "meeting_requirements": {
       "notice_period": "Governed primarily by the declaration/bylaws under the POAA; the Act does not set a single uniform statutory notice period for POA member meetings.",
@@ -565,7 +565,7 @@
     "unique_protections": [
       "OPT-IN structure: the GPOAA applies ONLY if the declaration expressly submits the association to O.C.G.A. §44-3-220 et seq.; associations existing when the Act passed did not automatically become subject to it, and non-opted-in communities are governed by general covenant/contract law",
       "Statutory cap on late fees (greater of $10 or 10% of the unpaid amount) and interest (max 10%/yr) under O.C.G.A. 44-3-232",
-      "SB 406 Property Owners' Bill of Rights Act (2026): raises the foreclosure threshold and excludes fines/late fees/specific assessments from the amount that can trigger foreclosure — only regular assessments count",
+      "SB 406 Property Owners' Bill of Rights Act (2026, effective January 1, 2027): a POAA assessment lien may be foreclosed only if it is at least the lesser of $4,000 or 12 months of regular assessments in arrears (never less than $2,000), and no specific assessment, fine, or fee counts toward that amount; the pre-foreclosure notice period rises from 30 to 60 days (O.C.G.A. 44-3-232(c) as amended).",
       "SB 406: payments must be applied to assessments before fines or other fees; 10-year records retention; Secretary-of-State registration; detailed pre-fine notice procedures (effective Jan 1, 2027)",
       "SB 406 attorney-fee itemization and judicial review for reasonableness (effective July 1, 2026 for actions filed on/after that date)"
     ],
