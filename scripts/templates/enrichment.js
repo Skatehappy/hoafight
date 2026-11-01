@@ -256,3 +256,24 @@ export function stateTeaser(state, d) {
   const cap = has(f.max_per_violation) ? `, fines capped at ${f.max_per_violation}` : '';
   return `Governed by ${st.name}${has(st.citation) ? ` (${st.citation})` : ''}${cap}`;
 }
+
+import { readFileSync } from 'fs';
+const HUB_PENDING = JSON.parse(readFileSync('scripts/data/hub-pending-fields.json', 'utf8'));
+
+// Short section for a topic merged into the state hub. Uses only verified
+// state-data.json fields (same source as the deep-page enrichment): the first two
+// rights paragraphs in the topic's emphasis order. Fields listed for the state in
+// hub-pending-fields.json cite statutes not yet in VERIFICATION_LOG; they are skipped
+// on the hub until verified.
+export function mergedTopicSection(state, dispute, d) {
+  if (!d) return '';
+  const pending = new Set(HUB_PENDING[state.abbr] || []);
+  const emphasis = TOPIC_EMPHASIS[dispute.slug] || ALL_RIGHTS;
+  const ordered = [...emphasis, ...ALL_RIGHTS.filter(k => !emphasis.includes(k))];
+  return ordered.map(k => {
+    const r = RIGHTS_RENDER[k];
+    if (!r || pending.has(k)) return '';
+    const text = r.fn(state.name, d);
+    return has(text) ? `      <p data-field="${k}"><strong>${r.label}:</strong> ${esc(text)}</p>` : '';
+  }).filter(Boolean).slice(0, 2).join('\n');
+}

@@ -1,3 +1,4 @@
+import { comboHref } from '../data/merged.js';
 import { APP_CONFIG } from '../data/config.js';
 import { stateTeaser } from './enrichment.js';
 
@@ -9,7 +10,7 @@ import { stateTeaser } from './enrichment.js';
 export function renderHub(states, disputes, stateData = {}) {
   const sections = states.map(state => {
     const links = disputes.map(d =>
-      `      <li><a href="/${state.slug}/${d.slug}">${escapeHtml(state.name)} ${escapeHtml(d.name)}</a></li>`
+      `      <li><a href="${comboHref(state.slug, d.slug)}">${escapeHtml(state.name)} ${escapeHtml(d.name)}</a></li>`
     ).join('\n');
     const teaser = stateTeaser(state, stateData[state.abbr]);
     const teaserHTML = teaser ? `\n    <p class="hub-teaser">${escapeHtml(teaser)}</p>` : '';

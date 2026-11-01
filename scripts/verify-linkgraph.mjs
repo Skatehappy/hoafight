@@ -10,6 +10,11 @@
 import { STATES } from './data/states.js';
 import { DISPUTES } from './data/disputes.js';
 import { APP_CONFIG } from './data/config.js';
+import { readFileSync } from 'node:fs';
+
+// Combos merged into their state hub: 301 to /<state>#<topic>, rendered as a hub section.
+const MERGED = new Set(JSON.parse(readFileSync(new URL('./data/merged-combos.json', import.meta.url), 'utf8')));
+const isMerged = (s, d) => MERGED.has(`${s}/${d}`);
 
 const BASE = (process.argv[2] || process.env.BASE_URL || `https://${APP_CONFIG.domain}`).replace(/\/+$/, '');
 const failures = [];
@@ -55,18 +60,34 @@ console.log(`Verifying link graph against ${BASE}\n`);
   }
 }
 
-// --- Check 2: each state hub links to all its cells -----------------------
+// --- Check 2: each state hub links to its live cells; merged topics are on-page sections
 await pool(STATES, async (s) => {
   const { status, body } = await get(`/${s.slug}`);
   if (status >= 400) { fail(`state hub /${s.slug} returned HTTP ${status}`); return; }
   for (const d of DISPUTES) {
+    if (isMerged(s.slug, d.slug)) {
+      if (hasAnchor(body, `#${d.slug}`) && body.includes(`id="${d.slug}"`)) ok(`/${s.slug} has section #${d.slug}`);
+      else fail(`state hub /${s.slug} missing merged section #${d.slug}`);
+      continue;
+    }
     if (hasAnchor(body, `/${s.slug}/${d.slug}`)) ok(`/${s.slug} -> /${s.slug}/${d.slug}`);
     else fail(`state hub /${s.slug} missing anchor to cell /${s.slug}/${d.slug}`);
   }
 });
 
 // --- Check 3: each cell links back to its state hub -----------------------
-const cells = STATES.flatMap(s => DISPUTES.map(d => ({ s, d })));
+const cells = STATES.flatMap(s => DISPUTES.filter(d => !isMerged(s.slug, d.slug)).map(d => ({ s, d })));
+
+// --- Check 3b: merged cells 301 to their hub section, and are not in the sitemap
+const mergedCells = STATES.flatMap(s => DISPUTES.filter(d => isMerged(s.slug, d.slug)).map(d => ({ s, d })));
+await pool(mergedCells, async ({ s, d }) => {
+  const res = await fetch(`${BASE}/${s.slug}/${d.slug}`, { redirect: 'manual', headers: { 'User-Agent': 'hoafight-linkgraph-verifier' } });
+  const loc = res.headers.get('location') || '';
+  if (res.status === 301 || res.status === 308) {
+    if (loc.endsWith(`/${s.slug}#${d.slug}`)) ok(`/${s.slug}/${d.slug} -> ${res.status} ${loc}`);
+    else fail(`merged cell /${s.slug}/${d.slug} redirects to ${loc}`);
+  } else fail(`merged cell /${s.slug}/${d.slug} returned HTTP ${res.status} (expected 301/308)`);
+});
 await pool(cells, async ({ s, d }) => {
   const { status, body } = await get(`/${s.slug}/${d.slug}`);
   if (status >= 400) { fail(`cell /${s.slug}/${d.slug} returned HTTP ${status}`); return; }
@@ -82,6 +103,8 @@ let sitemapBody = '';
   if (status >= 400) fail(`sitemap.xml returned HTTP ${status}`);
   const locs = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
   const appLocs = locs.filter(u => { try { return new URL(u).pathname.replace(/\/+$/, '') === '/app' || new URL(u).pathname.startsWith('/app/'); } catch { return /\/app(\/|$)/.test(u); } });
+  const mergedLocs = locs.filter(u => { try { return MERGED.has(new URL(u).pathname.replace(/^/+|/+$/g, '')); } catch { return false; } });
+  if (mergedLocs.length) fail(`sitemap contains ${mergedLocs.length} merged URL(s): ${mergedLocs.slice(0, 5).join(', ')}`);
   if (appLocs.length) fail(`sitemap contains ${appLocs.length} /app URL(s): ${appLocs.join(', ')}`);
   else ok(`sitemap has 0 /app URLs (${locs.length} URLs total)`);
 }
