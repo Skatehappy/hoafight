@@ -32,7 +32,7 @@ for (const state of STATES) {
 
   fs.writeFileSync(
     path.join(stateDir, 'index.html'),
-    renderStateHub(state, DISPUTES, STATES, STATE_DATA[state.abbr])
+    renderStateHub(state, DISPUTES, STATES, holdBack(state.slug, STATE_DATA[state.abbr]))
   );
   stats.stateHubs++;
 
@@ -54,6 +54,8 @@ for (const state of STATES) {
 
     const pageKey = `${state.slug}/${dispute.slug}`;
     const content = holdBack(pageKey, JSON.parse(fs.readFileSync(cacheFile, 'utf8')));
+    // a description withheld in full falls back to the dispute's generic (citation-free) one
+    if (!content.metaDescription) content.metaDescription = dispute.metaDescription;
     const disputeDir = path.join(stateDir, dispute.slug);
     if (!fs.existsSync(disputeDir)) fs.mkdirSync(disputeDir, { recursive: true });
 
@@ -69,7 +71,7 @@ for (const state of STATES) {
 // whole cluster is reachable from the homepage in <=2 clicks. Regenerated each run.
 const hubDir = path.join(PUBLIC_DIR, 'letters');
 if (!fs.existsSync(hubDir)) fs.mkdirSync(hubDir, { recursive: true });
-fs.writeFileSync(path.join(hubDir, 'index.html'), renderHub(STATES, DISPUTES, STATE_DATA));
+fs.writeFileSync(path.join(hubDir, 'index.html'), renderHub(STATES, DISPUTES, holdBack('letters', STATE_DATA)));
 stats.hub = 1;
 
 // STEP 4 — sitemap with today's lastmod on every entry (the legitimate re-crawl
