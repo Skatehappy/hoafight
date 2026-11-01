@@ -23,11 +23,13 @@ globalThis.fetch = async (url, init = {}) => {
     const body = JSON.parse(init.body);
     calls.anthropic.push(body);
     const text = anthropicQueue.shift() ?? 'Default letter.';
-    return new Response(JSON.stringify({ content: [{ text }], stop_reason: 'end_turn' }), { status: 200 });
+    return new Response(JSON.stringify({ content: [{ type: 'text', text }], stop_reason: 'end_turn' }), { status: 200 });
   }
   if (url.includes('payhip.com/api/v1/license/verify')) {
     calls.payhipVerify++;
-    return new Response(JSON.stringify(url.includes('GOODCODE') ? { data: { uses: 0 } } : {}), { status: url.includes('GOODCODE') ? 200 : 404 });
+    if (url.includes('GOODCODE')) return new Response(JSON.stringify({ data: { enabled: true, product_link: '8TWrB', uses: 0 } }), { status: 200 });
+    if (url.includes('DISABLED')) return new Response(JSON.stringify({ data: { enabled: false, product_link: '8TWrB' } }), { status: 200 });
+    return new Response(JSON.stringify({ message: 'not found' }), { status: 404 });
   }
   if (url.includes('payhip.com/api/v1/license/usage')) { calls.payhipUse++; return new Response('{}', { status: 200 }); }
   throw new Error('unexpected network call in test: ' + url);
@@ -35,8 +37,15 @@ globalThis.fetch = async (url, init = {}) => {
 
 function reset(queue) { anthropicQueue = queue; calls = { anthropic: [], payhipVerify: 0, payhipUse: 0 }; logs.length = 0; }
 async function post(payload) {
-  const res = await handler(new Request('https://x.test/api/generate', { method: 'POST', body: JSON.stringify(payload) }));
-  return { status: res.status, json: await res.json() };
+  let status = 0, json = null;
+  const res = {
+    setHeader() {},
+    status(c) { status = c; return res; },
+    json(o) { json = o; return res; },
+    end() { return res; },
+  };
+  await handler({ method: 'POST', body: payload }, res);
+  return { status, json };
 }
 const base = { accessCode: 'GOODCODE', systemPrompt: 'You write letters.', userPrompt: 'STATE: Florida\nDISPUTE TYPE: Wrongful Fine\nCC&R SECTION: Article IV, Section 3.2', state: 'Florida', disputeType: 'Wrongful Fine' };
 const FAKE = 'Under Fla. Stat. § 999.999, the board must refund every fine.';
@@ -88,11 +97,20 @@ ok('clean draft: one call, untouched');
 
 // 5. check call: no lock, no lint, no usage mark
 reset(['VALID']);
-r = await post({ accessCode: 'ANYTHING', systemPrompt: 'Reply: VALID', userPrompt: 'check' });
+r = await post({ accessCode: 'GOODCODE', systemPrompt: 'Reply: VALID', userPrompt: 'check' });
 assert.equal(r.status, 200);
 assert.ok(!(calls.anthropic[0].system || '').includes('CITATION RULE'));
 assert.equal(calls.payhipUse, 0);
 ok('check call unaffected');
+
+// 5b. fail-closed license check (regression guard: never let an unknown or disabled code reach Anthropic)
+reset(['should never be used']);
+r = await post({ ...base, accessCode: 'NOT-A-REAL-CODE' });
+assert.equal(r.status, 401, 'unknown code rejected');
+r = await post({ ...base, accessCode: 'DISABLED-CODE' });
+assert.equal(r.status, 401, 'disabled code rejected');
+assert.equal(calls.anthropic.length, 0, 'Anthropic never called for rejected codes');
+ok('license check fail-closed (unknown / disabled codes never reach Anthropic)');
 
 // 6. G4T path: inert without the env var
 reset(['Dear Board,\n\n' + REAL]);
