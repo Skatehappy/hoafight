@@ -1,18 +1,9 @@
 {
   "CA": [
-    "dispute_resolution",
-    "fine_limits",
     "meeting_requirements"
   ],
   "NY": [
-    "dispute_resolution",
     "meeting_requirements",
     "records_access"
-  ],
-  "OH": [
-    "records_access"
-  ],
-  "TX": [
-    "dispute_resolution"
   ]
 }

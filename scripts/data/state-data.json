@@ -39,7 +39,7 @@
       "max_per_violation": "$100 per violation (the lesser of the association's published fine schedule amount or $100), per Civ. Code § 5850(c) as amended by AB 130 (effective June 30, 2025). Late fees and interest on unpaid fines are prohibited.",
       "max_aggregate": null,
       "hearing_required": true,
-      "hearing_details": "Before imposing a monetary penalty, the board must give the member at least 10 days' written notice of a disciplinary hearing (Civ. Code § 5855), stating the date, time, place, and nature of the alleged violation. The hearing is held in executive session where the member may be heard. The board must notify the member of its decision in writing within 15 days of the hearing. A higher fine is allowed only for a violation posing an adverse health/safety impact, and only if the board makes a written finding at an open meeting describing that impact (Civ. Code § 5850(d)). Fine authority must be expressly granted in the governing documents."
+      "hearing_details": "Before imposing a monetary penalty, the board must give the member at least 10 days' written notice of a disciplinary hearing (Civ. Code § 5855), stating the date, time, place, and nature of the alleged violation. The member may attend and address the board, the board must meet in executive session if the member requests, and the member may cure before the meeting. The board must notify the member of its decision in writing within 14 days following the action. A higher fine is allowed only for a violation posing an adverse health/safety impact, and only if the board makes a written finding at an open meeting describing that impact (Civ. Code § 5850(d)). Fine authority must be expressly granted in the governing documents."
     },
     "records_access": {
       "right_to_inspect": true,
@@ -55,7 +55,7 @@
       "mandatory_mediation": false,
       "mandatory_arbitration": false,
       "small_claims_available": true,
-      "notes": "Internal Dispute Resolution (IDR, 'meet and confer') under Civ. Code §§ 5900-5920 is mandatory in the sense that the HOA cannot refuse a member's request and cannot pursue certain enforcement without it. For enforcement of the governing documents in court, a party must generally first offer/submit to Alternative Dispute Resolution (ADR — mediation or arbitration) under Civ. Code §§ 5925-5965; ADR is a procedural prerequisite but the specific method is not compelled and its outcome is generally non-binding unless the parties agree. Small claims court is available for records-inspection and other claims within its jurisdictional dollar limit."
+      "notes": "Internal Dispute Resolution (IDR, 'meet and confer') under Civ. Code §§ 5900-5920 is a procedure the association must provide: a member can invoke it in writing and the association must participate, although a member may decline to participate when the association invokes it. Before filing an enforcement action in superior court solely for declaratory, injunctive, or writ relief (not small claims, and generally not assessment disputes), a party must first endeavor to submit the dispute to Alternative Dispute Resolution (ADR — mediation or arbitration) under Civ. Code §§ 5925-5965; ADR is a procedural prerequisite but the specific method is not compelled and its outcome is generally non-binding unless the parties agree. Small claims court is available for records-inspection and other claims within its jurisdictional dollar limit."
     },
     "unique_protections": [
       "AB 130 (2025) caps most HOA fines at $100 per violation and bans late fees/interest on unpaid fines — one of the strictest statutory fine caps in the nation.",
@@ -127,7 +127,7 @@
       "mandatory_mediation": false,
       "mandatory_arbitration": false,
       "small_claims_available": true,
-      "notes": "Texas does not statutorily require mediation or arbitration for HOA disputes (governing documents may impose ADR contractually). Records-access disputes go to justice court under § 209.005; general disputes may be brought in justice/small claims court (jurisdiction up to $20,000) or district court. Private mediation is a voluntary option. The § 209.006/209.007 notice-and-hearing process is a pre-enforcement review before the board; § 209.007(e) separately allows an owner or the association to use alternative dispute resolution services, and a party to a suit on a covered matter may move to compel mediation."
+      "notes": "Texas does not statutorily require mediation or arbitration for HOA disputes (governing documents may impose ADR contractually). An owner may sue for a violation of Chapter 209 in justice court under § 209.017; general disputes may be brought in justice/small claims court (jurisdiction up to $20,000) or district court. Private mediation is a voluntary option. The § 209.006/209.007 notice-and-hearing process is a pre-enforcement review before the board; § 209.007(e) separately allows an owner or the association to use alternative dispute resolution services, and a party to a suit on a covered matter may move to compel mediation."
     },
     "unique_protections": [
       "Statewide statutory right to inspect and obtain copies of association books and records with a hard 10-business-day response deadline and a justice-court remedy for noncompliance (§ 209.005).",
@@ -272,7 +272,7 @@
       "mandatory_mediation": false,
       "mandatory_arbitration": false,
       "small_claims_available": true,
-      "notes": "No statewide statutory mediation/arbitration mandate for HOAs. Money disputes up to $10,000 can go to NY small claims / commercial claims court. Governance disputes are litigated in Supreme Court, often under the business-judgment rule; injunctions and Article 78 proceedings are common vehicles. Any binding mediation/arbitration usually arises only from the governing documents."
+      "notes": "No statewide statutory mediation/arbitration mandate for HOAs. Money disputes up to $10,000 can go to small claims in New York City and most city courts ($5,000 in town and village justice courts). Governance disputes are litigated in Supreme Court, often under the business-judgment rule; injunctions and Article 78 proceedings are common vehicles. Any binding mediation/arbitration usually arises only from the governing documents."
     },
     "unique_protections": [
       "NY has NO comprehensive single-family-HOA statute — associations are governed by the general Not-for-Profit Corporation Law plus their own declaration, giving owners corporate-law remedies (§720 actions against directors, §618 election challenges) rather than HOA-specific ones.",
