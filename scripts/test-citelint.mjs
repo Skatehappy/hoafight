@@ -47,7 +47,7 @@ async function post(payload) {
   await handler({ method: 'POST', body: payload }, res);
   return { status, json };
 }
-const base = { accessCode: 'GOODCODE', systemPrompt: 'You write letters.', userPrompt: 'STATE: Florida\nDISPUTE TYPE: Wrongful Fine\nCC&R SECTION: Article IV, Section 3.2', state: 'Florida', disputeType: 'Wrongful Fine' };
+const base = { accessCode: 'GOODCODE', systemPrompt: 'You write letters.', userPrompt: 'STATE: Florida\nDISPUTE TYPE: Wrongful Fine\nCC&R SECTION: Article IV, Section 3.2\nRESPONSE DEADLINE: 30 days', state: 'Florida', disputeType: 'Wrongful Fine' };
 const FAKE = 'Under Fla. Stat. § 999.999, the board must refund every fine.';
 const REAL = 'Fla. Stat. § 720.305 allows the prevailing party to recover reasonable attorney fees and costs.';
 const results = [];
@@ -94,6 +94,34 @@ r = await post(base);
 assert.equal(calls.anthropic.length, 1);
 assert.ok(r.json.text.includes('Section 3.2'));
 ok('clean draft: one call, untouched');
+
+
+// 4b. subsection lock: a verified section with an unverified subsection is stripped; a verified subsection is kept
+const subs = VERIFIED.states.FL.subs['S:720.305'];
+assert.ok(subs.includes('(2)') && !subs.includes('(9)'), 'FL 720.305 verified subsections are (1)/(2) only');
+const SUB_BAD = 'Fla. Stat. § 720.305(9) lets the board do anything.';
+const SUB_OK = 'Fla. Stat. § 720.305(2) requires a hearing before fines.';
+reset([`Dear Board,\n\n${SUB_OK} ${SUB_BAD}`, `Dear Board,\n\n${SUB_OK} ${SUB_BAD}`]);
+r = await post(base);
+assert.ok(!r.json.text.includes('720.305(9)') && r.json.text.includes('720.305(2)'), 'unverified subsection stripped, verified subsection kept');
+assert.equal(calls.anthropic.length, 2, 'subsection problem triggers one regeneration');
+assert.ok(calls.anthropic[0].system.includes('subsection letter or number'), 'prompt carries the subsection rule');
+ok('subsection lock: (9) stripped, (2) kept');
+
+// 4c. numeric-claims lock: figures outside verified data / owner facts are regenerated once, then stripped
+const FIG_BAD = 'The board owes you $7,777 in statutory damages.';
+const FIG_OK = 'Fines are capped at $100 per violation, and I received a $150 fine.';
+reset([`Dear Board,\n\n${FIG_OK} ${FIG_BAD} Respond within 30 days.`, `Dear Board,\n\n${FIG_OK} ${FIG_BAD} Respond within 30 days.`]);
+r = await post({ ...base, userPrompt: base.userPrompt + '\nFINE AMOUNT: $150' });
+assert.ok(!r.json.text.includes('7,777'), 'unverified dollar figure stripped');
+assert.ok(r.json.text.includes('$100 per violation') && r.json.text.includes('$150') && r.json.text.includes('30 days'), 'verified / owner figures kept');
+assert.equal(calls.anthropic.length, 2, 'figure problem triggers one regeneration');
+assert.ok(calls.anthropic[0].system.includes('FIGURE RULE'), 'prompt carries the figure rule');
+ok('numeric lock: invented $ figure stripped, verified and owner figures kept');
+reset([`Dear Board,\n\nYou have 45 days to cure and a 12% late fee applies.`, `Dear Board,\n\nYou have 45 days to cure and a 12% late fee applies.`]);
+r = await post(base);
+assert.ok(!/45 days|12%/.test(r.json.text), 'invented day and percent figures stripped');
+ok('numeric lock: invented day / percent figures stripped');
 
 // 5. check call: no lock, no lint, no usage mark
 reset(['VALID']);

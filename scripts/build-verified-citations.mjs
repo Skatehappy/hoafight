@@ -6,7 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { extractCitations, rangeKeys } from '../api/_citelint.js';
+import { extractCitations, rangeKeys, numericClaims } from '../api/_citelint.js';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LOGS = ['VERIFICATION_LOG.md', 'VERIFICATION_LOG-SEO-CONTENT.md'];
@@ -17,13 +17,33 @@ const NAME_TO_ABBR = { California: 'CA', Texas: 'TX', Florida: 'FL', 'New York':
 const FEDERAL = /U\.S\.C\.|\bCFR\b|C\.F\.R\.|FCC|OTARD/i;
 const BAD_PROSE = /\b(WRONG|REMOVED|NOT FOUND|no basis|incorrect|unverified)\b/i;
 
-const sets = { _federal: { keys: new Set(), display: new Set() } };
-function bucket(st) { return (sets[st] ||= { keys: new Set(), display: new Set() }); }
+const sets = { _federal: { keys: new Set(), display: new Set(), subs: new Map(), nums: new Set() } };
+function bucket(st) { return (sets[st] ||= { keys: new Set(), display: new Set(), subs: new Map(), nums: new Set() }); }
 
-function add(state, text, display) {
+// Keep only what the verified text says: drop parentheticals and sentences that describe what the OLD page claimed
+// ("The pages said ...", "(the $500 figure is NOT in the statute)", "REMOVED", "WRONG").
+const OLD = /\b(WRONG|REMOVED|pages? said|hub said|The pages?|The hub|previously|earlier|was corrected|were corrected|not in the text|is NOT|are NOT|NOT the|figure is NOT|not statutory)\b/i;
+export function verifiedPart(t) {
+  t = String(t).replace(/\([^()]*(WRONG|REMOVED|pages? said|hub said|previously|NOT )[^()]*\)/gi, ' ');
+  return t.split(/(?<=\.)\s+(?=[A-Z])/).filter(x => !OLD.test(x)).join(' ');
+}
+
+function add(state, text, display, ctx) {
+  const body = ctx == null ? null : verifiedPart(ctx);
+  const toks = body ? (body.match(/\([A-Za-z0-9]{1,4}\)/g) || []).map(x => x.toLowerCase()) : [];
   for (const c of extractCitations(text)) {
     const target = /U\.S\.C\.|\bCFR\b|C\.F\.R\./.test(text) || /^S:FED/.test(c.key) ? sets._federal : bucket(state);
-    for (const k of rangeKeys(c.key)) target.keys.add(k);
+    for (const k of rangeKeys(c.key)) {
+      target.keys.add(k);
+      const have = target.subs.get(k) || new Set();
+      toks.forEach(t => have.add(t));
+      if (c.sub) c.sub.match(/\([A-Za-z0-9]{1,4}\)/g).forEach(t => have.add(t.toLowerCase()));
+      target.subs.set(k, have);
+    }
+  }
+  if (body) {
+    const t = /U\.S\.C\.|\bCFR\b|C\.F\.R\./.test(text) ? sets._federal : bucket(state);
+    for (const n of numericClaims(body)) t.nums.add(n.key);
   }
   if (display && display.length < 110 && extractCitations(display).length) (FEDERAL.test(display) ? sets._federal : bucket(state)).display.add(display.replace(/\s+/g, ' ').trim());
 }
@@ -68,7 +88,7 @@ export function build() {
         if (cells.length >= 3 && /^(VERIFIED|CORRECTED)/.test(cells[1])) {
           const st = state || stateFromText(cells[0]);
           const parts = cells[0].split(/\s\/\s|;\s/).map(s => s.trim()).filter(Boolean);
-          for (const part of parts) add(st, part, part);
+          for (const part of parts) add(st, part, part, cells[0] + ' ' + cells[2]);
         }
         continue;
       }
@@ -80,7 +100,7 @@ export function build() {
     }
   }
   const out = { app: 'hoafight', states: {}, federal: null };
-  const fin = s => ({ keys: [...s.keys].sort(), display: [...s.display].sort().slice(0, 120) });
+  const fin = s => ({ keys: [...s.keys].sort(), display: [...s.display].sort().slice(0, 120), subs: Object.fromEntries([...s.subs].filter(([, v]) => v.size).sort(([a], [b]) => (a < b ? -1 : 1)).map(([k, v]) => [k, [...v].sort()])), nums: [...s.nums].sort() });
   for (const st of Object.keys(sets).sort()) {
     if (st === '_federal') out.federal = fin(sets[st]);
     else out.states[st] = fin(sets[st]);

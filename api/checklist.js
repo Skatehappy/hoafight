@@ -1,10 +1,13 @@
 // api/checklist.js
 import { MODEL } from './_config.js';
 import { verifyLicense, g4tMatches } from './_license.js';
+import { resolveStateValue, lockBlock, lintText, problemList, logHit } from './_lock.js';
 
 const PRODUCT_LINK = '8TWrB';
 
 export const config = { runtime: 'edge' };
+
+const FALLBACK = ['Send letter via certified mail with return receipt requested', 'Pull the specific CC&R section the HOA claims you violated — read it carefully', 'Document any neighbors with similar conditions who were NOT fined', 'Request a formal hearing in writing if the notice or your governing documents provide for one', 'Request copies of board meeting minutes and enforcement records', "Check your state's HOA statute for homeowner rights and board obligations", 'Photograph your property to document compliance or the alleged violation', "File complaint with your state's HOA ombudsman or regulatory agency if ignored", 'Consult an HOA attorney for large fines or a pattern of harassment'];
 
 
 export default async function handler(req) {
@@ -31,6 +34,7 @@ export default async function handler(req) {
     }
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
+    const abbr = resolveStateValue(state);
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -49,7 +53,7 @@ export default async function handler(req) {
 
 State: ${state}
 Situation: ${varianceType || 'HOA fine appeal / violation dispute'}
-Letter excerpt: ${letterExcerpt?.substring(0, 200) || ''}`,
+Letter excerpt: ${letterExcerpt?.substring(0, 200) || ''}${lockBlock(abbr)}`,
         }],
       }),
     });
@@ -66,10 +70,24 @@ Letter excerpt: ${letterExcerpt?.substring(0, 200) || ''}`,
     const clean = text.replace(/```json|```/g, '').trim();
 
     let checklist;
+    let parsed = true;
     try {
       checklist = JSON.parse(clean);
+      if (!Array.isArray(checklist)) throw new Error('not an array');
     } catch {
-      checklist = ['Send letter via certified mail with return receipt requested', 'Pull the specific CC&R section the HOA claims you violated — read it carefully', 'Document any neighbors with similar conditions who were NOT fined', 'Request a formal hearing in writing — most state laws require this before fines are final', 'Request copies of board meeting minutes and enforcement records', "Check your state's HOA statute for homeowner rights and board obligations", 'Photograph your property to document compliance or the alleged violation', "File complaint with your state's HOA ombudsman or regulatory agency if ignored", 'Consult an HOA attorney for fines over $500 or pattern of harassment'];
+      parsed = false;
+      checklist = FALLBACK;
+    }
+    if (parsed) {
+      // Same lock as the letter: drop any item that cites an unverified authority or states an unverified figure.
+      const own = [String(varianceType || ''), String(letterExcerpt || '')];
+      const kept = [], flagged = [];
+      for (const item of checklist.map(x => String(x))) {
+        const p = lintText(item, abbr, ...own);
+        if (p.cites.length || p.figs.length) flagged.push(...problemList(p)); else kept.push(item);
+      }
+      if (flagged.length) logHit('hoafight-checklist', { state: abbr || 'unknown', flagged: flagged.length, stripped: checklist.length - kept.length, cites: flagged.slice(0, 8) });
+      checklist = kept.length >= 3 ? kept : FALLBACK;
     }
 
     return new Response(JSON.stringify({ checklist }), { status: 200, headers });

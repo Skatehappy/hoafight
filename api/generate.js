@@ -1,7 +1,6 @@
 // api/generate.js
 import { MODEL } from './_config.js';
-import VERIFIED from './_verified-citations.js';
-import { findUnverified, stripSentences, logHit } from './_citelint.js';
+import { resolveStateValue, lockBlock, lintText, stripText, problemList, logHit } from './_lock.js';
 import { verifyLicense, g4tMatches } from './_license.js';
 
 // Node serverless runtime (NOT edge). Edge caps at ~25s on Hobby and ignores
@@ -31,30 +30,11 @@ function g4tTake() {
   return true;
 }
 
-// ── Citation lock ────────────────────────────────────────────────────────────
-const STATE_ABBR = { california: 'CA', texas: 'TX', florida: 'FL', 'new york': 'NY', illinois: 'IL', pennsylvania: 'PA', ohio: 'OH', georgia: 'GA', 'north carolina': 'NC', arizona: 'AZ' };
+// ── Citation + figure lock (api/_lock.js) ────────────────────────────────────
 const REGEN_BUDGET_MS = 30000; // maxDuration is 60s; skip the regeneration pass if the first call already used half of it
 
 function resolveState(body) {
-  const raw = String(body.state || (/^STATE:\s*(.+)$/m.exec(String(body.userPrompt || '')) || [])[1] || '').trim();
-  if (!raw) return null;
-  const up = raw.toUpperCase();
-  if (up.length === 2 && VERIFIED.states[up]) return up;
-  return STATE_ABBR[raw.toLowerCase()] || null;
-}
-
-function allowedKeys(abbr) {
-  const set = new Set(VERIFIED.federal.keys);
-  if (abbr && VERIFIED.states[abbr]) VERIFIED.states[abbr].keys.forEach(k => set.add(k));
-  else for (const [s, v] of Object.entries(VERIFIED.states)) if (!s.startsWith('_')) v.keys.forEach(k => set.add(k));
-  return set;
-}
-
-function citationBlock(abbr) {
-  const shown = new Set(VERIFIED.federal.display);
-  if (abbr && VERIFIED.states[abbr]) VERIFIED.states[abbr].display.forEach(d => shown.add(d));
-  const list = [...shown].slice(0, 90).join('; ') || '(none verified for this state)';
-  return `\n\nCITATION RULE (enforced by the server): cite ONLY these verified authorities${abbr ? ` for ${abbr}` : ''}, including their subsections: ${list}. Cite nothing else: no other statute, regulation, rule, or court case, and no invented section numbers, even if you believe it exists. If a point needs authority that is not on the list, make the point without a citation.`;
+  return resolveStateValue(body.state || (/^STATE:\s*(.+)$/m.exec(String(body.userPrompt || '')) || [])[1]);
 }
 
 async function callClaude(anthropicKey, system, messages) {
@@ -131,6 +111,18 @@ export default async function handler(req, res) {
       if (isCheckCall) return res.status(200).json({ text: 'VALID' });
     }
 
+    // Input caps (invalid input -> 400 with a clear message; the client keeps the buyer's code and form intact).
+    const tooLong = (v, max) => typeof v === 'string' && v.length > max;
+    if (tooLong(systemPrompt, 8000) || tooLong(userPrompt, 30000) || tooLong(draftLetter, 16000)) {
+      return res.status(400).json({ error: 'Your text is too long. Shorten the longest field and try again.', code: 'input_too_long' });
+    }
+    if ((systemPrompt != null && typeof systemPrompt !== 'string') || (userPrompt != null && typeof userPrompt !== 'string') || (draftLetter != null && typeof draftLetter !== 'string')) {
+      return res.status(400).json({ error: 'Invalid request.', code: 'bad_input' });
+    }
+    if (!reviewMode && !String(userPrompt || '').trim()) {
+      return res.status(400).json({ error: 'Nothing to generate: the request was empty.', code: 'bad_input' });
+    }
+
     let messages;
     if (reviewMode && draftLetter) {
       messages = [{ role: 'user', content: `Review and improve this appeal letter. Fix vague language, ensure all arguments are explicitly stated, remove emotional appeals, tighten redundancy. Return ONLY the improved letter:\n\n${draftLetter}` }];
@@ -141,8 +133,9 @@ export default async function handler(req, res) {
     const abbr = resolveState(body);
     const lockOn = !isCheckCall;
     const system = lockOn
-      ? ((systemPrompt || '') + citationBlock(abbr))
+      ? ((systemPrompt || '') + lockBlock(abbr))
       : (systemPrompt || undefined);
+    const ownTexts = [String(userPrompt || ''), String(systemPrompt || ''), String(draftLetter || '')];
 
     const t0 = Date.now();
     const result = await callClaude(anthropicKey, system, messages);
@@ -152,22 +145,22 @@ export default async function handler(req, res) {
     // mark-usage call below, the buyer's one-use license is NOT burned on a parse miss.
     if (!text) throw new Error(`No text block in API response (stop_reason: ${result.stop || 'unknown'})`);
 
-    // Post-generation citation lint: anything outside the verified set is regenerated once without it, else stripped.
+    // Post-generation lint: citations (section AND subsection) and dollar/percent/time figures outside the verified
+    // set are regenerated once without them, else their sentences are stripped.
     if (lockOn) {
-      const allowed = allowedKeys(abbr);
       const letterType = String(body.disputeType || body.letterType || '').slice(0, 60);
-      let bad = findUnverified(text, allowed);
+      let p = lintText(text, abbr, ...ownTexts);
       let regenerated = false;
       let stripped = 0;
-      const first = bad.map(b => b.text);
-      if (bad.length) {
+      const first = problemList(p);
+      if (first.length) {
         if (Date.now() - t0 < REGEN_BUDGET_MS) {
           regenerated = true;
-          const notice = `\n\nREGENERATION NOTICE: the previous draft cited authorities that are not verified (${first.slice(0, 8).join('; ')}). Rewrite the letter without citing them, and cite nothing outside the verified list.`;
+          const notice = `\n\nREGENERATION NOTICE: the previous draft used authorities or figures that are not verified (${first.slice(0, 8).join('; ')}). Rewrite the letter without them: cite nothing outside the verified list and state no dollar, percent or day figure outside the verified list or the owner's facts.`;
           const second = await callClaude(anthropicKey, system + notice, messages);
-          if (second.ok && second.text) { text = second.text; bad = findUnverified(text, allowed); }
+          if (second.ok && second.text) { text = second.text; p = lintText(text, abbr, ...ownTexts); }
         }
-        if (bad.length) { text = stripSentences(text, bad); stripped = bad.length; }
+        if (p.cites.length || p.figs.length) { text = stripText(text, abbr, ...ownTexts); stripped = p.cites.length + p.figs.length; }
       }
       logHit(APP, { state: abbr || 'unknown', letterType, flagged: first.length, regenerated, stripped, cites: first.slice(0, 8) });
       if (!text.trim()) throw new Error('No usable letter text after citation lint');

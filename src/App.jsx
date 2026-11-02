@@ -20,6 +20,7 @@ const APP = {
   displayFont: "'Playfair Display', serif",
 };
 
+const DRAFT_KEY = "hoa_draft_v1";
 const STEPS = ["Intro", "Owner", "HOA", "Dispute", "Demand", "Generate", "Letter"];
 const FORM_STEPS = ["Owner", "HOA", "Dispute", "Demand"];
 
@@ -166,8 +167,18 @@ const btnStyle = (active) => ({
   boxShadow: active ? `0 2px 12px ${colors.goldLight}55` : "none",
 });
 
+const CAP_TEXTAREA = 3000;
+const CAP_TEXT = 300;
+
 function Field({ field, value, onChange }) {
   const [focused, setFocused] = useState(false);
+  const cap = field.type === "textarea" ? CAP_TEXTAREA : CAP_TEXT;
+  const used = (value || "").length;
+  const counter = (field.type === "textarea" || used > cap * 0.8) ? (
+    <div data-testid={"counter-" + field.key} style={{ textAlign: "right", fontSize: "11px", marginTop: "4px", color: used >= cap ? colors.errorText : colors.inkFaint }}>
+      {used} / {cap}{used >= cap ? " (limit reached)" : ""}
+    </div>
+  ) : null;
   return (
     <div style={{ marginBottom: "4px" }}>
       <label style={{ display: "block", marginBottom: "7px", fontSize: "13px", color: colors.inkMuted }}>
@@ -188,6 +199,7 @@ function Field({ field, value, onChange }) {
       ) : field.type === "textarea" ? (
         <textarea
           value={value || ""}
+          maxLength={CAP_TEXTAREA}
           onChange={e => onChange(e.target.value)}
           placeholder={field.placeholder}
           rows={4}
@@ -199,6 +211,7 @@ function Field({ field, value, onChange }) {
         <input
           type="text"
           value={value || ""}
+          maxLength={CAP_TEXT}
           onChange={e => onChange(e.target.value)}
           placeholder={field.placeholder}
           onFocus={() => setFocused(true)}
@@ -206,6 +219,7 @@ function Field({ field, value, onChange }) {
           style={inputStyle(focused)}
         />
       )}
+      {counter}
     </div>
   );
 }
@@ -241,6 +255,7 @@ export default function App() {
   const [emailSending, setEmailSending] = useState(false);
   const [error, setError] = useState("");
   const [retryCount, setRetryCount] = useState(0);
+  const [savedLetter, setSavedLetter] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -252,7 +267,15 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    try { const s = sessionStorage.getItem("hoa_form"); if (s) setFormData(JSON.parse(s)); } catch {}
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY) || sessionStorage.getItem("hoa_form");
+      if (raw) {
+        const d = JSON.parse(raw);
+        const f = d && d.formData ? d.formData : d;
+        if (f && typeof f === "object") setFormData(f);
+        if (d && d.letter) { setLetter(String(d.letter)); setAltLetter(String(d.altLetter || "")); setChecklist(Array.isArray(d.checklist) ? d.checklist : []); setSavedLetter(true); }
+      }
+    } catch {}
     const params = new URLSearchParams(window.location.search);
     const stateParam = params.get("state");
     const disputeParam = params.get("dispute");
@@ -280,8 +303,8 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    try { sessionStorage.setItem("hoa_form", JSON.stringify(formData)); } catch {}
-  }, [formData]);
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ formData, letter, altLetter, checklist })); } catch {}
+  }, [formData, letter, altLetter, checklist]);
 
   const handleChange = (key, value) => setFormData(prev => ({ ...prev, [key]: value }));
 
@@ -299,14 +322,16 @@ export default function App() {
         body: JSON.stringify({ accessCode: code, systemPrompt: "Reply: VALID", userPrompt: "check" }),
       });
       if (res.status === 401) {
-        if (!silent) setCodeError("Invalid access code. Check your Payhip receipt email.");
+        if (!silent) setCodeError("Invalid access code. Check your Payhip receipt email, or contact support@buyappsonce.com if you have already used it.");
         setCodeValid(false);
-      } else {
+      } else if (res.ok) {
         setCodeValid(true);
         if (!silent) setStep(1);
+      } else if (!silent) {
+        setCodeError("Verification is temporarily unavailable. Your code was not used - please try again in a moment.");
       }
     } catch {
-      if (!silent) setCodeError("Could not verify. Check your connection.");
+      if (!silent) setCodeError("Could not verify. Check your connection and try again; your code was not used.");
     }
   };
 
@@ -316,7 +341,14 @@ export default function App() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ accessCode, systemPrompt, userPrompt, reviewMode: !!reviewMode, draftLetter: draftLetter || "", state: formData.state || "", disputeType: formData.disputeType || "" }),
     });
-    if (!res.ok) { const err = await res.json(); throw new Error(err.error || "Generation failed"); }
+    if (!res.ok) {
+      let err = {};
+      try { err = await res.json(); } catch {}
+      const e = new Error(err.error || "Generation failed");
+      // transient: free retry, code intact. invalid: fix the input and retry, code intact. consumed: code rejected, contact support.
+      e.kind = res.status === 401 ? "consumed" : (res.status === 400 || res.status === 413) ? "invalid" : "transient";
+      throw e;
+    }
     return (await res.json()).text;
   };
 
@@ -326,8 +358,8 @@ export default function App() {
 
 Rules:
 - Open with clear statement: the HOA levied a special assessment on a specific date in a specific amount; the assessment is improper for specified procedural or substantive reasons
-- Cite the state's HOA statute by name (e.g., California Davis-Stirling Common Interest Development Act at Civil Code §§5600-5615; Florida Chapter 720; Texas Property Code Chapter 209; North Carolina Chapter 47F)
-- Cite the notice and vote requirements the state imposes — most states require 30-60 days written notice and a member vote for special assessments exceeding stated budget thresholds (often 5% of budgeted gross expenses)
+- Cite the state's HOA statute by name (use only authorities from the server's verified citation list for the owner's state)
+- Cite the notice and vote requirements only where you are certain the statute you name actually imposes them; do not state a number of days or a percentage threshold unless it comes from the verified citation list or the owner's facts
 - Cite the governing documents (CC&Rs, Declaration, Bylaws) provisions on assessment authority and required procedures
 - Identify the specific defects: insufficient notice, no member vote when required, exceeds statutory cap, funds directed to ineligible purposes, or inadequate financial justification
 - Demand: production of the financial justification and itemized budget for the assessment; proof of proper notice and proper member vote (if required); suspension of the assessment pending compliance; refund of any amounts already paid if the assessment is void
@@ -342,7 +374,7 @@ Rules:
 
 Rules:
 - Open with clear statement: on a specific date you submitted a written request for enumerated records; the HOA has failed to comply within the statutory deadline
-- Cite the state's HOA records-inspection statute by name (e.g., California Davis-Stirling at Civil Code §§5200-5240; Florida §720.303(5); Texas Property Code §209.005; North Carolina §47F-3-118) — most states require production within 10-30 days of a written request
+- Cite the state's HOA records-inspection statute by name (e.g., California Davis-Stirling at Civil Code §§5200-5240; Florida §720.303(5); Texas Property Code §209.005; North Carolina §47F-3-118) — state the production deadline only if the statute you name sets one, and use the statute's own wording
 - Cite the CC&Rs and Bylaws provisions on member inspection rights
 - List the specific records requested — financial records, meeting minutes, budgets, reserve studies, vendor contracts, ballots, or other records the member is legally entitled to inspect
 - Rebut any "confidentiality" or "burden" excuse — statutory inspection rights are not defeated by member-information redactions that the statute itself already requires
@@ -358,7 +390,7 @@ Rules:
 
 Rules:
 - Open with clear statement: the board election held on a specific date was conducted improperly; specify each particular procedural violation
-- Cite the state's HOA election statute by name (e.g., California Davis-Stirling at Civil Code §§5100-5145 — election procedures and secret ballots; Florida §720.306; Texas Property Code §209.00593)
+- Cite the state's HOA election statute by name (use only authorities from the server's verified citation list for the owner's state)
 - Cite the CC&Rs and Bylaws provisions on election procedures, quorum, inspector of elections, and candidate eligibility
 - Identify specific defects: ballots not counted per statute, proxies mishandled, candidates improperly excluded, quorum not met, inspector of elections not appointed, inadequate notice of election, or failure to preserve ballots per statutory retention period
 - Demand: independent investigation of the election; production of all ballot records (sealed ballots, proxies, voter list, inspector of elections' report); and re-run of the election under proper procedures if defects cannot be cured
@@ -374,7 +406,7 @@ Rules:
 Rules:
 - Open with clear statement of the common area(s) at issue, the condition, how long it has gone unaddressed, and any safety hazards created
 - Cite the CC&Rs and Declaration provisions that assign maintenance responsibility for the common areas to the HOA
-- Cite the state's HOA statute confirming the association's duty to maintain common areas (e.g., California Davis-Stirling at Civil Code §4775; Florida §720.303; Texas Property Code Chapter 209)
+- Cite the state's HOA statute confirming the association's duty to maintain common areas (use only authorities from the server's verified citation list for the owner's state)
 - Cite the board's fiduciary duty to the membership — the business judgment rule does not protect inaction or gross neglect of core maintenance obligations
 - Reference prior requests to the HOA and the inadequate response
 - Demand: a specific repair plan with timeline; documentation of the HOA's contracted maintenance obligations; and interim safety measures where a hazard exists
@@ -390,8 +422,8 @@ Rules:
 Rules:
 - Open with clear statement: the HOA board or management company has engaged in targeted enforcement against the homeowner, with specific incidents and dates
 - Identify the pattern: repeated inspections, excessive fines, threatening communications, or selective enforcement of rules not applied to similarly situated homeowners
-- Cite the state's HOA uniform-enforcement and fiduciary-duty statutes (e.g., California Davis-Stirling at Civil Code §5975 and related uniform-enforcement requirements; Florida §720.305; Texas Property Code Chapter 209)
-- Cite the board's fiduciary duty and the uniform-enforcement doctrine — selective enforcement of covenants is itself a defense and an affirmative claim
+- Cite the state statute that governs the board's enforcement authority and fining procedure (e.g., Florida §720.305; Texas Property Code Chapter 209); do not say a statute imposes a fiduciary duty or a uniform-enforcement requirement unless its text says so
+- Argue selective or arbitrary enforcement from the owner's facts (comparators, dates) and the governing documents; present it as an argument, not as a settled statutory claim
 - If a protected class is implicated: cite the federal Fair Housing Act (42 U.S.C. §§3601-3619) and any applicable state fair housing statute, noting that disparate treatment or disparate-impact targeting is actionable
 - Name comparators where available — other homeowners with the same condition who were not fined, inspected, or harassed
 - Demand: immediate cessation of targeted enforcement; written enforcement criteria and proof of uniform application; withdrawal of any fines imposed through selective enforcement; and a written commitment to follow uniform enforcement procedures going forward
@@ -409,9 +441,9 @@ Rules:
 - Cite the CC&Rs and Architectural Guidelines provisions the HOA relied on, and rebut any pretextual or vague grounds — architectural review standards must be objective and applied uniformly
 - If the modification is federally or state protected, cite the governing law by name:
   * Satellite dishes and over-the-air reception devices: FCC Over-the-Air Reception Devices Rule (OTARD) at 47 CFR §1.4000, which preempts restrictions on antennas up to one meter
-  * Solar energy systems: state solar rights or solar access laws (e.g., California Civil Code §714; Florida §163.04; Arizona §33-1816; Texas Property Code §202.010)
-  * Accessibility modifications: Fair Housing Act at 42 U.S.C. §3604(f)(3)(A) — reasonable modifications for disabled residents; ADA if common areas are implicated
-  * Electric vehicle chargers: state EV charger protection statutes where applicable (e.g., California Civil Code §4745; Florida §718.113; Colorado §38-33.3-106.8)
+  * Solar energy systems: state solar rights or solar access laws, only if one is on the verified citation list
+  * Accessibility modifications: Fair Housing Act at 42 U.S.C. §3604 — reasonable modifications for disabled residents; ADA if common areas are implicated
+  * Electric vehicle chargers: state EV charger protection statutes, only if one is on the verified citation list
   * Flags: federal Freedom to Display the American Flag Act (4 U.S.C. §5 Note)
 - Demand: written denial citing specific CC&Rs provisions, not conclusions; reconsideration in light of the applicable federal or state protection; and, if denied on review, reasonable alternative modifications
 - Warn of remedies: civil action for declaratory and injunctive relief; FCC complaint (OTARD); HUD complaint (accessibility); state utility-commission or regulator complaint (solar, EV); and attorney's fees where statute or CC&Rs provide
@@ -425,7 +457,7 @@ Rules:
 
 Rules:
 - Open with clear statement: the HOA has charged specified fees or dues that are not authorized by the CC&Rs, are incorrectly calculated, lack required itemization, or include improper late fees
-- Cite the state's HOA assessment statute (e.g., California Davis-Stirling at Civil Code §§5600-5740; Florida §720.308; Texas Property Code §209.0063; North Carolina §47F-3-115) governing assessment authority, itemization, late fees, and collection procedures
+- Cite the state's HOA assessment statute (use only authorities from the server's verified citation list for the owner's state) governing assessment authority, itemization, late fees, and collection procedures
 - Cite the CC&Rs and Bylaws provisions on assessments and any required member-vote procedures for fee increases
 - Rebut each disputed fee specifically: unauthorized by the governing documents, exceeds statutory caps on late fees, improper compounding, assessed without required notice, or assessed in violation of the statutory fee-collection sequence (most states require payment to be applied to current assessments before late fees and fines)
 - Demand: itemized accounting of all fees charged and paid; the legal basis (statute or CC&Rs section) for each fee that is not clearly provided for in the governing documents; refund of any unauthorized amounts; and correction of any improper late fees
@@ -518,7 +550,9 @@ ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
     } catch (e) {
       const n = retryCount + 1;
       setRetryCount(n);
-      setError(`Generation failed: ${e.message}. Please try again.`);
+      if (e.kind === "consumed") setError("Your access code was rejected. If you have already generated letters with it, contact support@buyappsonce.com with your Payhip receipt.");
+      else if (e.kind === "invalid") setError(`Your input could not be processed: ${e.message}. Shorten or fix the field and try again - your code is unchanged.`);
+      else setError("Temporary problem reaching the letter service. Your code was not used - click Generate again.");
     }
     setLoading(false);
     setLoadingMsg("");
@@ -582,7 +616,8 @@ ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
     setEmailSent(false);
     setChecklist([]);
     setRetryCount(0);
-    try { sessionStorage.removeItem("hoa_form"); } catch {}
+    try { localStorage.removeItem(DRAFT_KEY); sessionStorage.removeItem("hoa_form"); } catch {}
+    setSavedLetter(false);
   };
 
   const currentStep = STEPS[step];
@@ -635,6 +670,11 @@ ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
               <button onClick={() => verifyCode(accessCode)} style={{ ...btnStyle(!!accessCode.trim()), width: "100%", justifyContent: "center", padding: "14px" }}>
                 Unlock My Letter →
               </button>
+              {savedLetter && letter && (
+                <button data-testid="view-saved" onClick={() => setStep(STEPS.indexOf("Letter"))} style={{ ...btnStyle(true), width: "100%", justifyContent: "center", padding: "12px", marginTop: "12px", background: "transparent", border: `1px solid ${colors.goldLight}`, color: colors.goldLight }}>
+                  View your saved letter
+                </button>
+              )}
               <div style={{ marginTop: "16px", fontSize: "12px", color: colors.inkFaint }}>
                 Don't have a code?{" "}
                 <a href={APP.payhip} style={{ color: colors.goldLight, textDecoration: "none" }}>Purchase for {APP.price} →</a>
