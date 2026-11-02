@@ -42,6 +42,21 @@ r = evaluate({ logText: log('2026-10-15'), data: { states: { FL: { keys: ['S:720
 // figure fed to a generator: stale figure date fails via the lock data
 r = evaluate({ logText: log('2026-10-15'), data: { states: { FL: { keys: [], dates: {}, nums: ['$100'], ndates: { '$100': '2025-01-01' } } }, federal: null }, now: NOW }); assert.ok(r.fail.some(f => /figure \$100/.test(f)));
 
+// STRICT MODE: a citation on a page with no dated log entry fails (never skipped)
+r = evaluate({ logText: log('2026-10-15'), data: lockFor('2026-10-15'), pages: [{ name: 'public/florida/x/index.html', html: '<p>Fla. Stat. § 720.999 lets the board act.</p>' }], now: NOW });
+assert.ok(r.fail.some(f => /citation S:720.999/.test(f) && /no dated log entry/.test(f)), r.fail.join(' / '));
+// STRICT MODE: a dollar / percent / day figure on a page with no dated log entry fails
+for (const [txt, key] of [['Fines are capped at $777 per violation.', 'usd:777'], ['The cap is 33% of the assessment.', 'pct:33'], ['Respond within 45 days of notice.', 'day:45']]) {
+  r = evaluate({ logText: log('2026-10-15'), data: lockFor('2026-10-15'), pages: [{ name: 'public/florida/x/index.html', html: '<p>' + txt + '</p>' }], now: NOW });
+  assert.ok(r.fail.some(f => f.includes('figure ' + key) && /no dated log entry/.test(f)), key + ': ' + r.fail.join(' / '));
+}
+// a mapped figure passes; the same figure on another state's page does NOT (state scope)
+const withFig = { states: { FL: { keys: [], dates: {}, nums: ['usd:777'], ndates: { 'usd:777': '2026-10-15' } } }, federal: null };
+r = evaluate({ logText: log('2026-10-15'), data: withFig, pages: [{ name: 'public/florida/x/index.html', html: '<p>Fines are capped at $777.</p>' }], now: NOW }); assert.deepEqual(r.fail, []);
+r = evaluate({ logText: log('2026-10-15'), data: withFig, pages: [{ name: 'public/texas/x/index.html', html: '<p>Fines are capped at $777.</p>' }], now: NOW }); assert.ok(r.fail.some(f => /figure usd:777/.test(f)), 'state scope');
+// a generator-fed source (state-data) is held to the same rule
+r = evaluate({ logText: log('2026-10-15'), data: lockFor('2026-10-15'), extra: [{ name: 'scripts/data/state-data.json', text: 'Penalty of $888 applies.' }], now: NOW }); assert.ok(r.fail.some(f => /figure usd:888/.test(f)));
+
 // stamping: idempotent, new entries get the supplied "today", existing dates preserved
 const raw = '## T\n\n| A | Status | B | Source |\n|---|---|---|---|\n| § 1 | VERIFIED | x | y |\n\n## Texas (TX)\n  - [k] https://e.org/z (retrieved 2026-07-22)\n';
 const s1 = stamp(raw, () => '2026-11-01'); assert.equal(s1.stamped, 2); assert.ok(parseEntries(s1.text).every(e => e.date === '2026-11-01'));
@@ -56,4 +71,4 @@ let d = build(tmp);
 assert.equal(d.states.FL.dates['S:720.305'], '2026-03-04');   // preserved
 assert.equal(d.states.FL.dates['S:720.306'], '2026-11-01');   // new entry -> today
 fs.rmSync(tmp, { recursive: true, force: true });
-console.log('verified_on tests passed (fresh, 10-month warn, 13-month fail, missing date fail, stamping, generator)');
+console.log('verified_on tests passed (unmapped citation fail, unmapped figure fail, state scope, fresh, 10-month warn, 13-month fail, missing date fail, stamping, generator)');

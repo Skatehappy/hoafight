@@ -3,6 +3,8 @@
 // is withheld from the page (content JSON and state data alike). Logging a verified citation
 // and rebuilding brings its sentences back.
 import fs from 'fs';
+import { STATES } from './states.js';
+import { extractCitations, rangeKeys, numericClaims } from '../../api/_citelint.js';
 
 const LOG = ['VERIFICATION_LOG.md', 'VERIFICATION_LOG-SEO-CONTENT.md']
   .filter(f => fs.existsSync(f)).map(f => fs.readFileSync(f, 'utf8')).join('\n');
@@ -63,10 +65,34 @@ function logged(key) {
   }
   return cache.get(key);
 }
-export const unlogged = text => [...citations(text)].filter(([k]) => !logged(k)).map(([, s]) => s);
+// STRICT MODE (2026-11-02): a citation or a dollar/percent/day figure is "logged" only when it maps to a DATED entry of the
+// verification logs, i.e. it is present in the generated lock data (api/_verified-citations.json: keys + nums with dates).
+// Run `node scripts/build-verified-citations.mjs` before building pages. No match -> the sentence is withheld.
+let LOCK = null;
+function lock() {
+  if (LOCK) return LOCK;
+  const d = JSON.parse(fs.readFileSync('api/_verified-citations.json', 'utf8'));
+  const mk = bs => { const keys = new Set(), nums = new Set(); for (const b of bs.filter(Boolean)) { for (const k of b.keys) if (b.dates?.[k]) keys.add(k); for (const k of b.nums || []) if (b.ndates?.[k]) nums.add(k); } return { keys, nums }; };
+  const shared = [d.federal, d.states?._misc];
+  const byState = {};
+  for (const [st, b] of Object.entries(d.states || {})) if (st !== '_misc') byState[st] = mk([b, ...shared]);
+  return (LOCK = { byState, all: mk([...Object.values(d.states || {}), d.federal]) });
+}
+// STATE SCOPE: a page or source file of state X may only use citations/figures logged for X (or federal / site-wide entries).
+// scope = state abbreviation, or null for cross-state surfaces (the /letters hub), which use the union.
+let SCOPE = null;
+export const slugToAbbr = key => STATES.find(s => key === s.slug || String(key).startsWith(s.slug + '/'))?.abbr || null;
+export function withScope(abbr, fn) { const prev = SCOPE; SCOPE = abbr; try { return fn(); } finally { SCOPE = prev; } }
+export const strictUnmapped = (text, abbr = SCOPE) => {
+  const L = lock(), { keys, nums } = (abbr && L.byState[abbr]) || L.all, out = [], seen = new Set();
+  for (const c of extractCitations(text)) if (!rangeKeys(c.key).slice(0, 1).some(k => keys.has(k)) && !seen.has(c.key)) { seen.add(c.key); out.push(c.text); }
+  for (const n of numericClaims(text)) if (!nums.has(n.key) && !seen.has(n.key)) { seen.add(n.key); out.push(n.text); }
+  return out;
+};
+export const unlogged = text => [...new Set([...[...citations(text)].filter(([k]) => !logged(k)).map(([, s]) => s), ...strictUnmapped(text)])];
 
 // Split on sentence ends, but not after abbreviations ("Ariz. Rev. Stat.", "v.", "N.C.").
-function sentences(s) {
+export function sentences(s) {
   const out = []; let start = 0;
   const re = /[.!?]["')\]]?\s+(?=[A-Z"(§])/g; let m;
   while ((m = re.exec(s))) {
@@ -78,7 +104,7 @@ function sentences(s) {
   return out;
 }
 
-function strip(value) {
+export function strip(value) {
   if (typeof value === 'string') {
     if (!unlogged(value).length) return value;
     return sentences(value).filter(x => !unlogged(x).length).join('').trim();
@@ -89,4 +115,4 @@ function strip(value) {
 }
 
 // key kept for call-site readability; the rule is the same for every page
-export function holdBack(key, value) { return value ? strip(value) : value; }
+export function holdBack(key, value) { return value ? withScope(slugToAbbr(key), () => strip(value)) : value; }

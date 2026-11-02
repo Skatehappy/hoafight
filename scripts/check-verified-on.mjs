@@ -8,6 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseEntries, classify, DATE_RE } from './verified-on.mjs';
+import { STATES } from './data/states.js';
 import { extractCitations, rangeKeys, numericClaims } from '../api/_citelint.js';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -29,8 +30,10 @@ export function evaluate({ logText, data, pages = [], extra = [], now }) {
   warn.splice(0, warn.length);
 
   const buckets = [...Object.entries(data.states || {}), ['federal', data.federal]].filter(([, b]) => b);
-  const keyDate = k => buckets.map(([, b]) => b.dates?.[k]).filter(Boolean).sort().at(-1) || null;   // newest verification wins
-  const numDate = k => buckets.map(([, b]) => b.ndates?.[k]).filter(Boolean).sort().at(-1) || null;
+  // STATE SCOPE: a page under public/<state-slug>/ maps only to log entries of that state (plus federal and site-wide ones).
+  const inScope = (st, abbr) => !abbr || st === abbr || st === 'federal' || st === '_misc';
+  const keyDate = (k, abbr) => buckets.filter(([st]) => inScope(st, abbr)).map(([, b]) => b.dates?.[k]).filter(Boolean).sort().at(-1) || null;   // newest verification wins
+  const numDate = (k, abbr) => buckets.filter(([st]) => inScope(st, abbr)).map(([, b]) => b.ndates?.[k]).filter(Boolean).sort().at(-1) || null;
 
   // lock data fed to api/generate.js + api/checklist.js: every key / figure must carry a date and be fresh
   for (const [st, b] of buckets) {
@@ -40,10 +43,11 @@ export function evaluate({ logText, data, pages = [], extra = [], now }) {
   // rendered pages and generator input data: attribute each citation / figure to the surface that carries it
   for (const { name, html, text } of [...pages.map(p => ({ name: p.name, text: strip(p.html) })), ...extra]) {
     const seen = new Set();
+    const abbr = STATES.find(s => name.startsWith('public/' + s.slug + '/'))?.abbr || null;
     for (const c of extractCitations(text)) for (const k of rangeKeys(c.key).slice(0, 1)) {
-      const d = keyDate(k); if (!d || seen.has('c' + k)) continue; seen.add('c' + k); note(name, k, d);
+      if (seen.has('c' + k)) continue; seen.add('c' + k); const d = keyDate(k, abbr); if (!d) { fail.push(`${name}: citation ${k} ("${c.text}") has no dated log entry`); continue; } note(name, k, d);
     }
-    for (const n of numericClaims(text)) { const d = numDate(n.key); if (!d || seen.has('n' + n.key)) continue; seen.add('n' + n.key); note(name, 'figure ' + n.key, d); }
+    for (const n of numericClaims(text)) { if (seen.has('n' + n.key)) continue; seen.add('n' + n.key); const d = numDate(n.key, abbr); if (!d) { fail.push(`${name}: figure ${n.key} ("${n.text}") has no dated log entry`); continue; } note(name, 'figure ' + n.key, d); }
   }
   return { fail: [...new Set(fail)], warn: [...new Set(warn)] };
 }
@@ -69,6 +73,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const ages = entries.filter(e => e.date);
   const n10 = ages.filter(e => classify(e.date, now) !== 'ok').length, n12 = ages.filter(e => classify(e.date, now) === 'fail').length;
   if (r.warn.length) { console.warn(`A19 WARN (${r.warn.length}, non-fatal): verified more than 10 months ago`); r.warn.slice(0, 40).forEach(w => console.warn('  ' + w)); }
-  if (r.fail.length) { console.error(`A19 FAIL (${r.fail.length})`); r.fail.slice(0, 40).forEach(w => console.error('  ' + w)); process.exit(1); }
+  if (r.fail.length) { console.error(`A19 FAIL (${r.fail.length})`); r.fail.slice(0, process.argv.includes("--all") ? 1e9 : 40).forEach(w => console.error('  ' + w)); process.exit(1); }
   console.log(`verified_on ok: ${entries.length} log entries, ${n10} older than 10 months, ${n12} older than 12 (now ${now}); ${a.pages.length} pages scanned`);
 }
