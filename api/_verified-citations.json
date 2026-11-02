@@ -286,6 +286,8 @@
         "Cal. Civ. Code § 4751",
         "Cal. Civ. Code § 4760",
         "Cal. Civ. Code § 4765",
+        "Cal. Civ. Code § 4920",
+        "Cal. Civ. Code § 4935",
         "Cal. Civ. Code § 4950",
         "Cal. Civ. Code § 4955",
         "Cal. Civ. Code § 51",
@@ -376,6 +378,20 @@
         "S:4760": [
           "(2)",
           "(a)"
+        ],
+        "S:4920": [
+          "(1)",
+          "(2)",
+          "(3)",
+          "(a)",
+          "(b)",
+          "(c)",
+          "(d)"
+        ],
+        "S:4935": [
+          "(a)",
+          "(b)",
+          "(e)"
         ],
         "S:4950": [
           "(4)",
@@ -990,8 +1006,10 @@
         "day:120",
         "day:14",
         "day:15",
+        "day:2",
         "day:28",
         "day:30",
+        "day:4",
         "day:45",
         "day:60",
         "day:90",
@@ -1239,9 +1257,11 @@
         "day:30",
         "day:60",
         "day:7",
+        "month:12",
         "pct:10",
         "usd:10",
         "usd:2000",
+        "usd:4000",
         "year:1",
         "year:2",
         "year:3",
@@ -1831,6 +1851,8 @@
         "S:339-z",
         "S:519",
         "S:600",
+        "S:603",
+        "S:605",
         "S:608",
         "S:618",
         "S:621",
@@ -1852,9 +1874,12 @@
         "N.Y. CPLR § 7803",
         "N.Y. General Business Law § 600",
         "N.Y. Not-for-Profit Corporation Law § 519",
+        "N.Y. Not-for-Profit Corporation Law § 603",
+        "N.Y. Not-for-Profit Corporation Law § 605",
         "N.Y. Not-for-Profit Corporation Law § 608",
         "N.Y. Not-for-Profit Corporation Law § 618",
         "N.Y. Not-for-Profit Corporation Law § 621",
+        "N.Y. Not-for-Profit Corporation Law § 621 (hub records_access)",
         "N.Y. Not-for-Profit Corporation Law § 706",
         "N.Y. Not-for-Profit Corporation Law § 717",
         "N.Y. Not-for-Profit Corporation Law § 722",
@@ -1882,11 +1907,15 @@
         "C:levandusky": [
           "(1990)"
         ],
+        "S:603": [
+          "(b)"
+        ],
         "S:621": [
           "(2024)",
           "(b)",
           "(d)",
-          "(e)"
+          "(e)",
+          "(f)"
         ],
         "S:717": [
           "(a)",
@@ -1894,7 +1923,10 @@
         ]
       },
       "nums": [
+        "day:10",
+        "day:30",
         "day:5",
+        "day:50",
         "day:60",
         "day:90",
         "month:4",
@@ -2231,24 +2263,14 @@
         "S:301.153",
         "S:41.003",
         "S:42.07",
-        "S:4920",
-        "S:4935",
         "S:5.006",
-        "S:603",
-        "S:605",
-        "S:621",
         "S:82.001",
         "TITLE:11",
         "TITLE:7"
       ],
       "display": [
-        "Cal. Civ. Code § 4920",
-        "Cal. Civ. Code § 4935",
         "Chapter 81",
         "Civil Practice and Remedies Code Chapter 41",
-        "N.Y. Not-for-Profit Corporation Law § 603",
-        "N.Y. Not-for-Profit Corporation Law § 605",
-        "N.Y. Not-for-Profit Corporation Law § 621 (hub records_access)",
         "Section 209.006",
         "Section 209.007",
         "Section 209.008",
@@ -2329,46 +2351,18 @@
         "S:42.07": [
           "(7)",
           "(a)"
-        ],
-        "S:4920": [
-          "(1)",
-          "(2)",
-          "(3)",
-          "(a)",
-          "(b)",
-          "(c)",
-          "(d)"
-        ],
-        "S:4935": [
-          "(a)",
-          "(b)",
-          "(e)"
-        ],
-        "S:603": [
-          "(b)"
-        ],
-        "S:621": [
-          "(d)",
-          "(f)"
         ]
       },
       "nums": [
-        "day:10",
         "day:15",
         "day:180",
-        "day:2",
         "day:20",
         "day:30",
-        "day:4",
         "day:45",
-        "day:5",
-        "day:50",
-        "day:60",
         "day:61",
         "month:12",
         "month:18",
         "month:3",
-        "month:6",
         "usd:200",
         "usd:500",
         "year:2",
