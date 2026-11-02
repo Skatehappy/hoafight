@@ -99,7 +99,7 @@ ok('clean draft: one call, untouched');
 reset(['VALID']);
 r = await post({ accessCode: 'GOODCODE', systemPrompt: 'Reply: VALID', userPrompt: 'check' });
 assert.equal(r.status, 200);
-assert.ok(!(calls.anthropic[0].system || '').includes('CITATION RULE'));
+assert.equal(r.json.text, 'VALID'); assert.equal(calls.anthropic.length, 0);
 assert.equal(calls.payhipUse, 0);
 ok('check call unaffected');
 

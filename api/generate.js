@@ -2,6 +2,7 @@
 import { MODEL } from './_config.js';
 import VERIFIED from './_verified-citations.js';
 import { findUnverified, stripSentences, logHit } from './_citelint.js';
+import { verifyLicense, g4tMatches } from './_license.js';
 
 // Node serverless runtime (NOT edge). Edge caps at ~25s on Hobby and ignores
 // maxDuration, which 504'd ~25s Opus letters. Node honors maxDuration:60. This
@@ -13,31 +14,6 @@ export const config = { maxDuration: 60 };
 const PRODUCT_LINK = '8TWrB';
 const APP = 'hoafight';
 
-// Fail-closed Payhip license verify. Runs on EVERY request (gate check and
-// generation). Rejects unless HTTP 200 + data.enabled===true + product_link
-// matches this app. Network error / timeout / non-JSON -> 503 (never "invalid").
-async function verifyLicense(licenseKey, productLink, apiKey) {
-  const key = (licenseKey || '').trim();
-  if (!key) return { ok: false, status: 401, error: 'Invalid license key.' };
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 8000);
-  try {
-    const url = `https://payhip.com/api/v1/license/verify?product_link=${encodeURIComponent(productLink)}&license_key=${encodeURIComponent(key)}`;
-    const res = await fetch(url, { headers: { 'payhip-api-key': apiKey }, signal: controller.signal });
-    if (res.status !== 200) return { ok: false, status: 401, error: 'Invalid license key.' };
-    const json = await res.json();
-    const d = json && json.data;
-    if (!d || d.enabled !== true || d.product_link !== productLink) {
-      return { ok: false, status: 401, error: 'Invalid license key.' };
-    }
-    return { ok: true };
-  } catch (e) {
-    return { ok: false, status: 503, error: 'License verification unavailable — please try again shortly.' };
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
 // ── Gate 4 test-code path ────────────────────────────────────────────────────
 // Inert unless G4_TEST_CODE_SECRET is set (Vercel env var, no default, 16+ chars). A code of the form
 // "G4T-<secret>" skips the Payhip check and the usage mark, is capped per UTC day, and every use is logged.
@@ -45,16 +21,6 @@ async function verifyLicense(licenseKey, productLink, apiKey) {
 // rail, not an accounting system.
 const G4T_DAILY_CAP = 10;
 const g4tState = (globalThis.__g4tState ||= { day: '', used: 0 });
-
-function g4tMatches(code, secret) {
-  if (!secret || secret.length < 16) return false;
-  const want = 'G4T-' + secret;
-  const got = String(code || '').trim();
-  if (got.length !== want.length) return false;
-  let diff = 0;
-  for (let i = 0; i < want.length; i++) diff |= want.charCodeAt(i) ^ got.charCodeAt(i);
-  return diff === 0;
-}
 
 function g4tTake() {
   const day = new Date().toISOString().slice(0, 10);
@@ -161,6 +127,8 @@ export default async function handler(req, res) {
     } else {
       const lic = await verifyLicense(accessCode, PRODUCT_LINK, payhipApiKey);
       if (!lic.ok) return res.status(lic.status).json({ error: lic.error });
+      // Access-code check: license verified; answer without a model call or a usage mark.
+      if (isCheckCall) return res.status(200).json({ text: 'VALID' });
     }
 
     let messages;

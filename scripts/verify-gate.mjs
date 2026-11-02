@@ -46,8 +46,8 @@ if (missing.length) {
 }
 // ── A10/A11: letter citation lock (Section 7) ────────────────────────────────
 import { execFileSync } from 'node:child_process';
-for (const [id, args] of [['A10 verified-citations stale', ['scripts/build-verified-citations.mjs', '--check']], ['A11 citation-lock mock test', ['scripts/test-citelint.mjs']]]) {
+for (const [id, args] of [['A10 verified-citations stale', ['scripts/build-verified-citations.mjs', '--check']], ['A11 citation-lock mock test', ['scripts/test-citelint.mjs']], ['A12 license gate (no Anthropic without Payhip/G4T; no bypass keys)', ['scripts/test-license-gate.mjs']]]) {
   try { execFileSync(process.execPath, args, { cwd: ROOT, stdio: 'pipe' }); } catch (e) { fail(id + ': ' + String(e.stderr || e.stdout || e.message).slice(0, 400)); }
 }
-console.log('GATE GREEN — A1 files ok; A9 citation-log parity: all ' + tokens.size + ' citations logged; A10 verified-citations current; A11 citation-lock mock test passed.');
+console.log('GATE GREEN — A1 files ok; A9 citation-log parity: all ' + tokens.size + ' citations logged; A10 verified-citations current; A11 citation-lock mock test passed; A12 license gate passed.');
 process.exit(0);

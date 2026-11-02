@@ -1,9 +1,11 @@
 // api/checklist.js
 import { MODEL } from './_config.js';
+import { verifyLicense, g4tMatches } from './_license.js';
+
+const PRODUCT_LINK = '8TWrB';
 
 export const config = { runtime: 'edge' };
 
-const VALID_CODES = (process.env.ACCESS_CODES || '').split(',').map(c => c.trim()).filter(Boolean);
 
 export default async function handler(req) {
   const headers = {
@@ -19,10 +21,13 @@ export default async function handler(req) {
   try {
     const { accessCode, state, varianceType, letterExcerpt } = await req.json();
 
-    const TEST_KEYS = (process.env.TEST_KEYS || 'SMOKE-TEST-2026-BAO').split(',').map(k => k.trim().toUpperCase()).filter(Boolean);
-    const isTestKey = TEST_KEYS.includes(String(accessCode || '').trim().toUpperCase());
-    if (!isTestKey && (!accessCode || !VALID_CODES.includes(accessCode.toUpperCase()))) {
-      return new Response(JSON.stringify({ error: 'Invalid access code' }), { status: 401, headers });
+    const payhipApiKey = process.env.PAYHIP_API_KEY;
+    if (!payhipApiKey) return new Response(JSON.stringify({ error: 'Service not configured' }), { status: 500, headers });
+    // Same gate as generate.js: a passed Payhip verification (valid, enabled, this product) or a G4T test code.
+    // No usage check/mark here: the checklist is requested after the letter has consumed the code.
+    if (!g4tMatches(accessCode, process.env.G4_TEST_CODE_SECRET)) {
+      const lic = await verifyLicense(accessCode, PRODUCT_LINK, payhipApiKey);
+      if (!lic.ok) return new Response(JSON.stringify({ error: lic.error }), { status: lic.status, headers });
     }
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
