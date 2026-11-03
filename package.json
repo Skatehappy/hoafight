@@ -23,6 +23,7 @@
     "generate:pages": "node scripts/build-pages.js",
     "generate:all": "npm run generate:content && npm run generate:pages",
     "build:citations": "node scripts/build-verified-citations.mjs",
-    "test:citelint": "node scripts/test-citelint.mjs"
+    "test:citelint": "node scripts/test-citelint.mjs",
+    "test": "node scripts/run-tests.mjs"
   }
 }
