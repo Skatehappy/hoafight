@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 import { stripMarkdown } from "../api/_markdown.js";
+import { VOICE_RULE } from "../api/_voice.js";
 
 const EMAILJS_SERVICE_ID  = "YOUR_EMAILJS_SERVICE_ID";
 const EMAILJS_TEMPLATE_ID = "YOUR_EMAILJS_TEMPLATE_ID";
@@ -353,9 +354,9 @@ export default function App() {
     return (await res.json()).text;
   };
 
-  const systemPrompt = "You are an expert HOA and community association attorney. Write compelling appeal letters citing your state HOA statute, invoking due process and hearing rights, and challenging procedural defects. 500-700 words. Format: formal appeal letter with [DATE] placeholder, via certified mail. Output ONLY the letter.";
+  const systemPrompt = "You are an expert HOA-dispute letter writer. Write compelling appeal letters citing your state HOA statute, invoking due process and hearing rights, and challenging procedural defects. 500-700 words. Format: formal appeal letter with [DATE] placeholder, via certified mail. Output ONLY the letter. " + VOICE_RULE;
 
-  const specialAssessmentPrompt = `You are an expert HOA and community association attorney specializing in special assessment disputes. Write firm, legally precise appeal letters.
+  const specialAssessmentPrompt = `You are an expert HOA-dispute letter writer specializing in special assessment disputes. Write firm, legally precise appeal letters.
 
 Rules:
 - Open with clear statement: the HOA levied a special assessment on a specific date in a specific amount; the assessment is improper for specified procedural or substantive reasons
@@ -369,9 +370,10 @@ Rules:
 - Professional but firm tone
 - 500-700 words
 - Format: formal letter with [DATE] placeholder, via certified mail
-- Output ONLY the letter, no preamble`;
+- Output ONLY the letter, no preamble
+- ${VOICE_RULE}`;
 
-  const recordsRequestPrompt = `You are an expert HOA and community association attorney specializing in member records-inspection rights. Write firm, legally precise demand letters.
+  const recordsRequestPrompt = `You are an expert HOA-dispute letter writer specializing in member records-inspection rights. Write firm, legally precise demand letters.
 
 Rules:
 - Open with clear statement: on a specific date you submitted a written request for enumerated records; the HOA has failed to comply within the statutory deadline
@@ -385,9 +387,10 @@ Rules:
 - Professional but firm tone
 - 500-700 words
 - Format: formal letter with [DATE] placeholder, via certified mail
-- Output ONLY the letter, no preamble`;
+- Output ONLY the letter, no preamble
+- ${VOICE_RULE}`;
 
-  const electionIrregularityPrompt = `You are an expert HOA and community association attorney specializing in HOA election disputes. Write firm, legally precise demand letters.
+  const electionIrregularityPrompt = `You are an expert HOA-dispute letter writer specializing in HOA election disputes. Write firm, legally precise demand letters.
 
 Rules:
 - Open with clear statement: the board election held on a specific date was conducted improperly; specify each particular procedural violation
@@ -400,9 +403,10 @@ Rules:
 - Professional but firm tone
 - 500-700 words
 - Format: formal letter with [DATE] placeholder, via certified mail
-- Output ONLY the letter, no preamble`;
+- Output ONLY the letter, no preamble
+- ${VOICE_RULE}`;
 
-  const commonAreaPrompt = `You are an expert HOA and community association attorney specializing in HOA maintenance and fiduciary duty claims. Write firm, legally precise demand letters.
+  const commonAreaPrompt = `You are an expert HOA-dispute letter writer specializing in HOA maintenance and fiduciary duty claims. Write firm, legally precise demand letters.
 
 Rules:
 - Open with clear statement of the common area(s) at issue, the condition, how long it has gone unaddressed, and any safety hazards created
@@ -416,9 +420,10 @@ Rules:
 - Professional but firm tone
 - 500-700 words
 - Format: formal letter with [DATE] placeholder, via certified mail
-- Output ONLY the letter, no preamble`;
+- Output ONLY the letter, no preamble
+- ${VOICE_RULE}`;
 
-  const boardHarassmentPrompt = `You are an expert HOA and community association attorney specializing in selective enforcement, board harassment, and fair housing claims. Write firm, legally precise demand letters.
+  const boardHarassmentPrompt = `You are an expert HOA-dispute letter writer specializing in selective enforcement, board harassment, and fair housing claims. Write firm, legally precise demand letters.
 
 Rules:
 - Open with clear statement: the HOA board or management company has engaged in targeted enforcement against the homeowner, with specific incidents and dates
@@ -433,9 +438,10 @@ Rules:
 - Professional but firm tone — document the record
 - 500-700 words
 - Format: formal letter with [DATE] placeholder, via certified mail
-- Output ONLY the letter, no preamble`;
+- Output ONLY the letter, no preamble
+- ${VOICE_RULE}`;
 
-  const architecturalPrompt = `You are an expert HOA and community association attorney specializing in architectural review and modification denials. Write firm, legally precise appeal letters.
+  const architecturalPrompt = `You are an expert HOA-dispute letter writer specializing in architectural review and modification denials. Write firm, legally precise appeal letters.
 
 Rules:
 - Open with clear statement: the HOA denied a specific modification request; identify the modification, the date of denial, and the stated grounds
@@ -452,9 +458,10 @@ Rules:
 - Professional but firm tone
 - 500-700 words
 - Format: formal letter with [DATE] placeholder, via certified mail
-- Output ONLY the letter, no preamble`;
+- Output ONLY the letter, no preamble
+- ${VOICE_RULE}`;
 
-  const hoaFeesPrompt = `You are an expert HOA and community association attorney specializing in assessment, fee, and billing disputes. Write firm, legally precise demand letters.
+  const hoaFeesPrompt = `You are an expert HOA-dispute letter writer specializing in assessment, fee, and billing disputes. Write firm, legally precise demand letters.
 
 Rules:
 - Open with clear statement: the HOA has charged specified fees or dues that are not authorized by the CC&Rs, are incorrectly calculated, lack required itemization, or include improper late fees
@@ -467,7 +474,8 @@ Rules:
 - Professional but firm tone
 - 500-700 words
 - Format: formal letter with [DATE] placeholder, via certified mail
-- Output ONLY the letter, no preamble`;
+- Output ONLY the letter, no preamble
+- ${VOICE_RULE}`;
 
   const pickSystemPrompt = (disputeType) => {
     if (!disputeType) return systemPrompt;

@@ -4,6 +4,7 @@ import { resolveStateValue, lockBlock, lintText, stripText, problemList, logHit 
 import { verifyLicense, g4tMatches } from './_license.js';
 import { callComplete } from './_complete.js';
 import { stripMarkdown } from './_markdown.js';
+import { VOICE_RULE, findAttorneyVoice } from './_voice.js';
 
 // The letter is shown, copied, emailed and printed as plain text, so the model is told to write plain text and any markdown that still
 // comes back is stripped (api/_markdown.js) before the lint and before the reply.
@@ -127,7 +128,9 @@ export default async function handler(req, res) {
     const abbr = resolveState(body);
     const lockOn = !isCheckCall;
     const system = lockOn
-      ? ((systemPrompt || '') + PLAIN_TEXT_RULE + lockBlock(abbr))
+      ? ((systemPrompt || '') + `
+
+${VOICE_RULE}` + PLAIN_TEXT_RULE + lockBlock(abbr))
       : (systemPrompt || undefined);
     const ownTexts = [String(userPrompt || ''), String(systemPrompt || ''), String(draftLetter || '')];
 
@@ -144,6 +147,22 @@ export default async function handler(req, res) {
     // Fail loudly on a missing text block — never return undefined — and because this throws BEFORE the
     // mark-usage call below, the buyer's one-use license is NOT burned on a parse miss.
     if (!text) throw new Error(`No text block in API response (stop_reason: ${result.stop || 'unknown'})`);
+
+    // Voice lint: the homeowner writes and signs; any attorney/counsel/firm signature or self-description is regenerated once,
+    // then rejected (502, BEFORE the usage mark, offending text never returned).
+    const voiceFail = () => res.status(502).json({ error: 'The letter service produced a letter written in a lawyer voice, which is not allowed. Please try again; your access code was not used.', code: 'attorney_voice' });
+    let voiceHits = lockOn ? findAttorneyVoice(text) : [];
+    if (voiceHits.length) {
+      console.log(JSON.stringify({ evt: 'voice_lint_hit', app: APP, hits: voiceHits, retried: deadlineAt - Date.now() >= REGEN_MIN_MS }));
+      if (deadlineAt - Date.now() >= REGEN_MIN_MS) {
+        const vnotice = `
+
+REGENERATION NOTICE: the previous draft contained the phrase "${voiceHits[0]}", which is not allowed. ${VOICE_RULE} Rewrite the whole letter as a homeowner writing for themselves, signed [Your Name].`;
+        const again = await callClaude(anthropicKey, system + vnotice, messages, deadlineAt, [TOKEN_LIMITS[1]]);
+        if (again.ok && again.text) { text = stripMarkdown(again.text); voiceHits = findAttorneyVoice(text); }
+      }
+      if (voiceHits.length) return voiceFail();
+    }
 
     // Post-generation lint: citations (section AND subsection) and dollar/percent/time figures outside the verified
     // set are regenerated once without them, else their sentences are stripped.
@@ -162,6 +181,7 @@ export default async function handler(req, res) {
         }
         if (p.cites.length || p.figs.length) { text = stripText(text, abbr, ...ownTexts); stripped = p.cites.length + p.figs.length; }
       }
+      if (findAttorneyVoice(text).length) return voiceFail();
       logHit(APP, { state: abbr || 'unknown', letterType, flagged: first.length, regenerated, stripped, cites: first.slice(0, 8) });
       if (!text.trim()) throw new Error('No usable letter text after citation lint');
     }

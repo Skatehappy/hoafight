@@ -4,6 +4,7 @@ import { verifyLicense, g4tMatches } from './_license.js';
 import { callComplete } from './_complete.js';
 import { fallbackFor } from './_checklist-fallbacks.js';
 import { resolveStateValue, lintText, problemList, logHit } from './_lock.js';
+import { findAttorneyVoice } from './_voice.js';
 import { buildChecklistPrompt } from './_checklist-prompt.js';
 
 const PRODUCT_LINK = '8TWrB';
@@ -70,6 +71,7 @@ export default async function handler(req) {
       const own = [String(type || ''), String(letterExcerpt || '')];
       const kept = [], flagged = [];
       for (const item of checklist.filter(x => typeof x === 'string' && x.trim())) {
+        if (findAttorneyVoice(item).length) { (diag.droppedItems = diag.droppedItems || []).push({ item: item.slice(0, 120), voice: true }); continue; }
         const p = lintText(item, abbr, ...own);
         if (p.cites.length || p.figs.length) {
           flagged.push(...problemList(p));
