@@ -666,7 +666,7 @@ ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
               Your HOA Isn't Always Right.
             </h1>
             <p style={{ fontSize: "17px", color: colors.inkMuted, maxWidth: "480px", margin: "0 auto 40px", lineHeight: "1.7" }}>
-              AI-generated appeal letters for HOA fines, special assessments, records requests, election disputes, architectural denials, common-area maintenance failures, board harassment, and unauthorized fees. Attorney-quality. 5 minutes. {APP.price}.
+              AI-generated appeal letters for HOA fines, special assessments, records requests, election disputes, architectural denials, common-area maintenance failures, board harassment, and unauthorized fees. A clear, well-organized letter citing your state's law, in about 5 minutes. {APP.price}.
             </p>
             <div style={{ maxWidth: "400px", margin: "0 auto", background: colors.white, border: `1px solid ${colors.border}`, borderRadius: "12px", padding: "32px", boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}>
               <div style={{ fontSize: "14px", color: colors.inkLight, marginBottom: "16px", fontWeight: "600" }}>Enter Your Access Code</div>
@@ -693,6 +693,9 @@ ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
               <div style={{ marginTop: "12px", fontSize: "12px", color: colors.inkFaint }}>
                 Your letter tool is at <strong>hoafight.com</strong> — bookmark it.
                 <br />This product is at hoafight.com. We are not affiliated with fightmyhoa.com.
+              </div>
+              <div style={{ marginTop: "12px", fontSize: "11px", color: colors.inkFaint, lineHeight: "1.6" }}>
+                FightMyHOA is a self-help letter tool, not a law firm. It does not provide legal advice. For complex matters, consult a licensed attorney.
               </div>
             </div>
           </div>
