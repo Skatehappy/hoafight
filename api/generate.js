@@ -2,6 +2,7 @@
 import { MODEL } from './_config.js';
 import { resolveStateValue, lockBlock, lintText, stripText, problemList, logHit } from './_lock.js';
 import { verifyLicense, g4tMatches } from './_license.js';
+import { callComplete } from './_complete.js';
 
 // Node serverless runtime (NOT edge). Edge caps at ~25s on Hobby and ignores
 // maxDuration, which 504'd ~25s Opus letters. Node honors maxDuration:60. This
@@ -37,29 +38,10 @@ function resolveState(body) {
   return resolveStateValue(body.state || (/^STATE:\s*(.+)$/m.exec(String(body.userPrompt || '')) || [])[1]);
 }
 
-async function callClaude(anthropicKey, system, messages) {
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': anthropicKey,
-      'anthropic-version': '2023-06-01',
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      max_tokens: 3000,
-      thinking: { type: 'disabled' },
-      system: system || undefined,
-      messages,
-    }),
-  });
-  if (!response.ok) return { ok: false, detail: await response.text() };
-  const data = await response.json();
-  // Extract the text block by type, not by position. With adaptive thinking a
-  // model can place a "thinking" block at content[0], so content[0].text is
-  // undefined even on a 200.
-  return { ok: true, text: data.content?.find(b => b.type === 'text')?.text, stop: data.stop_reason };
-}
+// stop_reason "max_tokens" = truncated: retried once with a higher limit, never returned or linted as a letter.
+const TOKEN_LIMITS = [3000, 6000];
+const callClaude = (anthropicKey, system, messages) =>
+  callComplete(anthropicKey, max => ({ model: MODEL, max_tokens: max, thinking: { type: 'disabled' }, system: system || undefined, messages }), TOKEN_LIMITS);
 
 function cors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -139,7 +121,12 @@ export default async function handler(req, res) {
 
     const t0 = Date.now();
     const result = await callClaude(anthropicKey, system, messages);
-    if (!result.ok) return res.status(502).json({ error: 'AI generation failed', detail: result.detail });
+    // Failure (incl. a reply still cut off after the retry) returns here, BEFORE the usage mark: the code is not burned
+    // and no partial letter is ever returned.
+    if (!result.ok) {
+      if (result.truncated) return res.status(502).json({ error: 'The letter was too long to finish. Please try again; your access code was not used.', code: 'truncated' });
+      return res.status(502).json({ error: 'AI generation failed', detail: result.err });
+    }
     let text = result.text;
     // Fail loudly on a missing text block — never return undefined — and because this throws BEFORE the
     // mark-usage call below, the buyer's one-use license is NOT burned on a parse miss.

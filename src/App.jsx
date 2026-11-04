@@ -537,6 +537,7 @@ ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
             address: formData.hoaName,
             state: formData.state,
             varianceType: "HOA appeal",
+            issueType: formData.disputeType || "",
             letterExcerpt: reviewed.substring(0, 300),
           }),
         });

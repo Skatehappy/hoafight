@@ -1,6 +1,8 @@
 // api/checklist.js
 import { MODEL } from './_config.js';
 import { verifyLicense, g4tMatches } from './_license.js';
+import { callComplete } from './_complete.js';
+import { typeInfo, fallbackFor } from './_checklist-fallbacks.js';
 import { resolveStateValue, lockBlock, lintText, problemList, logHit } from './_lock.js';
 
 const PRODUCT_LINK = '8TWrB';
@@ -22,13 +24,14 @@ export default async function handler(req) {
   if (req.method !== 'POST') return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers });
 
   try {
-    const { accessCode, state, varianceType, letterExcerpt } = await req.json();
+    const { accessCode, state, varianceType, issueType, letterExcerpt } = await req.json();
 
     const payhipApiKey = process.env.PAYHIP_API_KEY;
     if (!payhipApiKey) return new Response(JSON.stringify({ error: 'Service not configured' }), { status: 500, headers });
     // Same gate as generate.js: a passed Payhip verification (valid, enabled, this product) or a G4T test code.
     // No usage check/mark here: the checklist is requested after the letter has consumed the code.
-    if (!g4tMatches(accessCode, process.env.G4_TEST_CODE_SECRET)) {
+    const testMode = g4tMatches(accessCode, process.env.G4_TEST_CODE_SECRET);
+    if (!testMode) {
       const lic = await verifyLicense(accessCode, PRODUCT_LINK, payhipApiKey);
       if (!lic.ok) return new Response(JSON.stringify({ error: lic.error }), { status: lic.status, headers });
     }
@@ -36,61 +39,45 @@ export default async function handler(req) {
     const apiKey = process.env.ANTHROPIC_API_KEY;
     const abbr = resolveStateValue(state);
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        max_tokens: 900,
-        thinking: { type: 'disabled' },
-        messages: [{
-          role: 'user',
-          content: `Generate a practical submission checklist for a HOA fine appeal / violation dispute as a JSON array of strings. Include items like: send via certified mail, request formal hearing, review CC&Rs for the specific rule, document inconsistent enforcement, request HOA financial records, check state HOA statutes, file with state HOA ombudsman if ignored. Return ONLY a valid JSON array, no other text.
+    // The dispute type comes from issueType (the client sends the form's Type of Dispute); varianceType is the legacy field.
+    const type = issueType || varianceType;
+    const prompt = `Generate a practical checklist for a homeowner sending a letter to their HOA about ${typeInfo(type).focus}, as a JSON array of 8 to 10 strings. Every item is one plain action step of at most 25 words and fits this situation only. Always include sending the letter by certified mail with return receipt and keeping a copy. Return ONLY a valid JSON array, no other text.
 
 State: ${state}
-Situation: ${varianceType || 'HOA fine appeal / violation dispute'}
-Letter excerpt: ${letterExcerpt?.substring(0, 200) || ''}${lockBlock(abbr)}`,
-        }],
-      }),
-    });
+Situation: ${type || 'HOA dispute'}
+Letter excerpt: ${letterExcerpt?.substring(0, 200) || ''}${lockBlock(abbr)}`;
 
-    // Fail loudly on an API error instead of silently returning an empty
-    // checklist (the pre-migration bug: a dead model 404'd and this returned []).
-    if (!response.ok) {
-      const detail = await response.text();
-      return new Response(JSON.stringify({ error: 'Checklist generation failed', detail }), { status: 502, headers });
+    // Never parse a cut-off reply: callComplete retries once with a higher limit, then reports truncation.
+    // Any model failure (HTTP error, truncation, unparseable reply) falls back to this dispute type's own list (HTTP 200).
+    const diag = {};
+    const r = await callComplete(apiKey, max => ({ model: MODEL, max_tokens: max, thinking: { type: 'disabled' }, messages: [{ role: 'user', content: prompt }] }), [2000, 4000]);
+    diag.attempts = r.attempts; diag.stop = r.stop; diag.status = r.status;
+    let checklist = null;
+    if (r.ok) {
+      try { checklist = JSON.parse(r.text.replace(/```json|```/g, '').trim()); } catch { diag.parseFailed = true; }
+    } else {
+      diag.failed = r.truncated ? 'truncated' : 'model-error';
+      console.log(JSON.stringify({ evt: 'checklist_model_fail', app: 'hoafight', reason: diag.failed, status: r.status || null }));
     }
 
-    const data = await response.json();
-    const text = data.content?.find(b => b.type === 'text')?.text || '[]';
-    const clean = text.replace(/```json|```/g, '').trim();
-
-    let checklist;
-    let parsed = true;
-    try {
-      checklist = JSON.parse(clean);
-      if (!Array.isArray(checklist)) throw new Error('not an array');
-    } catch {
-      parsed = false;
-      checklist = FALLBACK;
-    }
-    if (parsed) {
+    if (Array.isArray(checklist)) {
       // Same lock as the letter: drop any item that cites an unverified authority or states an unverified figure.
-      const own = [String(varianceType || ''), String(letterExcerpt || '')];
+      const own = [String(type || ''), String(letterExcerpt || '')];
       const kept = [], flagged = [];
-      for (const item of checklist.map(x => String(x))) {
+      for (const item of checklist.filter(x => typeof x === 'string' && x.trim())) {
         const p = lintText(item, abbr, ...own);
-        if (p.cites.length || p.figs.length) flagged.push(...problemList(p)); else kept.push(item);
+        if (p.cites.length || p.figs.length) {
+          flagged.push(...problemList(p));
+          (diag.droppedItems = diag.droppedItems || []).push({ item: item.slice(0, 120), cites: p.cites.map(c => c.text), nums: p.figs.map(f => f.text) });
+        } else kept.push(item);
       }
       if (flagged.length) logHit('hoafight-checklist', { state: abbr || 'unknown', flagged: flagged.length, stripped: checklist.length - kept.length, cites: flagged.slice(0, 8) });
-      checklist = kept.length >= 3 ? kept : FALLBACK;
+      checklist = kept.slice(0, 15);
     }
+    diag.survivors = Array.isArray(checklist) ? checklist.length : -1;
+    if (!Array.isArray(checklist) || checklist.length < 3) { diag.usedFallback = true; checklist = fallbackFor(type); }
 
-    return new Response(JSON.stringify({ checklist }), { status: 200, headers });
+    return new Response(JSON.stringify(testMode ? { checklist, _diag: diag } : { checklist }), { status: 200, headers });
 
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), { status: 500, headers });
