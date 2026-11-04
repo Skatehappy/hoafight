@@ -8,7 +8,8 @@ export async function callComplete(apiKey, buildBody, limits, opts = {}) {
   const { deadlineAt = Infinity, minRetryMs = 0 } = opts;
   for (let i = 0; i < limits.length; i++) {
     const left = deadlineAt - Date.now();
-    if (left <= 1000 || (i > 0 && left < minRetryMs)) return { ok: false, timeout: true, budget: true, err: 'Not enough time left for a model call', attempts: i };
+    if (i > 0 && left < minRetryMs) return { ok: false, truncated: true, budget: true, err: 'Model reply was cut off and there is no time left to retry', attempts: i };
+    if (left <= 1000) return { ok: false, timeout: true, budget: true, err: 'Not enough time left for a model call', attempts: i };
     const body = buildBody(limits[i]);
     let response;
     try {

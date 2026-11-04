@@ -36,7 +36,7 @@ export const TYPES = {
     steps: ['Photograph and video each problem in the common area, with dates visible, and keep adding new dates', 'Keep a dated log of every request you made to the board or management company and each reply', 'Pull the CC&R section that makes the association responsible for maintaining the area', 'Note any safety risk or damage to your property and keep repair estimates or receipts', 'Ask the board in writing for a repair plan and a schedule'],
   },
   'Board Harassment / Targeted Enforcement': {
-    focus: 'a board singling out the homeowner for harassment or targeted enforcement',
+    focus: 'rules that the homeowner feels the board is enforcing against them unfairly or unevenly',
     steps: ['Build a dated timeline of each notice, fine, comment or action directed at you', 'Save every email, letter and notice, and keep photos of the conditions cited', 'Document comparable homes that were treated differently, with dates and addresses', 'Request the enforcement records and board minutes that mention your home', 'Keep all communication with the board in writing and polite'],
   },
   'HOA Fee / Dues Dispute': {

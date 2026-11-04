@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
+import { stripMarkdown } from "../api/_markdown.js";
 
 const EMAILJS_SERVICE_ID  = "YOUR_EMAILJS_SERVICE_ID";
 const EMAILJS_TEMPLATE_ID = "YOUR_EMAILJS_TEMPLATE_ID";
@@ -273,7 +274,7 @@ export default function App() {
         const d = JSON.parse(raw);
         const f = d && d.formData ? d.formData : d;
         if (f && typeof f === "object") setFormData(f);
-        if (d && d.letter) { setLetter(String(d.letter)); setAltLetter(String(d.altLetter || "")); setChecklist(Array.isArray(d.checklist) ? d.checklist : []); setSavedLetter(true); }
+        if (d && d.letter) { setLetter(stripMarkdown(d.letter)); setAltLetter(stripMarkdown(d.altLetter || "")); setChecklist(Array.isArray(d.checklist) ? d.checklist : []); setSavedLetter(true); }
       }
     } catch {}
     const params = new URLSearchParams(window.location.search);
@@ -523,10 +524,10 @@ ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
       const draft = await callAPI(effectivePrompt, buildPrompt("standard"), false, "");
       setLoadingMsg("Running quality review...");
       const reviewed = await callAPI("", "", true, draft);
-      setLetter(reviewed);
+      setLetter(stripMarkdown(reviewed));
       setLoadingMsg("Generating assertive version...");
       const alt = await callAPI(effectivePrompt, buildPrompt("assertive"), false, "");
-      setAltLetter(alt);
+      setAltLetter(stripMarkdown(alt));
       setLoadingMsg("Building checklist...");
       try {
         const clRes = await fetch("/api/checklist", {
@@ -538,7 +539,7 @@ ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
             state: formData.state,
             varianceType: "HOA appeal",
             issueType: formData.disputeType || "",
-            letterExcerpt: reviewed.substring(0, 300),
+            letterExcerpt: stripMarkdown(reviewed).substring(0, 300),
           }),
         });
         if (clRes.ok) {
@@ -579,7 +580,8 @@ ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
     setEmailSending(false);
   };
 
-  const copyText = (text) => {
+  const copyText = (text0) => {
+    const text = stripMarkdown(text0);
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
@@ -594,7 +596,7 @@ ADDITIONAL INFO: ${formData.additionalInfo || "none"}`;
     doc.setFont("Times", "normal");
     doc.setFontSize(11);
     const today = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
-    const fullText = text.replace(/\[DATE\]/g, today);
+    const fullText = stripMarkdown(text).replace(/\[DATE\]/g, today);
     const lines = doc.splitTextToSize(fullText, usableWidth);
     let y = margin;
     lines.forEach(line => {

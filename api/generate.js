@@ -3,6 +3,11 @@ import { MODEL } from './_config.js';
 import { resolveStateValue, lockBlock, lintText, stripText, problemList, logHit } from './_lock.js';
 import { verifyLicense, g4tMatches } from './_license.js';
 import { callComplete } from './_complete.js';
+import { stripMarkdown } from './_markdown.js';
+
+// The letter is shown, copied, emailed and printed as plain text, so the model is told to write plain text and any markdown that still
+// comes back is stripped (api/_markdown.js) before the lint and before the reply.
+const PLAIN_TEXT_RULE = '\n\nFORMAT RULE: write the letter in plain text only. No markdown: no # headings, no ** or __ bold, no * or _ italics, no bullet symbols, no tables or | characters, no code fences. Use ordinary paragraphs, and numbered sentences such as "1." if a list is needed.';
 
 // Node serverless runtime (NOT edge). Edge caps at ~25s on Hobby and ignores
 // maxDuration, which 504'd ~25s Opus letters. Node honors maxDuration:60. This
@@ -114,7 +119,7 @@ export default async function handler(req, res) {
 
     let messages;
     if (reviewMode && draftLetter) {
-      messages = [{ role: 'user', content: `Review and improve this appeal letter. Fix vague language, ensure all arguments are explicitly stated, remove emotional appeals, tighten redundancy. Return ONLY the improved letter:\n\n${draftLetter}` }];
+      messages = [{ role: 'user', content: `Review and improve this appeal letter. Fix vague language, ensure all arguments are explicitly stated, remove emotional appeals, tighten redundancy. Write plain text only (no markdown, headings, bold, bullets or tables). Return ONLY the improved letter:\n\n${draftLetter}` }];
     } else {
       messages = [{ role: 'user', content: userPrompt }];
     }
@@ -122,7 +127,7 @@ export default async function handler(req, res) {
     const abbr = resolveState(body);
     const lockOn = !isCheckCall;
     const system = lockOn
-      ? ((systemPrompt || '') + lockBlock(abbr))
+      ? ((systemPrompt || '') + PLAIN_TEXT_RULE + lockBlock(abbr))
       : (systemPrompt || undefined);
     const ownTexts = [String(userPrompt || ''), String(systemPrompt || ''), String(draftLetter || '')];
 
@@ -135,7 +140,7 @@ export default async function handler(req, res) {
       if (result.truncated) return res.status(502).json({ error: 'The letter was too long to finish. Please try again; your access code was not used.', code: 'truncated' });
       return res.status(502).json({ error: 'AI generation failed', detail: result.err });
     }
-    let text = result.text;
+    let text = stripMarkdown(result.text);
     // Fail loudly on a missing text block — never return undefined — and because this throws BEFORE the
     // mark-usage call below, the buyer's one-use license is NOT burned on a parse miss.
     if (!text) throw new Error(`No text block in API response (stop_reason: ${result.stop || 'unknown'})`);
@@ -153,7 +158,7 @@ export default async function handler(req, res) {
           regenerated = true;
           const notice = `\n\nREGENERATION NOTICE: the previous draft used authorities or figures that are not verified (${first.slice(0, 8).join('; ')}). Rewrite the letter without them: cite nothing outside the verified list and state no dollar, percent or day figure outside the verified list or the owner's facts.`;
           const second = await callClaude(anthropicKey, system + notice, messages, deadlineAt, [TOKEN_LIMITS[1]]);
-          if (second.ok && second.text) { text = second.text; p = lintText(text, abbr, ...ownTexts); }
+          if (second.ok && second.text) { text = stripMarkdown(second.text); p = lintText(text, abbr, ...ownTexts); }
         }
         if (p.cites.length || p.figs.length) { text = stripText(text, abbr, ...ownTexts); stripped = p.cites.length + p.figs.length; }
       }

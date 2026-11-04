@@ -27,7 +27,7 @@ export default async function handler(req) {
 
   try {
     const t0 = Date.now();
-    const { accessCode, state, varianceType, issueType, letterExcerpt, _variant: reqVariant } = await req.json();
+    const { accessCode, state, varianceType, issueType, letterExcerpt } = await req.json();
 
     const payhipApiKey = process.env.PAYHIP_API_KEY;
     if (!payhipApiKey) return new Response(JSON.stringify({ error: 'Service not configured' }), { status: 500, headers });
@@ -44,10 +44,9 @@ export default async function handler(req) {
 
     // The dispute type comes from issueType (the client sends the form's Type of Dispute); varianceType is the legacy field.
     const type = issueType || varianceType;
-    const variant = testMode && reqVariant ? reqVariant : {};
-    const built = buildChecklistPrompt(state, type, letterExcerpt, abbr, variant);
-    const prompt = variant.userOverride || built.user;
-    const system = variant.system || built.system;
+    const built = buildChecklistPrompt(state, type, letterExcerpt, abbr);
+    const prompt = built.user;
+    const system = built.system;
 
     // Edge must start responding within 25s: the whole request (licence check + model calls) gets a 20s budget,
     // a truncation retry only starts with 10s left, and any failure falls back to this dispute type's own list.

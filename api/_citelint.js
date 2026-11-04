@@ -98,30 +98,8 @@ export function findUnverified(text, allowed, subs) {
 
 // Numeric claims: dollar, percent and time figures must come from verified state data, the owner's own facts or the
 // request prompts. Anything else is regenerated once, then its sentence is stripped.
-const WORDNUM = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, fifteen: 15, twenty: 20, 'twenty-one': 21, 'twenty-five': 25, thirty: 30, forty: 40, 'forty-five': 45, fifty: 50, sixty: 60, ninety: 90, 'one hundred': 100, hundred: 100 };
-const WORDS = Object.keys(WORDNUM).sort((a, b) => b.length - a.length).join('|');
-const UNIT = '(?:(calendar|business|working|consecutive)[-\\s]+)?(day|hour|week|month|year)s?\\b';
-const numOf = x => { const k = String(x).toLowerCase().replace(/,/g, ''); return k in WORDNUM ? WORDNUM[k] : parseFloat(k); };
-const unitKey = (kind, unit, n) => (kind && /business|working/i.test(kind) ? 'b' : '') + unit.toLowerCase() + ':' + n;
-
-export function numericClaims(text) {
-  const out = [];
-  let src = String(text || '');
-  const push = (key, m) => out.push({ key, text: m.trim().slice(0, 60) });
-  src = src.replace(/\$\s?(\d[\d,]*(?:\.\d+)?)(?:\s*(million|thousand))?/gi, (m, n, mag) => {
-    push('usd:' + parseFloat(n.replace(/,/g, '')) * (/million/i.test(mag || '') ? 1e6 : /thousand/i.test(mag || '') ? 1e3 : 1), m); return ' ';
-  });
-  src = src.replace(new RegExp('\\b(\\d+(?:\\.\\d+)?|' + WORDS + ')\\s?(?:%|percent\\b)', 'gi'), (m, n) => { push('pct:' + numOf(n), m); return ' '; });
-  const A = '(\\d+|' + WORDS + ')';
-  src = src.replace(new RegExp('\\b' + A + '\\s*(?:-|–|to|or)\\s*' + A + '[-\\s]+' + UNIT, 'gi'), (m, a, b, kind, unit) => {
-    push(unitKey(kind, unit, numOf(a)), m); push(unitKey(kind, unit, numOf(b)), m); return ' ';
-  });
-  src = src.replace(/\b(\d+)(?:st|nd|rd|th)\s+(?:(business|calendar|working)\s+)?day\b/gi, (m, n, kind) => { push(unitKey(kind, 'day', n), m); return ' '; });
-  src.replace(new RegExp('(?:\\b(\\d+|' + WORDS + ')(?:\\s*\\((\\d+)\\))?|\\((\\d+)\\))[-\\s]+' + UNIT, 'gi'), (m, n, p, p2, kind, unit) => {
-    push(unitKey(kind, unit, numOf(p2 || p || n)), m); return ' ';
-  });
-  return out;
-}
+import { numericClaims, wordsToNumber } from './_numclaims.js';
+export { numericClaims, wordsToNumber };
 
 export function findUnverifiedFigures(text, allowedNums) {
   const seen = new Set();
