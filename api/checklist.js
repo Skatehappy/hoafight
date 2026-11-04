@@ -2,10 +2,12 @@
 import { MODEL } from './_config.js';
 import { verifyLicense, g4tMatches } from './_license.js';
 import { callComplete } from './_complete.js';
-import { typeInfo, fallbackFor } from './_checklist-fallbacks.js';
-import { resolveStateValue, lockBlock, lintText, problemList, logHit } from './_lock.js';
+import { fallbackFor } from './_checklist-fallbacks.js';
+import { resolveStateValue, lintText, problemList, logHit } from './_lock.js';
+import { buildChecklistPrompt } from './_checklist-prompt.js';
 
 const PRODUCT_LINK = '8TWrB';
+const EDGE_BUDGET_MS = 20000;
 
 export const config = { runtime: 'edge' };
 
@@ -24,7 +26,8 @@ export default async function handler(req) {
   if (req.method !== 'POST') return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers });
 
   try {
-    const { accessCode, state, varianceType, issueType, letterExcerpt } = await req.json();
+    const t0 = Date.now();
+    const { accessCode, state, varianceType, issueType, letterExcerpt, _variant: reqVariant } = await req.json();
 
     const payhipApiKey = process.env.PAYHIP_API_KEY;
     if (!payhipApiKey) return new Response(JSON.stringify({ error: 'Service not configured' }), { status: 500, headers });
@@ -41,23 +44,26 @@ export default async function handler(req) {
 
     // The dispute type comes from issueType (the client sends the form's Type of Dispute); varianceType is the legacy field.
     const type = issueType || varianceType;
-    const prompt = `Generate a practical checklist for a homeowner sending a letter to their HOA about ${typeInfo(type).focus}, as a JSON array of 8 to 10 strings. Every item is one plain action step of at most 25 words and fits this situation only. Always include sending the letter by certified mail with return receipt and keeping a copy. Return ONLY a valid JSON array, no other text.
+    const variant = testMode && reqVariant ? reqVariant : {};
+    const built = buildChecklistPrompt(state, type, letterExcerpt, abbr, variant);
+    const prompt = variant.userOverride || built.user;
+    const system = variant.system || built.system;
 
-State: ${state}
-Situation: ${type || 'HOA dispute'}
-Letter excerpt: ${letterExcerpt?.substring(0, 200) || ''}${lockBlock(abbr)}`;
-
-    // Never parse a cut-off reply: callComplete retries once with a higher limit, then reports truncation.
-    // Any model failure (HTTP error, truncation, unparseable reply) falls back to this dispute type's own list (HTTP 200).
+    // Edge must start responding within 25s: the whole request (licence check + model calls) gets a 20s budget,
+    // a truncation retry only starts with 10s left, and any failure falls back to this dispute type's own list.
+    const deadlineAt = t0 + EDGE_BUDGET_MS;
     const diag = {};
-    const r = await callComplete(apiKey, max => ({ model: MODEL, max_tokens: max, thinking: { type: 'disabled' }, messages: [{ role: 'user', content: prompt }] }), [2000, 4000]);
-    diag.attempts = r.attempts; diag.stop = r.stop; diag.status = r.status;
+    const reqPreview = { model: MODEL, max_tokens: 2000, state: String(state || '').slice(0, 40), issueType: String(type || '').slice(0, 60), systemLen: (system || '').length, userLen: prompt.length, system: (system || '').slice(0, 600), user: prompt.slice(0, 600) };
+    const r = await callComplete(apiKey, max => ({ model: MODEL, max_tokens: max, thinking: { type: 'disabled' }, system, messages: [{ role: 'user', content: prompt }] }), [2000, 4000], { deadlineAt, minRetryMs: 10000 });
+    diag.attempts = r.attempts; diag.stop = r.stop; diag.stopDetails = r.stopDetails; diag.status = r.status; diag.ms = Date.now() - t0;
+    diag.request = reqPreview;
     let checklist = null;
     if (r.ok) {
       try { checklist = JSON.parse(r.text.replace(/```json|```/g, '').trim()); } catch { diag.parseFailed = true; }
     } else {
-      diag.failed = r.truncated ? 'truncated' : 'model-error';
-      console.log(JSON.stringify({ evt: 'checklist_model_fail', app: 'hoafight', reason: diag.failed, status: r.status || null }));
+      diag.failed = r.refusal ? 'refusal' : r.truncated ? 'truncated' : r.timeout ? 'timeout' : 'model-error';
+      // Diagnostics only: request preview (prompt text, state, type - no keys, no PII beyond the 200-char excerpt) + stop info.
+      console.log(JSON.stringify({ evt: 'checklist_model_fail', app: 'hoafight', reason: diag.failed, status: r.status || null, stop: r.stop || null, stopDetails: r.stopDetails || null, usage: r.usage || null, ms: diag.ms, request: reqPreview }));
     }
 
     if (Array.isArray(checklist)) {

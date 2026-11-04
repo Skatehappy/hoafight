@@ -32,7 +32,12 @@ function g4tTake() {
 }
 
 // ── Citation + figure lock (api/_lock.js) ────────────────────────────────────
-const REGEN_BUDGET_MS = 30000; // maxDuration is 60s; skip the regeneration pass if the first call already used half of it
+// Hobby maxDuration is 60s. Every request has a hard 50s budget (licence check + model calls + usage mark): each model fetch is
+// aborted at the deadline, the truncation retry only starts with 30s left, and the lint regeneration (one single-attempt call)
+// only starts with 30s left; otherwise the unverified sentences are stripped from the text already in hand.
+const REQUEST_BUDGET_MS = 50000;
+const RETRY_MIN_MS = 30000;
+const REGEN_MIN_MS = 30000;
 
 function resolveState(body) {
   return resolveStateValue(body.state || (/^STATE:\s*(.+)$/m.exec(String(body.userPrompt || '')) || [])[1]);
@@ -40,8 +45,8 @@ function resolveState(body) {
 
 // stop_reason "max_tokens" = truncated: retried once with a higher limit, never returned or linted as a letter.
 const TOKEN_LIMITS = [3000, 6000];
-const callClaude = (anthropicKey, system, messages) =>
-  callComplete(anthropicKey, max => ({ model: MODEL, max_tokens: max, thinking: { type: 'disabled' }, system: system || undefined, messages }), TOKEN_LIMITS);
+const callClaude = (anthropicKey, system, messages, deadlineAt, limits = TOKEN_LIMITS) =>
+  callComplete(anthropicKey, max => ({ model: MODEL, max_tokens: max, thinking: { type: 'disabled' }, system: system || undefined, messages }), limits, { deadlineAt, minRetryMs: RETRY_MIN_MS });
 
 function cors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -66,6 +71,8 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
+  const t0 = Date.now();
+  const deadlineAt = t0 + REQUEST_BUDGET_MS;
   try {
     const body = await readBody(req);
     const { accessCode, systemPrompt, userPrompt, reviewMode, draftLetter } = body;
@@ -119,11 +126,12 @@ export default async function handler(req, res) {
       : (systemPrompt || undefined);
     const ownTexts = [String(userPrompt || ''), String(systemPrompt || ''), String(draftLetter || '')];
 
-    const t0 = Date.now();
-    const result = await callClaude(anthropicKey, system, messages);
+    const result = await callClaude(anthropicKey, system, messages, deadlineAt);
     // Failure (incl. a reply still cut off after the retry) returns here, BEFORE the usage mark: the code is not burned
     // and no partial letter is ever returned.
     if (!result.ok) {
+      if (result.refusal) { console.log(JSON.stringify({ evt: 'generate_refusal', app: APP, stop: result.stop, stopDetails: result.stopDetails || null })); return res.status(502).json({ error: 'The letter service could not complete this request. Please try again; your access code was not used.', code: 'refusal' }); }
+      if (result.timeout) return res.status(504).json({ error: 'The letter took too long to finish. Please try again; your access code was not used.', code: 'timeout' });
       if (result.truncated) return res.status(502).json({ error: 'The letter was too long to finish. Please try again; your access code was not used.', code: 'truncated' });
       return res.status(502).json({ error: 'AI generation failed', detail: result.err });
     }
@@ -141,10 +149,10 @@ export default async function handler(req, res) {
       let stripped = 0;
       const first = problemList(p);
       if (first.length) {
-        if (Date.now() - t0 < REGEN_BUDGET_MS) {
+        if (deadlineAt - Date.now() >= REGEN_MIN_MS) {
           regenerated = true;
           const notice = `\n\nREGENERATION NOTICE: the previous draft used authorities or figures that are not verified (${first.slice(0, 8).join('; ')}). Rewrite the letter without them: cite nothing outside the verified list and state no dollar, percent or day figure outside the verified list or the owner's facts.`;
-          const second = await callClaude(anthropicKey, system + notice, messages);
+          const second = await callClaude(anthropicKey, system + notice, messages, deadlineAt, [TOKEN_LIMITS[1]]);
           if (second.ok && second.text) { text = second.text; p = lintText(text, abbr, ...ownTexts); }
         }
         if (p.cites.length || p.figs.length) { text = stripText(text, abbr, ...ownTexts); stripped = p.cites.length + p.figs.length; }
